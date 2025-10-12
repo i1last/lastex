@@ -1,0 +1,100 @@
+\documentclass[14pt]{extarticle}
+\usepackage[left=3cm,right=1cm,top=2cm,bottom=2cm]{geometry} % Настройка полей
+
+% --- Основные пакеты ---
+\usepackage[russian]{babel} % Поддержка русского языка (переносы, названия)
+\usepackage{fontspec}       % Для работы со шрифтами в LuaLaTeX/XeLaTeX. Заменяет inputenc и fontenc.
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{float}          % Для управления положением плавающих объектов
+\usepackage[toc,page]{appendix}
+\usepackage{pdflscape}
+\usepackage{multirow}
+
+% --- Настройка шрифтов ---
+% \setmainfont{Times New Roman} % Установка основного шрифта документа
+\setmainfont{TeX Gyre Termes} % Свободный неотличимый от оригинала аналог Times New Roman
+\linespread{1.25}             % Межстрочный интервал
+
+% Подписи к рисункам и таблицам
+\usepackage{caption}
+\captionsetup[figure]{textfont=it, labelsep=period, justification=centering , singlelinecheck=false, format=plain}
+\captionsetup[table] {textfont=it, labelsep=period, justification=raggedleft, singlelinecheck=false, format=plain, skip=0pt}
+
+% Настраиваем заголовки
+\usepackage{titlesec}
+%titleformat{<команда>}{<стиль>}{<номер>}{<отступ>}{<текст до>}
+\titleformat{\section}{\bfseries\normalsize}{\thesection.}{1em}{}
+\titleformat{\subsection}{\bfseries\normalsize}{\thesubsection.}{1em}{}
+\titleformat{\subsubsection}{\bfseries\normalsize}{\thesubsubsection.}{1em}{}
+\newcommand{\centeredsection}[1]{%
+    \noindent
+    % \vspace{1em}
+    \begin{center}
+        \textbf{\normalsize #1}
+    \end{center}
+    \par
+    % \vspace{1em}
+}
+
+% Работа с таблицами
+\usepackage{tabularx, array, makecell, booktabs}
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{L}{>{\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+
+% Работа со ссылками и гиперссылками
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue
+}
+
+
+% Пояснения в колонтитулум
+\usepackage{enotez}
+\makeatletter % Создание нового стиля для сносок на странице
+\def\enotez@endnotes@footer{%
+    \begin{center}
+        \rule{0.5\linewidth}{0.4pt}
+        \enotez@theendnotes
+    \end{center}
+}
+
+
+% Красная строка
+\usepackage{indentfirst}
+\setlength{\parindent}{1cm}
+
+
+% Содержание
+\usepackage{tocloft}
+\renewcommand{\cftsecleader}{\hfil} % Убираем точки между заголовком и номером страницы
+\renewcommand{\cftsubsecleader}{\hfil}
+\renewcommand{\cfttoctitlefont}{\normalfont\bfseries\Large\centering}
+\renewcommand{\cfttoctitlefont}{\normalfont\Large\bfseries\centering} % Делаем заголовок оглавления без жирного шрифта
+\renewcommand{\contentsname}{{\large\uppercase{СОДЕРЖАНИЕ}}}
+\renewcommand{\cftsecfont}{\normalfont} % Убираем жирный шрифт с разделов и номеров страниц
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsubsecfont}{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+
+
+\usepackage{etoolbox}
+\usepackage{lipsum}
+\newcommand{\customfourteenpt}{\fontsize{14pt}{16.8pt}\selectfont}
+\AtBeginDocument{\customfourteenpt}
+
+% Разрешаем ставить больее длинные пробелы, если иначе не выходит сделать
+% более верное разбиение абзаца на строки
+\sloppy
+
+
+% Полезные ресурсы
+% https://open-resource.ru/spisok-literatury/
+% https://samolisov.blogspot.com/2008/06/latex_09.html

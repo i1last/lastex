@@ -1,3 +1,19 @@
+# Используем полный образ TeX Live
 FROM texlive/texlive:latest
 
+# --- УСТАНОВКА ЛОКАЛЬНЫХ ШРИФТОВ ---
+# 1. Создаем папку для наших шрифтов внутри контейнера
+RUN mkdir -p /usr/local/share/fonts/truetype/times-new-roman
+
+# 2. Копируем файлы шрифтов из папки /fonts проекта в созданную папку контейнера
+COPY fonts/times.ttf /usr/local/share/fonts/truetype/times-new-roman/
+COPY fonts/timesbd.ttf /usr/local/share/fonts/truetype/times-new-roman/
+COPY fonts/timesi.ttf /usr/local/share/fonts/truetype/times-new-roman/
+COPY fonts/timesbi.ttf /usr/local/share/fonts/truetype/times-new-roman/
+
+# 3. Обновляем кэш шрифтов операционной системы, чтобы они стали доступны
+RUN fc-cache -f -v
+# --- КОНЕЦ БЛОКА УСТАНОВКИ ШРИФТОВ ---
+
+# Устанавливаем рабочую директорию внутри контейнера.
 WORKDIR /workdir

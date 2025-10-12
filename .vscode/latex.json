@@ -1,0 +1,82 @@
+{
+    "Section": {
+        "prefix": "sec",
+        "body": [
+            "\\section{${1:Название раздела}}",
+            "$0"
+        ],
+        "description": "Вставка нового раздела \\section"
+    },
+    "Subsection": {
+        "prefix": "ssec",
+        "body": [
+            "\\subsection{${1:Название подраздела}}",
+            "$0"
+        ],
+        "description": "Вставка нового подраздела \\subsection"
+    },
+    "Figure": {
+        "prefix": "fig",
+        "body": [
+            "\\begin{figure}[H]",
+            "\t\\centering",
+            "\t\\includegraphics[width=0.8\\textwidth]{images/${1:image.png}}",
+            "\t\\caption{${2:Подпись к рисунку}}",
+            "\t\\label{fig:${3:label}}",
+            "\\end{figure}",
+            "$0"
+        ],
+        "description": "Вставка окружения figure для изображения"
+    },
+    "Table (booktabs)": {
+        "prefix": "tab",
+        "body": [
+            "\\begin{table}[H]",
+            "\t\\centering",
+            "\t\\caption{${1:Название таблицы}}",
+            "\t\\label{tab:${2:label}}",
+            "\t\\begin{tabular}{${3|l,c,r|}}",
+            "\t\t\\toprule",
+            "\t\t${4:Заголовок 1} & ${5:Заголовок 2} \\\\",
+            "\t\t\\midrule",
+            "\t\t${6:Данные 1} & ${7:Данные 2} \\\\",
+            "\t\t\\bottomrule",
+            "\t\\end{tabular}",
+            "\\end{table}",
+            "$0"
+        ],
+        "description": "Вставка таблицы с использованием стиля booktabs"
+    },
+    "Insert Code": {
+        "prefix": "code",
+        "body": [
+            "\\insertcode[caption={${1:Подпись к листингу}}, label={lst:${2:label}}]{src/${3:filename.py}}",
+            "$0"
+        ],
+        "description": "Вставка листинга кода из файла через команду \\insertcode"
+    },
+    "Clever Reference": {
+        "prefix": "cref",
+        "body": [
+            "\\cref{${1|fig,tab,lst,eq|}:${2:label}}"
+        ],
+        "description": "Вставка 'умной' ссылки \\cref"
+    },
+    "Display Math": {
+        "prefix": "dm",
+        "body": [
+            "$$",
+            "\t$1",
+            "$$",
+            "$0"
+        ],
+        "description": "Вставка выключной (display) формулы $$...$$"
+    },
+    "Inline Math": {
+        "prefix": "im",
+        "body": [
+            "$$1$"
+        ],
+        "description": "Вставка внутристрочной (inline) формулы $...$"
+    }
+}
