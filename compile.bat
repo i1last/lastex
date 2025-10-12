@@ -15,16 +15,6 @@ IF NOT "%2"=="" (
     set FILENAME=%2
 )
 
-REM --- АВТОМАТИЧЕСКАЯ ОЧИСТКА ---
-echo Очищаю временные файлы в папке %1...
-del /Q "%1\*.aux" >nul 2>nul
-del /Q "%1\*.log" >nul 2>nul
-del /Q "%1\*.out" >nul 2>nul
-del /Q "%1\*.toc" >nul 2>nul
-del /Q "%1\*.fls" >nul 2>nul
-del /Q "%1\*.fdb_latexmk" >nul 2>nul
-REM --- КОНЕЦ БЛОКА ОЧИСТКИ ---
-
 set IMAGE_NAME=latex-compiler-env
 docker inspect --type=image %IMAGE_NAME% > nul 2>nul
 IF errorlevel 1 (
@@ -35,12 +25,20 @@ IF errorlevel 1 (
 set "DOCKER_PATH=%1"
 set "DOCKER_PATH=%DOCKER_PATH:\=/%"
 
+REM === ГАРАНТИРОВАННАЯ ОЧИСТКА ПЕРЕД КОМПИЛЯЦИЕЙ
+echo Очистка целевой папки: %1\out\
+IF EXIST "%1\out" (
+    rmdir /s /q "%1\out"
+)
+mkdir "%1\out"
+
 echo Запускаю компиляцию файла %FILENAME% в папке: %DOCKER_PATH%
 
+REM === ЗАПУСК КОНТЕЙНЕРА СО СТРОГОЙ ИЗОЛЯЦИЕЙ ПУТЕЙ
 docker run --rm ^
     -v "%cd%":/workdir ^
-    -e "TEXINPUTS=/workdir//:" ^
+    -e "TEXINPUTS=./out//:./:/workdir//:" ^
     -w /workdir/%DOCKER_PATH% ^
-    %IMAGE_NAME% lualatex -interaction=batchmode %FILENAME%
+    %IMAGE_NAME% lualatex -output-directory=out -interaction=nonstopmode %FILENAME%
 
-echo Компиляция завершена. PDF-файл должен находиться в папке %1. Если его там нет, см. .log файл для нахождения ошибок (в терминале они не печатаются).
+echo Компиляция завершена. PDF-файл должен находиться в папке %1\out.
