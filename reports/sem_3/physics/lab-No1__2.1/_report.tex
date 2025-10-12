@@ -1,0 +1,30 @@
+% === ПОДКЛЮЧЕНИЕ ОБЩЕЙ ПРЕАМБУЛЫ ===
+\input{template/preambula.tex}
+
+% === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
+\newcommand{\Department}{физики}
+\newcommand{\WorkType}{ОТЧЕТ}
+\newcommand{\WorkNumber}{№2.1.}
+\newcommand{\Discipline}{физика}
+\newcommand{\WorkTitle}{ИЗМЕРЕНИЕ ДЛИНЫ СВЕТОВОЙ ВОЛНЫ С ИСПОЛЬЗОВАНИЕМ БИПРИЗМЫ ФРЕНЕЛЯ}
+\newcommand{\Group}{4494}
+\newcommand{\Variant}{11}
+\newcommand{\StudentName}{Рахметов А. Р.}
+\newcommand{\TeacherName}{Черёмухина И. А.}
+\newcommand{\Year}{2025}
+
+% === СБОРКА ДОКУМЕНТА ===
+\begin{document}
+
+\input{template/title_template.tex}
+
+% Содержание
+% \begin{center}
+%     \tableofcontents
+% \end{center}
+% \thispagestyle{empty}
+% \newpage
+
+\input{main.tex} % Основное содержание
+
+\end{document}
