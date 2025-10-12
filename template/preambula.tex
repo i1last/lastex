@@ -1,7 +1,14 @@
 %========================================================================================
 % КЛАСС ДОКУМЕНТА И ОСНОВНЫЕ ПАРАМЕТРЫ
 %========================================================================================
-\documentclass[14pt]{extarticle}
+\documentclass[a4paper,14pt,russian]{extarticle}
+
+% Расширяет возможности размеров стандартных классов
+\usepackage{extsizes}
+
+% Разрешаем ставить больее длинные пробелы, если иначе не выходит сделать
+% более верное разбиение абзаца на строки
+\sloppy
 
 
 
@@ -10,6 +17,7 @@
 %========================================================================================
 % ЯЗЫК, ШРИФТЫ И КОДИРОВКА (Современный подход для LuaLaTeX)
 %========================================================================================
+\usepackage{cmap}           % Обеспечивает правильное отображение шрифтов и символов в PDF
 \usepackage{fontspec}       % Пакет для работы с любыми системными шрифтами.
                             % Заменяет устаревшие inputenc и fontenc.
 \usepackage[russian]{babel} % Поддержка русского языка: переносы, названия и т.д.
@@ -38,12 +46,62 @@
 
 
 %========================================================================================
-% ОФОРМЛЕНИЕ СТРАНИЦЫ
+% СТРАНИЦЫ
 %========================================================================================
 \usepackage[left=3cm, right=1cm, top=2cm, bottom=2cm]{geometry} % Поля документа
-\usepackage{indentfirst}       % Красная строка для первого абзаца после заголовка
-\setlength{\parindent}{1.25cm} % Отступ красной строки - 1.25 см
+\usepackage{indentfirst}        % Красная строка для первого абзаца после заголовка
+\setlength{\parindent}{1.25cm}  % Отступ красной строки - 1.25 см
 
+\usepackage[toc,page]{appendix} % Поддержка приложение в отчете
+\usepackage{pdflscape}          % Поддержка горизонтальных страниц
+
+% --- Поддержка колонтитулов
+\usepackage{enotez}
+
+\makeatletter % Создание нового стиля для сносок на странице
+\def\enotez@endnotes@footer{%
+    \begin{center}
+        \rule{0.5\linewidth}{0.4pt}
+        \enotez@theendnotes
+    \end{center}
+}
+
+% --- Настройка содержанмя
+\usepackage{tocloft}
+
+% Убираем точки между заголовком и номером страницы
+\renewcommand{\cftsecleader      }{\hfil} 
+\renewcommand{\cftsubsecleader   }{\hfil}
+\renewcommand{\cftsubsubsecleader}{\hfil}
+% Делаем заголовок оглавления без жирного шрифта
+\renewcommand{\cfttoctitlefont}{\normalfont\bfseries\Large\centering}
+\renewcommand{\cfttoctitlefont}{\normalfont\Large\bfseries\centering}
+% Меняем название на "СОДЕРЖАНИЕ"
+\renewcommand{\contentsname}{{\large\uppercase{СОДЕРЖАНИЕ}}}
+% Убираем жирный шрифт с разделов и номеров страниц
+\renewcommand{\cftsecfont       }{\normalfont} 
+\renewcommand{\cftsecpagefont   }{\normalfont}
+\renewcommand{\cftsubsecfont    }{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+
+
+%========================================================================================
+% ЗАГОЛОВКИ
+%========================================================================================
+\usepackage{titlesec}
+
+%titleformat{<команда>     }{<стиль>             }{<номер>           }{<отступ>}{<текст до>}
+\titleformat{\section      }{\bfseries\normalsize}{\thesection.      }{1em     }{          }
+\titleformat{\subsection   }{\bfseries\normalsize}{\thesubsection.   }{1em     }{          }
+\titleformat{\subsubsection}{\bfseries\normalsize}{\thesubsubsection.}{1em     }{          }
+
+\newcommand{\centeredsection}[1]{
+    \noindent
+    \begin{center}
+        \textbf{\normalsize #1}
+    \end{center}
+    \par
+}
 
 
 
@@ -88,9 +146,17 @@
 }
 
 % --- Пакеты для качественных таблиц
+\usepackage{multirow}       % Улучшенное форматирование таблиц
 \usepackage{tabularx}       % Таблицы с автоматическим расчетом ширины колонок
+\usepackage{array}          % Расширяет возможности работы с таблицами и выравниваниями
 \usepackage{booktabs}       % Профессиональное оформление таблиц (горизонтальные линии \toprule, \midrule, \bottomrule)
 \usepackage{makecell}       % Многострочные ячейки в таблицах
+
+% --- Настройка новых типов колонок для tabularx
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{L}{>{\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
 
 
 
