@@ -63,3 +63,7 @@
     # Для Linux/macOS
     ./compile.sh reports/year_1/semester_1/physics/lab_01
     ```
+
+# Полезные ссылки
+- https://open-resource.ru/spisok-literatury/
+- https://samolisov.blogspot.com/2008/06/latex_09.html
