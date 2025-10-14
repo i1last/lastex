@@ -1,19 +1,40 @@
 # Используем полный образ TeX Live
 FROM texlive/texlive:latest
 
+# Устанавливаем только отсутствующие пакеты
+RUN tlmgr update --self && \
+    tlmgr install \
+    babel-russian \
+    cmap \
+    enotez \
+    extsizes \
+    pdflscape \
+    tocloft \
+    titlesec \
+    multirow \
+    makecell \
+    cleveref && \
+    tlmgr path add
+
 # --- УСТАНОВКА ЛОКАЛЬНЫХ ШРИФТОВ ---
-# 1. Создаем папку для наших шрифтов внутри контейнера
 RUN mkdir -p /usr/local/share/fonts/truetype/times-new-roman
 
-# 2. Копируем файлы шрифтов из папки /fonts проекта в созданную папку контейнера
 COPY fonts/times.ttf /usr/local/share/fonts/truetype/times-new-roman/
 COPY fonts/timesbd.ttf /usr/local/share/fonts/truetype/times-new-roman/
 COPY fonts/timesi.ttf /usr/local/share/fonts/truetype/times-new-roman/
 COPY fonts/timesbi.ttf /usr/local/share/fonts/truetype/times-new-roman/
 
-# 3. Обновляем кэш шрифтов операционной системы, чтобы они стали доступны
 RUN fc-cache -f -v
 # --- КОНЕЦ БЛОКА УСТАНОВКИ ШРИФТОВ ---
 
-# Устанавливаем рабочую директорию внутри контейнера.
+# --- КОПИРУЕМ TEMPLATE ВНУТРЬ ОБРАЗА ---
+# COPY template /internal-template
+COPY template /template
+
+# --- ПРЕДВАРИТЕЛЬНАЯ ГЕНЕРАЦИЯ БАЗ ДАННЫХ ---
+RUN mkdir -p /root/.texlive2024/texmf-var/luatex-cache && \
+    luaotfload-tool --update --force && \
+    mtxrun --generate && \
+    fmtutil-sys --all
+
 WORKDIR /workdir
