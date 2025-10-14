@@ -1,0 +1,175 @@
+{
+    "Section": {
+        "prefix": "sec",
+        "body": [
+            "\\section*{${1:title}}",
+            "$0"
+        ],
+        "description": "Create a new section"
+    },
+    "SubSection": {
+        "prefix": "ssec",
+        "body": [
+            "\\subsection*{${1:title}}",
+            "$0"
+        ],
+        "description": "Create a new subsection"
+    },
+    "SubSubSection": {
+        "prefix": "sssec",
+        "body": [
+            "\\subsubsection*{${1:title}}",
+            "$0"
+        ],
+        "description": "Create a new subsubsection"
+    },
+    "CenteredSection": {
+        "prefix": "csec",
+        "body": [
+            "\\centeredsection{${1:title}}",
+            "$0"
+        ],
+        "description": "Create a new centered section"
+    },
+    "Enumerate": {
+        "prefix": "enum",
+        "body": [
+            "\\begin{enumerate}",
+            "    \\item $0",
+            "\\end{enumerate}"
+        ],
+        "description": ""
+    },
+    "Itemize": {
+        "prefix": "itz",
+        "body": [
+            "\\begin{itemize}",
+            "    \\item $0",
+            "\\end{itemize}"
+        ],
+        "description": ""
+    },
+    "BeginEnd": {
+        "prefix": "be",
+        "body": [
+            "\\begin{$1}",
+            "    $0",
+            "\\end{$1}"
+        ],
+        "description": ""
+    },
+    "Equation": {
+        "prefix": "eq",
+        "body": [
+            "\\begin{equation}",
+            "    $0",
+            "\\end{equation}"
+        ],
+        "description": ""
+    },
+    "Figure": {
+        "prefix": "fig",
+        "body": [
+            "\\begin{figure}[${1:H}]",
+            "    \\centering",
+            "    \\caption{${2:caption}}",
+            "    \\label{fig:${3:label}}",
+            "    \\includegraphics[width=${4:0.5}\\textwidth]{${5:image}}",
+            "\\end{figure}"
+        ],
+        "description": "Insert a figure environment"
+    },
+    "Table": {
+        "prefix": "table",
+        "body": [
+            "\\begin{table}[${1:H}]",
+            "    \\centering",
+            "    \\caption{${2:caption}}",
+            "    \\label{table:${label}}",
+            "    \\begin{tabularx}{\\linewidth}{${3:|C|C|C|}}",
+            "        \\hline",
+            "            ${4:cell}",
+            "        \\hline",
+            "    \\end{tabularx}",
+            "\\end{table}"
+        ],
+        "description": "Insert a table environment"
+    },
+    "ForceNumber": {
+        "prefix": "fn",
+        "body": [
+            "\\def\\thefigure{${1:1.1}}",
+            "\\protect\\phantomsection",
+            "$0"
+        ],
+        "description": ""
+    },
+    "BoldText": {
+        "prefix": "tbf",
+        "body": [
+            "\\textbf{$1}"
+        ],
+        "description": ""
+    },
+    "ItalicText": {
+        "prefix": "tit",
+        "body": [
+            "\\textit{$1}"
+        ],
+        "description": ""
+    },
+    "Text": {
+        "prefix": "txt",
+        "body": [
+            "\\text{$1}"
+        ],
+        "description": ""
+    },
+    "fraction": {
+        "prefix": "frac",
+        "body": [
+            "\\frac{$1}{$2}"
+        ],
+        "description": ""
+    },
+    "NoPageNumber": {
+        "prefix": "npn",
+        "body": [
+            "\\thispagestyle{empty}",
+            "$0"
+        ],
+        "description": ""
+    },
+    "Insert Code": {
+        "prefix": "code",
+        "body": [
+            "\\insertcode[language={${1:matlab}}, caption={${2:caption}}, label={listing:${3:label}}]{code/${4:filename.m}}",
+            "$0"
+        ],
+        "description": "Вставка листинга кода из файла через команду \\insertcode"
+    },
+    "Clever Reference": {
+        "prefix": "cref",
+        "body": [
+            "\\cref{${1|fig,tab,lst,eq|}:${2:label}}"
+        ],
+        "description": "Вставка 'умной' ссылки \\cref"
+    },
+    "Display Math": {
+        "prefix": "dm",
+        "body": [
+            "$$",
+            "\t$1",
+            "$$",
+            "$0"
+        ],
+        "description": "Вставка выключной (display) формулы $$...$$"
+    },
+    "Inline Math": {
+        "prefix": "im",
+        "body": [
+            "$$1$"
+        ],
+        "description": "Вставка внутристрочной (inline) формулы $...$"
+    }
+}
