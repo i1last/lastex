@@ -73,8 +73,8 @@
             "\\begin{figure}[${1:H}]",
             "    \\centering",
             "    \\caption{${2:caption}}",
-            "    \\label{fig:${3:label}}",
-            "    \\includegraphics[width=${4:0.5}\\textwidth]{${5:image}}",
+            "    \\label{fig:${2:label}}",
+            "    \\includegraphics[width=${3:0.5}\\textwidth]{${4:image}}",
             "\\end{figure}"
         ],
         "description": "Insert a figure environment"
@@ -85,7 +85,7 @@
             "\\begin{table}[${1:H}]",
             "    \\centering",
             "    \\caption{${2:caption}}",
-            "    \\label{table:${label}}",
+            "    \\label{table:${2:label}}",
             "    \\begin{tabularx}{\\linewidth}{${3:|C|C|C|}}",
             "        \\hline",
             "            ${4:cell}",
