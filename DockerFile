@@ -1,19 +1,23 @@
 # Используем полный образ TeX Live
 FROM texlive/texlive:latest
 
-# Устанавливаем только отсутствующие пакеты
-RUN tlmgr update --self && \
+# Устанавливаем системные зависимости, пакеты TeX и Pygments для minted
+RUN apt-get update && \
+    apt-get install -y python3 python3-pygments && \
+    rm -rf /var/lib/apt/lists/* && \
+    tlmgr update --self && \
     tlmgr install \
-    babel-russian \
-    cmap \
-    enotez \
-    extsizes \
-    pdflscape \
-    tocloft \
-    titlesec \
-    multirow \
-    makecell \
-    cleveref && \
+        babel-russian \
+        cmap \
+        enotez \
+        extsizes \
+        pdflscape \
+        tocloft \
+        titlesec \
+        multirow \
+        makecell \
+        cleveref \
+        minted && \
     tlmgr path add
 
 # --- УСТАНОВКА ЛОКАЛЬНЫХ ШРИФТОВ ---
@@ -23,6 +27,11 @@ COPY fonts/times.ttf /usr/local/share/fonts/truetype/times-new-roman/
 COPY fonts/timesbd.ttf /usr/local/share/fonts/truetype/times-new-roman/
 COPY fonts/timesi.ttf /usr/local/share/fonts/truetype/times-new-roman/
 COPY fonts/timesbi.ttf /usr/local/share/fonts/truetype/times-new-roman/
+
+COPY fonts/JetBrainsMono-Regular.ttf /usr/local/share/fonts/truetype/jb-mono/
+COPY fonts/JetBrainsMono-Bold.ttf /usr/local/share/fonts/truetype/jb-mono/
+COPY fonts/JetBrainsMono-Italic.ttf /usr/local/share/fonts/truetype/jb-mono/
+COPY fonts/JetBrainsMono-BoldItalic.ttf /usr/local/share/fonts/truetype/jb-mono/
 
 RUN fc-cache -f -v
 # --- КОНЕЦ БЛОКА УСТАНОВКИ ШРИФТОВ ---
