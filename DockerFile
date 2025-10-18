@@ -1,49 +1,53 @@
-# Используем полный образ TeX Live
+# --- УСТАНОВКА ОБРАЗА ---
 FROM texlive/texlive:latest
+ENV TERM=dumb
 
-# Устанавливаем системные зависимости, пакеты TeX и Pygments для minted
-RUN apt-get update && \
-    apt-get install -y python3 python3-pygments && \
-    rm -rf /var/lib/apt/lists/* && \
-    tlmgr update --self && \
-    tlmgr install \
-        babel-russian \
-        cmap \
-        enotez \
-        extsizes \
-        pdflscape \
+# --- УСТАНОВКА ПАКЕТОВ ---
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends python3 python3-pygments
+RUN rm -rf /var/lib/apt/lists/*
+
+RUN tlmgr update --self
+RUN tlmgr install \
+        collection-latexrecommended \
+        collection-luatex \
+        collection-langcyrillic \
+        collection-context && \
+    tlmgr path add
+RUN tlmgr install \
+        cleveref \
+        enumitem \
+        makecell \
+        was \
+        multirow \
         tocloft \
         titlesec \
-        multirow \
-        makecell \
-        cleveref \
-        minted && \
+        minted \
+        appendix \
+        enotez \
+        translations && \
     tlmgr path add
+
+RUN mktexlsr
 
 # --- УСТАНОВКА ЛОКАЛЬНЫХ ШРИФТОВ ---
 RUN mkdir -p /usr/local/share/fonts/truetype/times-new-roman
-
 COPY fonts/times.ttf /usr/local/share/fonts/truetype/times-new-roman/
 COPY fonts/timesbd.ttf /usr/local/share/fonts/truetype/times-new-roman/
 COPY fonts/timesi.ttf /usr/local/share/fonts/truetype/times-new-roman/
 COPY fonts/timesbi.ttf /usr/local/share/fonts/truetype/times-new-roman/
-
 COPY fonts/JetBrainsMono-Regular.ttf /usr/local/share/fonts/truetype/jb-mono/
 COPY fonts/JetBrainsMono-Bold.ttf /usr/local/share/fonts/truetype/jb-mono/
 COPY fonts/JetBrainsMono-Italic.ttf /usr/local/share/fonts/truetype/jb-mono/
 COPY fonts/JetBrainsMono-BoldItalic.ttf /usr/local/share/fonts/truetype/jb-mono/
 
-RUN fc-cache -f -v
-# --- КОНЕЦ БЛОКА УСТАНОВКИ ШРИФТОВ ---
-
-# --- КОПИРУЕМ TEMPLATE ВНУТРЬ ОБРАЗА ---
-# COPY template /internal-template
-COPY template /template
-
 # --- ПРЕДВАРИТЕЛЬНАЯ ГЕНЕРАЦИЯ БАЗ ДАННЫХ ---
-RUN mkdir -p /root/.texlive2024/texmf-var/luatex-cache && \
-    luaotfload-tool --update --force && \
-    mtxrun --generate && \
-    fmtutil-sys --all
+RUN fc-cache -f -v
+RUN mkdir -p /root/.texlive2024/texmf-var/luatex-cache
+RUN luaotfload-tool --update --force
+RUN mtxrun --generate
+RUN fmtutil-sys --byfmt lualatex
+RUN fmtutil-sys --all
+
 
 WORKDIR /workdir
