@@ -2,7 +2,7 @@
 REM =============================================================================
 REM УМНЫЙ СКРИПТ КОМПИЛЯЦИИ LaTeX С АВТОМАТИЧЕСКИМ УПРАВЛЕНИЕМ КОНТЕЙНЕРОМ
 REM Использование: .\compile.bat [путь_к_папке] [имя_файла.tex] [режим]
-REM Режимы: fast (черновик), full (финальный), stop (остановить контейнер)
+REM Режимы: stop, status
 REM =============================================================================
 
 chcp 65001 > nul
@@ -52,13 +52,9 @@ IF "%1"=="" (
     echo.
     echo Примеры:
     echo   .\compile.bat reports\physics\lab-1
-    echo   .\compile.bat reports\math\sem-2 main.tex full
+    echo   .\compile.bat reports\math\sem-2 main.tex
     echo   .\compile.bat stop                    - остановить фоновый контейнер
     echo   .\compile.bat status                  - статус контейнера
-    echo.
-    echo Режимы:
-    echo   fast  - черновая компиляция [быстро]
-    echo   full  - полная компиляция [с SyncTeX] [по умолчанию]
     exit /b 1
 )
 
@@ -166,7 +162,7 @@ IF "%COMPILE_MODE%"=="fast" (
 
 IF "%COMPILE_MODE%"=="full" (
     echo 🔧 ПОЛНАЯ КОМПИЛЯЦИЯ...
-    set "COMPILE_CMD=lualatex %LATEX_OPTS% -synctex=1 %TEX_FILE%"
+    set "COMPILE_CMD=lualatex %LATEX_OPTS% %TEX_FILE%"
 )
 
 if "!COMPILE_CMD!"=="" (
@@ -179,19 +175,31 @@ if "!COMPILE_CMD!"=="" (
 
 
 
-REM === КОПИРОВАНИЕ ПАПКИ TEMPLATE ВО ВРЕМЕННУЮ ДИРЕКТОРИЮ КОНТЕЙНЕРА ===
-echo 📋 Копирую template во временную директорию контейнера...
-docker exec %CONTAINER_NAME% bash -c "if [ -d '/workdir/template' ]; then mkdir -p /tmp/latex-template/template && cp -r /workdir/template/* /tmp/latex-template/template && echo '✅ Template скопирован во временную директорию'; else echo '❌ Папка template не найдена в корне'; fi"
+@REM REM === ЗАПУСК КОМПИЛЯЦИИ С ПРАВИЛЬНЫМИ ПУТЯМИ ===
+@REM set START_TIME=%TIME%
 
+@REM echo 🔄 Компилирую...
+@REM docker exec -e "TEXINPUTS=.:/workdir//:" -w "/workdir/%DOCKER_PATH%" %CONTAINER_NAME% bash -c "!COMPILE_CMD!"
+REM === ЗАПУСК КОМПИЛЯЦИИ С ИЗОЛЯЦИЕЙ ВО ВРЕМЕННОЙ ПАПКЕ ===
+set "TEMP_BUILD_DIR=/tmp/build_%RANDOM%"
 
+echo 🔄 Подготовка временной среды в контейнере...
+REM Создаем временную папку и копируем туда только нужную директорию проекта
+docker exec %CONTAINER_NAME% bash -c "mkdir -p %TEMP_BUILD_DIR% && cp -r /workdir/%DOCKER_PATH%/* %TEMP_BUILD_DIR%/"
 
-
-
-REM === ЗАПУСК КОМПИЛЯЦИИ С ПРАВИЛЬНЫМИ ПУТЯМИ ===
 set START_TIME=%TIME%
+echo 🚀 Компиляция в изолированной среде %TEMP_BUILD_DIR%...
 
-echo 🔄 Компилирую...
-docker exec -e "TEXINPUTS=.:/tmp/latex-template//:" -w "/workdir/%DOCKER_PATH%" %CONTAINER_NAME% bash -c "!COMPILE_CMD!"
+REM Запускаем компиляцию внутри временной папки. Все служебные файлы останутся там.
+docker exec -e "TEXINPUTS=.:/workdir//:" -w "%TEMP_BUILD_DIR%" %CONTAINER_NAME% bash -c "!COMPILE_CMD!"
+
+REM Копируем только PDF-файл обратно в локальную папку 'out'
+set "PDF_FILE_NAME=%TEX_FILE:.tex=.pdf%"
+echo 📥 Копирую результат: %PDF_FILE_NAME%...
+docker exec %CONTAINER_NAME% bash -c "cp '%TEMP_BUILD_DIR%/out/%PDF_FILE_NAME%' '/workdir/%DOCKER_PATH%/out/'" 2>nul
+
+REM Очищаем временную директорию внутри контейнера
+docker exec %CONTAINER_NAME% bash -c "rm -rf %TEMP_BUILD_DIR%"
 
 
 
