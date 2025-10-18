@@ -23,6 +23,14 @@
         ],
         "description": "Create a new subsubsection"
     },
+    "Exercise": {
+        "prefix": "ex",
+        "body": [
+            "\\section*{ \\boxed{\\text{ Задание ${1:1}. }} }",
+            "$0"
+        ],
+        "description": "Create a new subsubsection"
+    },
     "CenteredSection": {
         "prefix": "csec",
         "body": [
@@ -46,6 +54,15 @@
             "\\begin{itemize}",
             "    \\item $0",
             "\\end{itemize}"
+        ],
+        "description": ""
+    },
+    "Quote": {
+        "prefix": "qq",
+        "body": [
+            "\\begin{quote}",
+            "    $0",
+            "\\end{quote}"
         ],
         "description": ""
     },
@@ -143,10 +160,26 @@
     "Insert Code": {
         "prefix": "code",
         "body": [
-            "\\insertcode[language={${1:matlab}}, caption={${2:caption}}, label={listing:${3:label}}]{code/${4:filename.m}}",
+            "\\begin{listing}[H]",
+            "    \\caption{${1:caption}}",
+            "    \\label{lst:${1:label}}",
+            "    \\inputminted[",
+            "        % lines={1-10},",
+            "        % highlightlines={1-10},",
+            "    ]{${2:matlab}}{code/${3:filename.m}}",
+            "\\end{listing}",
             "$0"
         ],
-        "description": "Вставка листинга кода из файла через команду \\insertcode"
+        "description": "Вставка листинга кода из файла."
+    },
+    "Insert Code On Several Pages": {
+        "prefix": "codemp",
+        "body": [
+            "\\captionof{listing}{${1:caption}\\label{lst:${1:label}}}",
+            "\\inputminted{${2:matlab}}{code/${3:filename.m}}",
+            "$0"
+        ],
+        "description": "Вставка листинга кода из файла."
     },
     "Clever Reference": {
         "prefix": "cref",

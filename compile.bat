@@ -157,7 +157,7 @@ if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 
 REM === КОМАНДЫ КОМПИЛЯЦИИ ===
 set "COMPILE_CMD="
-set "LATEX_OPTS=-output-directory=out -interaction=nonstopmode"
+set "LATEX_OPTS=-shell-escape -output-directory=out -interaction=nonstopmode"
 
 IF "%COMPILE_MODE%"=="fast" (
     echo ⚡ ЧЕРНОВАЯ КОМПИЛЯЦИЯ...

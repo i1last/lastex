@@ -40,6 +40,16 @@
 ]
 % \setmainfont{TeX Gyre Termes} % Свободный аналог Times New Roman, включенный в TeX Live
 
+% --- Настройка моноширинного шрифта для кода ---
+\setmonofont{JetBrains Mono}[
+    Path            = /usr/local/share/fonts/truetype/jb-mono/, % Путь внутри контейнера
+    Extension       = .ttf,
+    UprightFont     = JetBrainsMono-Regular,
+    BoldFont        = JetBrainsMono-Bold,
+    ItalicFont      = JetBrainsMono-Italic,
+    BoldItalicFont  = JetBrainsMono-BoldItalic
+]
+
 % Указываем babel использовать основной шрифт для всех языков по умолчанию
 \babelprovide[main]{russian}
 
@@ -229,44 +239,63 @@
 %========================================================================================
 % ИСХОДНЫЙ КОД
 %========================================================================================
-\usepackage{listings}       % Для вставки листингов кода
-\usepackage{xcolor}         % Для определения цветов
+\usepackage[newfloat=true]{minted}       % Для вставки листингов кода
+\usepackage{xcolor}
+\usepackage{newfloat}
 
-% --- Настройка стиля для листингов
-\definecolor{codegray}{gray}{0.95}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+% --- Регистрируем новый тип подписи 'listing' ---
+% --- Создание нового окружения для 'listing' ---
+\SetupFloatingEnvironment{listing}{
+    name=Листинг,
+    listname=Список листингов
+    placement=hbtp,
+}
+
+\captionsetup[listing]{
+    position=top,
+    justification=raggedleft,  % Выравнивание по правому краю
+    labelsep=endash,           % Разделитель "Листинг 1 –" (тире)
+    singlelinecheck=false,     % Принудительное выравнивание
+    font=normalsize,           % Обычный размер шрифта
+    skip=0pt,                  % Отступ после подписи. Значение 0 визуально совпадает со значением 6pt
+}
+
+% --- Настройка внешнего вида блоков кода minted ---
+% Определяем цвет фона, если он еще не определен
 \definecolor{backcolour}{rgb}{0.98,0.98,0.98}
 
-\lstdefinestyle{mystyle}{
-    backgroundcolor=\color{backcolour},
-    commentstyle=\color{green!50!black},
-    keywordstyle=\color{blue},
-    numberstyle=\tiny\color{gray},
-    stringstyle=\color{codepurple},
-    basicstyle=\footnotesize\ttfamily,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2,
-    frame=single,
-    framerule=0.5pt,
-    rulecolor=\color{black!20},
-    title=\lstname
+% Переопределяем команду для стилизации номеров строк
+% \theFancyVerbLine - это команда, которую minted использует для вывода номера
+\renewcommand{\theFancyVerbLine}{
+  \tiny\color{gray}\arabic{FancyVerbLine}
 }
-\lstset{style=mystyle} % Применяем стиль по умолчанию
 
-% --- Новая команда для вставки кода из файла
-% Использование: \insertcode[caption={Подпись}, label={lbl:code}]{путь/к/файлу.py}
-% Код будет автоматически отформатирован, подсвечен синтаксис Python, и пронумерованы строки.
-% Язык можно поменять, например: \insertcode[language=C++]{путь/к/файлу.cpp}.
-% Т.е. language=Python - это язык по умолчанию, который можно свободно переопределять.
-\newcommand{\insertcode}[2][]{\lstinputlisting[language=Python, #1]{#2}}
+% --- Автоматический расчет отступа для номеров строк ---
+% Этот блок рассчитывает отступ слева, чтобы номера строк (до 999) не
+% прилипали к коду. Для 1000+ строк может понадобиться увеличить '999'.
+\newlength{\mintednumbersep}
+\setlength{\mintednumbersep}{8pt}
+\newlength{\mintedxleftmargin}
+\settowidth{\mintedxleftmargin}{{\tiny 999}}
+\addtolength{\mintedxleftmargin}{\mintednumbersep}
+
+% --- Глобальные настройки для всех блоков minted ---
+% См. fancyvrb документацию для всех доступных опций
+\setminted{
+    fontfamily=tt,      % Использовать моноширинный шрифт
+    fontsize=\footnotesize,
+    frame=lines,        % Рамка вокруг кода
+    framesep=2mm,       % Отступ от рамки до кода
+    rulecolor=\color{black!20},
+    bgcolor=backcolour, % Цвет фона
+    linenos,            % Включить нумерацию строк
+    breaklines,         % Автоматически переносить длинные строки
+    tabsize=2,
+    vspace=0pt,         % Вертикальные отступы до и после блока кода
+    numbersep=\mintednumbersep,      % Используем нашу переменную
+    xleftmargin=\mintedxleftmargin   % Используем нашу вычисленную переменную
+}
 
 
 
@@ -300,3 +329,5 @@
 \Crefname{section}{Разд.}{Разд.}
 \crefname{equation}{формуле}{формулам}
 \Crefname{equation}{Формуле}{Формулам}
+\crefname{listing}{листинге}{листингах}
+\Crefname{listing}{Листинге}{Листингах}
