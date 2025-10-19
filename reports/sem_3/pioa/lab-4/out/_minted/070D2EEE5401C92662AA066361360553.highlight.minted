@@ -1,0 +1,19 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{function}\PYG{+w}{ }\PYG{n+nf}{[x, y] = ex2}\PYG{p}{(}a, b, k, m, n\PYG{p}{)}
+\PYG{+w}{    }\PYG{c}{\PYGZpc{} piecewise\PYGZus{}odd\PYGZus{}function генерирует нечетную кусочно\PYGZhy{}линейную функцию}
+\PYG{+w}{    }\PYG{c}{\PYGZpc{}     a, b \PYGZhy{} интервальные точки кусочно\PYGZhy{}линейной функции}
+\PYG{+w}{    }\PYG{c}{\PYGZpc{}     k    \PYGZhy{} коэффициент наклона линейного участка}
+\PYG{+w}{    }\PYG{c}{\PYGZpc{}     m, n \PYGZhy{} произвольные константы для горизонтальных участков}
+
+\PYG{+w}{    }\PYG{n}{x\PYGZus{}positive}\PYG{+w}{ }\PYG{p}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }\PYG{p}{:}\PYG{+w}{ }\PYG{l+m+mf}{0.01}\PYG{+w}{ }\PYG{p}{:}\PYG{+w}{ }\PYG{l+m+mi}{10}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{y\PYGZus{}positive}\PYG{+w}{ }\PYG{p}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{+w}{                 }\PYG{n}{x\PYGZus{}positive}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{a}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{.*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{k}\PYG{+w}{ }\PYG{o}{*}\PYG{+w}{ }\PYG{n}{x\PYGZus{}positive}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{k}{...}
+\PYG{+w}{                 }\PYG{p}{(}\PYG{n}{a}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{x\PYGZus{}positive}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{+w}{ }\PYG{n}{x\PYGZus{}positive}\PYG{+w}{ }\PYG{o}{\PYGZlt{}=}\PYG{+w}{ }\PYG{n}{b}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{.*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{m}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{k}{...}
+\PYG{+w}{                 }\PYG{p}{(}\PYG{n}{b}\PYG{+w}{ }\PYG{o}{\PYGZlt{}}\PYG{+w}{ }\PYG{n}{x\PYGZus{}positive}\PYG{+w}{                  }\PYG{p}{)}\PYG{+w}{ }\PYG{o}{.*}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{n}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{n}{x\PYGZus{}negative}\PYG{+w}{ }\PYG{p}{=}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{n+nb}{fliplr}\PYG{p}{(}\PYG{n}{x\PYGZus{}positive}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{y\PYGZus{}negative}\PYG{+w}{ }\PYG{p}{=}\PYG{+w}{ }\PYG{o}{\PYGZhy{}}\PYG{n+nb}{fliplr}\PYG{p}{(}\PYG{n}{y\PYGZus{}positive}\PYG{p}{);}
+
+\PYG{+w}{    }\PYG{n}{x}\PYG{+w}{ }\PYG{p}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{x\PYGZus{}negative}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{x\PYGZus{}positive}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{:}\PYG{k}{end}\PYG{p}{)];}
+\PYG{+w}{    }\PYG{n}{y}\PYG{+w}{ }\PYG{p}{=}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{y\PYGZus{}negative}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{y\PYGZus{}positive}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{:}\PYG{k}{end}\PYG{p}{)];}
+\PYG{k}{end}
+\end{MintedVerbatim}
