@@ -26,7 +26,7 @@
     "Exercise": {
         "prefix": "ex",
         "body": [
-            "\\section*{ \\boxed{\\text{ Задание ${1:1}. }} }",
+            "\\subsection*{ \\boxed{\\text{ Задание ${1:1}. }} }",
             "$0"
         ],
         "description": "Create a new subsubsection"
@@ -89,9 +89,9 @@
         "body": [
             "\\begin{figure}[${1:H}]",
             "    \\centering",
+            "    \\includegraphics[width=${3:0.5}\\textwidth]{figs/${4:image}}",
             "    \\caption{${2:caption}}",
-            "    \\label{fig:${2:label}}",
-            "    \\includegraphics[width=${3:0.5}\\textwidth]{${4:image}}",
+            "    \\label{fig:${4:label}}",
             "\\end{figure}"
         ],
         "description": "Insert a figure environment"
@@ -102,10 +102,10 @@
             "\\begin{table}[${1:H}]",
             "    \\centering",
             "    \\caption{${2:caption}}",
-            "    \\label{table:${2:label}}",
-            "    \\begin{tabularx}{\\linewidth}{${3:|C|C|C|}}",
+            "    \\label{table:${3:label}}",
+            "    \\begin{tabularx}{\\linewidth}{${4:|C|C|C|}}",
             "        \\hline",
-            "            ${4:cell}",
+            "            ${0:cell}",
             "        \\hline",
             "    \\end{tabularx}",
             "\\end{table}"
@@ -132,6 +132,13 @@
         "prefix": "tit",
         "body": [
             "\\textit{$1}"
+        ],
+        "description": ""
+    },
+    "MonoText": {
+        "prefix": "ic",
+        "body": [
+            "\\mintinline{${1:x}}!${0:code}!"
         ],
         "description": ""
     },
@@ -162,10 +169,11 @@
         "body": [
             "\\begin{listing}[H]",
             "    \\caption{${1:caption}}",
-            "    \\label{lst:${1:label}}",
+            "    \\label{lst:${3:label}}",
             "    \\inputminted[",
-            "        % lines={1-10},",
-            "        % highlightlines={1-10},",
+            "        % firstline      = 1,",
+            "        % lastline       = 10,",
+            "        % highlightlines = {1-10},",
             "    ]{${2:matlab}}{code/${3:filename.m}}",
             "\\end{listing}",
             "$0"
@@ -175,8 +183,10 @@
     "Insert Code On Several Pages": {
         "prefix": "codemp",
         "body": [
-            "\\captionof{listing}{${1:caption}\\label{lst:${1:label}}}",
-            "\\inputminted{${2:matlab}}{code/${3:filename.m}}",
+            "\\begin{codemultipage}",
+            "    \\captionof{listing}{${1:caption}\\label{lst:${3:label}}}",
+            "    \\inputminted{${2:matlab}}{code/${3:filename.m}}",
+            "\\end{codemultipage}",
             "$0"
         ],
         "description": "Вставка листинга кода из файла."

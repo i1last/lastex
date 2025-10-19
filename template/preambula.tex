@@ -181,9 +181,11 @@
 \usepackage{graphicx}       % Для вставки изображений
 \usepackage{float}          % Для точного позиционирования объектов с опцией [H]
 \usepackage{caption}        % Гибкая настройка подписей к рисункам и таблицам
+\usepackage{subcaption}     % Подписи для подрисунков и подтаблиц
 
 % --- Настройка подписей к рисункам
 \captionsetup[figure]{
+    position=bottom,           % Подпись под рисунком
     justification=centering,   % Выравнивание по центру
     labelsep=endash,           % Разделитель "Рисунок 1 –" (тире)
     singlelinecheck=false,     % Принудительное центрирование даже для коротких подписей
@@ -327,7 +329,7 @@
 \Crefname{table}{Табл.}{Табл.}
 \crefname{section}{разд.}{разд.}
 \Crefname{section}{Разд.}{Разд.}
-\crefname{equation}{формуле}{формулам}
-\Crefname{equation}{Формуле}{Формулам}
-\crefname{listing}{листинге}{листингах}
-\Crefname{listing}{Листинге}{Листингах}
+\crefname{equation}{форм.}{форм.}
+\Crefname{equation}{Форм.}{Форм.}
+\crefname{listing}{лист.}{лист.}
+\Crefname{listing}{Лист.}{Лист.}
