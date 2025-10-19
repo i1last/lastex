@@ -1,5 +1,5 @@
 # --- УСТАНОВКА ОБРАЗА ---
-FROM texlive/texlive:latest
+FROM texlive/texlive:latest-small
 ENV TERM=dumb
 
 # --- УСТАНОВКА ПАКЕТОВ ---
