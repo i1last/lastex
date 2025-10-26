@@ -57,3 +57,14 @@
 # Полезные ссылки
 - https://open-resource.ru/spisok-literatury/
 - https://samolisov.blogspot.com/2008/06/latex_09.html
+
+# Latex Workshop
+Используйте Latex Workshop для подсказок в коде.
+`latex-workshop.latex.autoBuild.run` лучше поставить `never`, т.к. в данном проекте своя команда для сборки.
+
+## Форматирование
+Для форматирования скачайте `latexindent.exe` с соотв. [github репозитория](https://github.com/cmhughes/latexindent.pl) и поместите в какую-нибудь папку на вашем диске. Далее для настройки `latex-workshop.formatting.latexindent.path` указываем путь к .exe файлу (напр, `C:\path\to\latexindent.exe`). Не забываем установить `latex-workshop.formatting.latex` на `latexindent`.
+
+## Линтинг
+Я еще не разобрался, как это должно работать.
+Аналогично форматированию. Я использую [LaCheck](https://github.com/mitchmoser/LACheck). `latex-workshop.linting.lacheck.enabled` = `true`, `latex-workshop.linting.lacheck.exec.path` = `C:\path\to\LACheck.exe`.

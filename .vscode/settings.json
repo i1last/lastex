@@ -1,0 +1,14 @@
+{
+    "latex-workshop.latex.rootFile.doNotFind": true,
+    "latex-workshop.check.onSave.enabled": false,
+    "latex-workshop.check.onBuild.enabled": false,
+    
+    "latex-workshop.latex.autoBuild.run": "never",
+
+    "latex-workshop.formatting.latex": "latexindent",
+    "latex-workshop.formatting.latexindent.path": "C:\\programs\\latexindent.exe",
+    
+    "latex-workshop.linter.lacheck.enabled": true,
+    "latex-workshop.linting.run": "onType",
+    "latex-workshop.linting.lacheck.exec.path": "C:\\programs\\LACheck.exe",
+}
