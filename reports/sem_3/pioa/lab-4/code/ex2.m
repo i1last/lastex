@@ -1,17 +1,16 @@
-function [x, y] = ex2(a, b, k, m, n)
-    % piecewise_odd_function генерирует нечетную кусочно-линейную функцию
+function f = ex2(a, b, m, n)
+    % Возвращает function handle для нечетной кусочно-линейной функции
     %     a, b - интервальные точки кусочно-линейной функции
-    %     k    - коэффициент наклона линейного участка
     %     m, n - произвольные константы для горизонтальных участков
+    % Использование:
+    %     x = -10 : 0.01 : 10; % диапазон значений x
+    %     f = ex2(a, b, m, n); % получение function handle
+    %     y = f(x);            % вычисление значений функции
 
-    x_positive = 0 : 0.01 : 10;
-    y_positive = (                 x_positive <= a) .* (k * x_positive) + ...
-                 (a < x_positive & x_positive <= b) .* (m) + ...
-                 (b < x_positive                  ) .* (n);
+    
+    k = m / a;  % наклон для линейного участка
 
-    x_negative = -fliplr(x_positive);
-    y_negative = -fliplr(y_positive);
-
-    x = [x_negative, x_positive(2:end)];
-    y = [y_negative, y_positive(2:end)];
+    f = @(x) (-a <= x      &      x <= a) .* (k * x) + ...
+             ( a  < abs(x) & abs(x) <= b) .* (m * sign(x)) + ...
+             ( b  < abs(x)              ) .* (n * sign(x));
 end

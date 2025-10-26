@@ -3,11 +3,12 @@ disp('--- Кусочно-линейная нечетная функция ---');
 disp('Выберите параметры функции:');
 a = input('Введите точку a (первый интервал)    : ');
 b = input('Введите точку b (второй интервал)    : ');
-k = input('Введите коэффициент наклона k        : ');
 m = input('Введите значение m (первая константа): ');
 n = input('Введите значение n (вторая константа): ');
 
-[x, y] = ex2(a, b, k, m, n);
+x = -10 : 0.01 : 10;
+f = ex2(a, b, m, n);
+y = f(x);
 plot(x, y);
 grid on;
 xlabel('x'); ylabel('f(x)');
@@ -22,18 +23,19 @@ max_matrix_val_input = input('Введите максимальное значе
 min_matrix_val_input = input('Введите минимальное значение элемента матрицы : ');
 rows_input           = input('Введите количество строк матрицы              : ');
 cols_input           = input('Введите количество столбцов матрицы           : ');
+operation_mode_input = input('Введите операцию над элементами (sum/mul)     : ', 's');
 
 matrix = randi([min_matrix_val_input, max_matrix_val_input], rows_input, cols_input);
 
-search_mode_input    = input('Введите режим поиска (min/max)           : ', 's');
-operation_mode_input = input('Введите операцию над элементами (sum/mul): ', 's');
+search_results.struct = ex3_1(matrix);
+[search_results.value, search_results.subindex] = ex3_1(matrix);
 
-result = ex3(matrix, search_mode_input, operation_mode_input);
+operation_result = ex3_2(matrix, operation_mode_input);
 
 disp('Исходная матрица:');
 disp(matrix);
-fprintf('Результат поиска %s: %f\n', search_mode_input, result.value);
-disp('Позиция найденного элемента (строка, столбец):');
-disp(result.subindex);
-disp('Результат вычисления операции над найденным элементом:');
-disp(result.operation);
+disp('Результат поиска:');
+disp(search_results);
+disp(search_results.struct);
+disp('Результат вычислений:');
+disp(operation_result);
