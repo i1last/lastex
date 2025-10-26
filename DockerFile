@@ -1,5 +1,7 @@
 # --- УСТАНОВКА ОБРАЗА ---
-FROM texlive/texlive:latest-small
+# FROM texlive/texlive:latest-small
+# 26 oct 2025
+FROM texlive/texlive@sha256:8aa671eb1ad026bff4103bd2f5744eab9b4f33faab8a6bcd673590e2128720e2
 ENV TERM=dumb
 
 # --- УСТАНОВКА ПАКЕТОВ ---
