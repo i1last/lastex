@@ -78,11 +78,20 @@
     "Equation": {
         "prefix": "eq",
         "body": [
-            "\\begin{equation}",
+            "\\begin{equation${1:*}}",
             "    $0",
-            "\\end{equation}"
+            "\\end{equation${1:*}}"
         ],
         "description": ""
+    },
+    "Align*": {
+        "prefix": "agn",
+        "body": [
+            "\\begin{align${1:*}}",
+            "    $0",
+            "\\end{align${1:*}}"
+        ],
+        "description": "Insert align* environment"
     },
     "Figure": {
         "prefix": "fig",
@@ -214,5 +223,20 @@
             "$$1$"
         ],
         "description": "Вставка внутристрочной (inline) формулы $...$"
-    }
+    },
+    "MultiColumn": {
+        "prefix": "mc",
+        "body": [
+            "\\multicolumn{${1:2}}{${2:|c|}}{${0:text}}"
+        ],
+        "description": ""
+    },
+    "MultiRow": {
+        "prefix": "mr",
+        "body": [
+            "\\multirow{${1:2}}{${2:*}}{${0:text}}"
+        ],
+        "description": ""
+    },
+    
 }
