@@ -1,7 +1,6 @@
 # --- УСТАНОВКА ОБРАЗА ---
 # FROM texlive/texlive:latest-small
-# 26 oct 2025
-FROM texlive/texlive@sha256:4c2ff2c857477a362c7593530727f1fd4f8eaad6f390b5231f5193254d587569
+FROM registry.gitlab.com/islandoftex/images/texlive:TL2025-2025-11-02-small
 ENV TERM=dumb
 
 # --- УСТАНОВКА ПАКЕТОВ ---
@@ -17,7 +16,7 @@ RUN tlmgr install \
         collection-context && \
     tlmgr path add
 RUN tlmgr install \
-        ltablex \
+        tabularray \
         cleveref \
         enumitem \
         makecell \
