@@ -109,6 +109,8 @@ if exist "%DOCKERFILE%" (
             echo ❌ Ошибка сборки!
             exit /b 1
         )
+        docker stop %CONTAINER_NAME% 2>nul
+        docker rm %CONTAINER_NAME% 2>nul
     )
     set "IMAGE_TAG=!TAG!"
 ) else (
@@ -228,17 +230,10 @@ REM === ПРОВЕРКА РЕЗУЛЬТАТА ===
 set PDF_FILE=%TEX_FILE:.tex=.pdf%
 set END_TIME=%TIME%
 
-echo 📁 Проект:  %PROJECT_PATH%
-echo 📄 Файл:    %TEX_FILE%
-echo 🎯 Режим:   %COMPILE_MODE%
-echo 📂 Выход:   %OUTPUT_DIR%
-echo.
 
 if exist "%OUTPUT_DIR%\%PDF_FILE%" (    
-    echo ✅ КОМПИЛЯЦИЯ УСПЕШНА
-    echo 📊 Файл: %OUTPUT_DIR%\%PDF_FILE%
-    echo ⏱️ Время: %START_TIME% - %END_TIME%
-    echo.
+    echo ✅ %PDF_FILE%  📁 %PROJECT_PATH%  📄 %TEX_FILE%  🎯 %COMPILE_MODE%  ⏱️ %START_TIME% -%END_TIME%
+echo.
 ) else (
     echo ❌ PDF файл не создан!
     echo.

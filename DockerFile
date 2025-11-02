@@ -3,7 +3,7 @@
 FROM registry.gitlab.com/islandoftex/images/texlive:TL2025-2025-11-02-small
  
 ENV TERM=dumb
-
+ 
 # --- УСТАНОВКА ПАКЕТОВ ---
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends python3 python3-pygments
