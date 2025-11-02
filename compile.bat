@@ -93,6 +93,33 @@ IF ERRORLEVEL 1 (
 
 
 
+REM === ПЕРЕСБОРКА ПРИ ИЗМЕНЕНИИ DOCKERFILE ===
+set "DOCKERFILE=%cd%\Dockerfile"
+set "BUILD_CONTEXT=%cd%"
+
+if exist "%DOCKERFILE%" (
+    for /f "skip=1 delims=" %%i in ('certutil -hashfile "%DOCKERFILE%" SHA256 ^| findstr /r /v /c:"CertUtil"') do set "DOCKER_HASH=%%i"
+    set "DOCKER_HASH=!DOCKER_HASH: =!"
+    set "TAG=%IMAGE_NAME%:!DOCKER_HASH:~0,12!"
+
+    docker inspect --type=image !TAG! >nul 2>&1
+    if ERRORLEVEL 1 (
+        echo 🔨 Изменился Dockerfile. Пересборка образа...
+        docker build -t !TAG! "%BUILD_CONTEXT%" || (
+            echo ❌ Ошибка сборки!
+            exit /b 1
+        )
+    )
+    set "IMAGE_TAG=!TAG!"
+) else (
+    echo ❌ Dockerfile не найден: %DOCKERFILE%
+    exit /b 1
+)
+
+
+
+
+
 REM === ПРОВЕРКА ОБРАЗА ===
 docker inspect --type=image %IMAGE_NAME% >nul 2>&1
 IF ERRORLEVEL 1 (
@@ -118,7 +145,7 @@ IF ERRORLEVEL 1 (
     docker run -d --name %CONTAINER_NAME% ^
         -v "%cd%":/workdir ^
         -w /workdir ^
-        %IMAGE_NAME% ^
+        %IMAGE_TAG% ^
         sleep infinity
     echo 🟢 Контейнер запущен
 ) ELSE (
