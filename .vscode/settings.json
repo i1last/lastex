@@ -11,4 +11,6 @@
     "latex-workshop.linter.lacheck.enabled": true,
     "latex-workshop.linting.run": "onType",
     "latex-workshop.linting.lacheck.exec.path": "C:\\programs\\LACheck.exe",
+
+    "latex-workshop.latex.outDir": "./out",
 }

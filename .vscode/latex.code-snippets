@@ -121,6 +121,45 @@
         ],
         "description": "Insert a table environment"
     },
+    "tabularray: tblr in table": {
+        "prefix": "tblr",
+        "body": [
+            "\\begin{table}[${1:H}]",
+            "    \\centering",
+            "    \\caption{${2:caption}}",
+            "    \\label{table:${3:label}}",
+            "",
+            "    \\begin{tblr}{",
+            "        colspec = {| Q[c, m] | Q[c, m] | X[j, h] | },",
+            "        width = \\linewidth,",
+            "        hlines = 1, vlines = 1,",
+            "        row{1} = {font=\\bfseries},",
+            "    }",
+            "        ${0:rows}",
+            "    \\end{tblr}",
+            "\\end{table}"
+        ],
+        "description": "tblr внутри table с подписью"
+    },
+    "tabularray: longtblr": {
+        "prefix": "ltblr",
+        "body": [
+            "\\begin{longtblr}[",
+            "    caption = {${1:caption}},",
+            "    label = {table:${2:label}},",
+            "]{",
+            "    width = \\linewidth,",
+            "    colspec = { | X[j,m] | X[j,m] | X[j,m] | X[j,h] | },",
+            "    hlines,",
+            "    rowhead = 1,",
+            "    column{1} = {font=\\bfseries},",
+            "    row{1} = {font=\\bfseries}",
+            "}",
+            "    ${0:header row} \\\\\\\\",
+            "\\end{longtblr}"
+        ],
+        "description": "longtblr с подписью и повтором заголовка"
+    },
     "ForceNumber": {
         "prefix": "fn",
         "body": [

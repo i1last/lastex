@@ -2,6 +2,10 @@
     {
         "key": "ctrl+alt+b",
         "command": "workbench.action.tasks.runTask",
-        "args": "Build and Lint LaTeX"
+        "args": "Compile Current LaTeX Report"
+    },
+    {
+        "key": "ctrl+alt+l",
+        "command": "latex-workshop.actions.check"
     }
 ]
