@@ -1,6 +1,7 @@
 # --- УСТАНОВКА ОБРАЗА ---
 # FROM texlive/texlive:latest-small
 FROM registry.gitlab.com/islandoftex/images/texlive:TL2025-2025-11-02-small
+ 
 ENV TERM=dumb
 
 # --- УСТАНОВКА ПАКЕТОВ ---
@@ -17,6 +18,8 @@ RUN tlmgr install \
     tlmgr path add
 RUN tlmgr install \
         tabularray \
+        xcolor \
+        ninecolors \
         cleveref \
         enumitem \
         makecell \
