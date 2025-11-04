@@ -18,6 +18,8 @@ RUN tlmgr install \
     tlmgr path add
 RUN tlmgr install \
         tabularray \
+        xurl \
+        zref \
         xcolor \
         ninecolors \
         cleveref \

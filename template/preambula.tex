@@ -69,7 +69,6 @@
 \usepackage{indentfirst}        % Красная строка для первого абзаца после заголовка
 \setlength{\parindent}{1.25cm}  % Отступ красной строки - 1.25 см
 
-\usepackage[toc,page]{appendix} % Поддержка приложение в отчете
 \usepackage{pdflscape}          % Поддержка горизонтальных страниц
 
 % --- Поддержка колонтитулов
@@ -86,38 +85,30 @@
 % --- Настройка содержанмя
 \usepackage{tocloft}
 
-% Убираем точки между заголовком и номером страницы
-\renewcommand{\cftsecleader      }{\hfil} 
-\renewcommand{\cftsubsecleader   }{\hfil}
-\renewcommand{\cftsubsubsecleader}{\hfil}
-% Делаем заголовок оглавления без жирного шрифта
-\renewcommand{\cfttoctitlefont}{\normalfont\Large\bfseries\centering}
-% Меняем название на "СОДЕРЖАНИЕ"
-\renewcommand{\contentsname}{{\large\uppercase{СОДЕРЖАНИЕ}}}
-% Убираем жирный шрифт с разделов и номеров страниц
+% --- Для настроек по умолчанию закоментированы 1 и 2
+% -- 1 Устанавливаем пробелы между заголовком и номером страницы
+% \renewcommand{\cftsecleader      }{\hfil}
+% \renewcommand{\cftsubsecleader   }{\hfil}
+% \renewcommand{\cftsubsubsecleader}{\hfil}
+% -- 2 Устанавливаем точки между заголовком и номером страницы
+\renewcommand{\cftsecleader      }{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader   }{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
+% -- Форматирование заголовка Содержания
+\renewcommand{\cfttoctitlefont}{\normalfont\normalsize\bfseries\centering\uppercase}
+% -- Меняем название на "СОДЕРЖАНИЕ"
+\renewcommand{\contentsname}{СОДЕРЖАНИЕ}
+% -- Убираем жирный шрифт с разделов и номеров страниц
 \renewcommand{\cftsecfont       }{\normalfont} 
 \renewcommand{\cftsecpagefont   }{\normalfont}
 \renewcommand{\cftsubsecfont    }{\normalfont}
 \renewcommand{\cftsubsecpagefont}{\normalfont}
 
-% --- Настройка вида приложений ---
-% Переименовываем "Appendix" в "ПРИЛОЖЕНИЕ"
-\renewcommand{\appendixname}{ПРИЛОЖЕНИЕ}
-
-% Добавляем хук, который срабатывает при вызове команды \appendix
-% и меняет стиль нумерации секций на русские заглавные буквы.
-\usepackage{etoolbox}
-\AtBeginEnvironment{appendices}{\pretocmd{\section}{\clearpage}{}{}}
-\pretocmd{\appendix}{\gdef\thesection{\Asbuk{section}}}{}{}
-
-% ИСПОЛЬЗОВАНИЕ:
-    % \appendix % Эта команда переключает режим на "Приложения"
-
-    % \section{Название первого приложения}
-    % Содержимое первого приложения...
-
-    % \section{Название второго приложения}
-    % Содержимое второго приложения...
+% --- Вертикальные отступы в содержании
+% \setlength{\cftaftertoctitleskip}{1em}  % Отступ ПОСЛЕ заголовка "СОДЕРЖАНИЕ"
+\setlength{\cftbeforesecskip      }{0.3em}
+\setlength{\cftbeforesubsecskip   }{0.2em}
+\setlength{\cftbeforesubsubsecskip}{0.21em}
 
 
 
@@ -130,15 +121,15 @@
 
 % --- Настройка формматирования заголовков
 %titleformat{<команда>     }{<стиль>             }{<номер>           }{<отступ>}{<текст до>}
-\titleformat{\section      }{\bfseries\normalsize}{\thesection.      }{1em     }{          }
-\titleformat{\subsection   }{\bfseries\normalsize}{\thesubsection.   }{1em     }{          }
-\titleformat{\subsubsection}{\bfseries\normalsize}{\thesubsubsection.}{1em     }{          }
+\titleformat{\section      }{\bfseries\normalsize}{\thesection       }{0.25em     }{          }
+\titleformat{\subsection   }{\bfseries\normalsize}{\thesubsection    }{0.25em     }{          }
+\titleformat{\subsubsection}{\bfseries\normalsize}{\thesubsubsection }{0.25em     }{          }
 
 % --- Настройка отступов для создания иерархии ---
 %titlespacing*{<команда>     }{<отступ слева>}{<отступ сверху> }{<отступ снизу>  }
-\titlespacing*{\section      }{0.0\parindent }{1.2\baselineskip}{0.5\baselineskip} % Раздел: без отступа слева
+\titlespacing*{\section      }{1.0\parindent }{1.2\baselineskip}{0.5\baselineskip} % Раздел: без отступа слева
 \titlespacing*{\subsection   }{1.0\parindent }{1.0\baselineskip}{0.5\baselineskip} % Подраздел: отступ слева равен абзацному отступу (\parindent)
-\titlespacing*{\subsubsection}{2.0\parindent }{1.0\baselineskip}{0.5\baselineskip} % Подподраздел: отступ слева равен двум абзацным отступам
+\titlespacing*{\subsubsection}{1.0\parindent }{1.0\baselineskip}{0.5\baselineskip} % Подподраздел: отступ слева равен двум абзацным отступам
 
 %  --- Добавление центрального заголовка без номера
 \newcommand{\centeredsection}[1]{
@@ -148,6 +139,66 @@
     \end{center}
     \par
 }
+
+
+
+
+
+%========================================================================================
+% ПРИЛОЖЕНИЯ
+%========================================================================================
+\usepackage{appendix}
+\usepackage{etoolbox} % Пакет для надежного изменения команд
+
+\usepackage{xurl} 
+\usepackage{hyperref} % Для работы \phantomsection
+
+% Переопределяем стандартные названия на русские
+\renewcommand{\appendixname}{Приложение}
+\renewcommand{\appendixtocname}{Приложения}
+
+% Этот код сработает автоматически, как только вы напишете \begin{appendices}
+\AtBeginEnvironment{appendices}{%
+    % Меняем нумерацию секций на русские буквы (А, Б, В...)
+    % \renewcommand{\thesection}{\asbuk{section}}
+    
+    \renewcommand{\section}[1]{%
+        \clearpage
+        
+        \refstepcounter{section}
+        
+        % Добавляем в Содержание РОВНО ОДНУ строку
+        % Формат: "Приложение А. Тема приложения"
+        \addcontentsline{toc}{section}{\appendixname~\thesection. #1}
+        
+        % Вручную создаем заголовок на странице
+        \begin{center}
+            \textbf{\MakeUppercase{\appendixname}~\thesection} % Первая строка: "ПРИЛОЖЕНИЕ А"
+            \par
+            \textbf{#1} % Вторая строка: "Тема приложения"
+        \end{center}
+        
+        % Добавляем невидимую метку для правильной работы гиперссылок
+        \phantomsection
+    }
+}
+
+% ИСПОЛЬЗОВАНИЕ:
+    % % --- НАЧАЛО ПРИЛОЖЕНИЙ ---
+    % \begin{appendices}
+
+    % % Каждое приложение - это обычная \section
+    % \section{Тема первого приложения}
+    % Здесь содержимое приложения А.
+    % Оно будет на новой странице.
+
+    % \section{Тема второго приложения}
+    % Здесь содержимое приложения Б.
+    % Оно также будет на новой странице.
+
+    % \end{appendices}
+    % % --- КОНЕЦ ПРИЛОЖЕНИЙ ---
+
 
 
 
@@ -338,6 +389,8 @@
     xleftmargin=\mintedxleftmargin   % Используем нашу вычисленную переменную
 }
 
+\RenewDocumentCommand{\texttt}{m}{\mintinline{x}§#1§}
+
 
 
 
@@ -345,13 +398,18 @@
 %========================================================================================
 % ССЫЛКИ И НАВИГАЦИЯ
 %========================================================================================
-\usepackage{hyperref}       % Создание кликабельных ссылок в документе
+% Внимание! XURL должен загружаться ДО hyperref. Первое включение hyperref 
+% в разделе "Приложения"! Включение данного пакета осуществляется там.
+% \usepackage{xurl} 
+% \usepackage{hyperref}       % Создание кликабельных ссылок в документе
 \hypersetup{
     colorlinks=true,
     linkcolor=black,
     urlcolor=blue,
     citecolor=black
 }
+
+\renewcommand{\UrlFont}{\footnotesize\ttfamily}
 
 % cleveref ОБЯЗАТЕЛЬНО должен быть загружен ПОСЛЕ hyperref
 \usepackage[russian]{cleveref} % "Умные" ссылки (\cref вместо \ref)
