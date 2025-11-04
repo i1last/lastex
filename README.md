@@ -68,3 +68,7 @@
 ## Линтинг
 Я еще не разобрался, как это должно работать.
 Аналогично форматированию. Я использую [LaCheck](https://github.com/mitchmoser/LACheck). `latex-workshop.linting.lacheck.enabled` = `true`, `latex-workshop.linting.lacheck.exec.path` = `C:\path\to\LACheck.exe`.
+
+---
+
+[ГОСТ 7.32-2017](https://cs.msu.ru/sites/cmc/files/docs/2021-11gost_7.32-2017.pdf), в соотв. с которым разрабатывается проект.
