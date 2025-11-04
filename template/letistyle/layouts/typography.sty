@@ -1,0 +1,39 @@
+\ProvidesPackage{letistyle/layouts/typography}
+
+\babelprovide[main]{russian}    % Указываем babel использовать основной шрифт для всех языков по умолчанию
+
+\onehalfspacing                 % Установка полуторного межстрочного интервала
+\setlength{\parindent}{1.25cm}  % Отступ красной строки - 1.25 см
+
+\makeatletter                   % Создание нового стиля для сносок на странице
+\def\enotez@endnotes@footer{%
+    \begin{center}
+        \rule{0.5\linewidth}{0.4pt}
+        \enotez@theendnotes
+    \end{center}
+}
+
+% --- Настройка формматирования заголовков
+%titleformat{<команда>     }{<стиль>             }{<номер>           }{<отступ>}{<текст до>}
+\titleformat{\section      }{\bfseries\normalsize}{\thesection       }{0.25em     }{          }
+\titleformat{\subsection   }{\bfseries\normalsize}{\thesubsection    }{0.25em     }{          }
+\titleformat{\subsubsection}{\bfseries\normalsize}{\thesubsubsection }{0.25em     }{          }
+
+% --- Настройка отступов заголовков ---
+%titlespacing*{<команда>     }{<отступ слева>}{<отступ сверху> }{<отступ снизу>  }
+\titlespacing*{\section      }{1.0\parindent }{1.2\baselineskip}{0.5\baselineskip} % Раздел: без отступа слева
+\titlespacing*{\subsection   }{1.0\parindent }{1.0\baselineskip}{0.5\baselineskip} % Подраздел: отступ слева равен абзацному отступу (\parindent)
+\titlespacing*{\subsubsection}{1.0\parindent }{1.0\baselineskip}{0.5\baselineskip} % Подподраздел: отступ слева равен двум абзацным отступам
+
+% --- Настройка отступов для плавающих объектов ---
+\setlength{\intextsep}{6pt}     % Отступ сверху и снизу для объектов, расположенных внутри текста.
+\setlength{\textfloatsep}{6pt}  % Отступ сверху и снизу для объектов, расположенных вверху или внизу страницы.
+
+% Устанавливаем глобальные параметры для всех списков (itemize, enumerate, description).
+% Это убирает излишние вертикальные отступы в списках, не затрагивая основной текст.
+\setlist{
+    itemsep=2pt,           % Вертикальный отступ между элементами списка
+    parsep=0pt,            % Отступ между абзацами внутри одного элемента списка
+    topsep=5pt,            % Отступ перед и после всего списка
+    leftmargin=\parindent  % Использовать стандартный левый отступ
+}

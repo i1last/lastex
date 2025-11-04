@@ -1,0 +1,28 @@
+\ProvidesPackage{letistyle/layouts/tableOfContents}
+
+% --- Для настроек по умолчанию закоментированы 1 и 2
+
+% -- 1 Устанавливаем пробелы между заголовком и номером страницы
+% \renewcommand{\cftsecleader      }{\hfil}
+% \renewcommand{\cftsubsecleader   }{\hfil}
+% \renewcommand{\cftsubsubsecleader}{\hfil}
+
+% -- 2 Устанавливаем точки между заголовком и номером страницы
+\renewcommand{\cftsecleader      }{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader   }{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
+
+\renewcommand{\cfttoctitlefont}{\normalfont\normalsize\bfseries\centering\uppercase} % -- Форматирование заголовка Содержания
+\renewcommand{\contentsname}{СОДЕРЖАНИЕ} % -- Меняем название на "СОДЕРЖАНИЕ"
+
+% --- Убираем жирный шрифт с разделов и номеров страниц
+\renewcommand{\cftsecfont       }{\normalfont} 
+\renewcommand{\cftsecpagefont   }{\normalfont}
+\renewcommand{\cftsubsecfont    }{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+
+% --- Вертикальные отступы в содержании
+% \setlength{\cftaftertoctitleskip}{1em}  % Отступ ПОСЛЕ заголовка "СОДЕРЖАНИЕ"
+\setlength{\cftbeforesecskip      }{0.3em}
+\setlength{\cftbeforesubsecskip   }{0.2em}
+\setlength{\cftbeforesubsubsecskip}{0.21em}

@@ -1,0 +1,47 @@
+\ProvidesPackage{letistyle/layouts/appendix}
+
+% Переопределяем стандартные названия на русские
+\renewcommand{\appendixname}{Приложение}
+\renewcommand{\appendixtocname}{Приложения}
+
+% Этот код сработает автоматически, как только вы напишете \begin{appendices}
+\AtBeginEnvironment{appendices}{%
+    % Меняем нумерацию секций на русские буквы (А, Б, В...)
+    % \renewcommand{\thesection}{\asbuk{section}}
+    
+    \renewcommand{\section}[1]{%
+        \clearpage
+        
+        \refstepcounter{section}
+        
+        % Добавляем в Содержание РОВНО ОДНУ строку
+        % Формат: "Приложение А. Тема приложения"
+        \addcontentsline{toc}{section}{\appendixname~\thesection. #1}
+        
+        % Вручную создаем заголовок на странице
+        \begin{center}
+            \textbf{\MakeUppercase{\appendixname}~\thesection} % Первая строка: "ПРИЛОЖЕНИЕ А"
+            \par
+            \textbf{#1} % Вторая строка: "Тема приложения"
+        \end{center}
+        
+        % Добавляем невидимую метку для правильной работы гиперссылок
+        \phantomsection
+    }
+}
+
+% ИСПОЛЬЗОВАНИЕ:
+    % % --- НАЧАЛО ПРИЛОЖЕНИЙ ---
+    % \begin{appendices}
+
+    % % Каждое приложение - это обычная \section
+    % \section{Тема первого приложения}
+    % Здесь содержимое приложения А.
+    % Оно будет на новой странице.
+
+    % \section{Тема второго приложения}
+    % Здесь содержимое приложения Б.
+    % Оно также будет на новой странице.
+
+    % \end{appendices}
+    % % --- КОНЕЦ ПРИЛОЖЕНИЙ ---

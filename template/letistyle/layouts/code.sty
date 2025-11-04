@@ -1,0 +1,54 @@
+\ProvidesPackage{letistyle/layouts/code}
+
+% --- Создание нового окружения для 'listing'
+\SetupFloatingEnvironment{listing}{
+    name=Листинг,
+    listname=Список листингов
+    placement=hbtp,
+}
+
+\captionsetup[listing]{
+    position=top,
+    justification=raggedleft,  % Выравнивание по правому краю
+    labelsep=endash,           % Разделитель "Листинг 1 –" (тире)
+    singlelinecheck=false,     % Принудительное выравнивание
+    font=normalsize,           % Обычный размер шрифта
+    skip=0pt,                  % Отступ после подписи. Значение 0 визуально совпадает со значением 6pt
+}
+
+% --- Настройка внешнего вида блоков кода minted ---
+\definecolor{backcolour}{rgb}{0.98,0.98,0.98}  % Определяем цвет фона, если он еще не определен
+
+% Переопределяем команду для стилизации номеров строк
+% \theFancyVerbLine - это команда, которую minted использует для вывода номера
+\renewcommand{\theFancyVerbLine}{
+  \tiny\color{gray}\arabic{FancyVerbLine}
+}
+
+% --- Автоматический расчет отступа для номеров строк ---
+% Этот блок рассчитывает отступ слева, чтобы номера строк (до 999) не
+% прилипали к коду. Для 1000+ строк может понадобиться увеличить '999'.
+\newlength{\mintednumbersep}
+\setlength{\mintednumbersep}{8pt}
+\newlength{\mintedxleftmargin}
+\settowidth{\mintedxleftmargin}{{\tiny 999}}
+\addtolength{\mintedxleftmargin}{\mintednumbersep}
+
+% --- Глобальные настройки для всех блоков minted ---
+% См. fancyvrb документацию для всех доступных опций
+\setminted{
+    fontfamily=tt,                   % Использовать моноширинный шрифт
+    fontsize=\footnotesize,
+    frame=lines,                     % Рамка вокруг кода
+    framesep=2mm,                    % Отступ от рамки до кода
+    rulecolor=\color{black!20},
+    bgcolor=backcolour,              % Цвет фона
+    linenos,                         % Включить нумерацию строк
+    breaklines,                      % Автоматически переносить длинные строки
+    tabsize=2,
+    vspace=0pt,                      % Вертикальные отступы до и после блока кода
+    numbersep=\mintednumbersep,      % Используем нашу переменную
+    xleftmargin=\mintedxleftmargin   % Используем нашу вычисленную переменную
+}
+
+\RenewDocumentCommand{\texttt}{m}{\mintinline{x}§#1§}
