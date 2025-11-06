@@ -50,6 +50,7 @@
 \RequirePackage[
     newfloat=true
 ]{minted}                       % Для вставки листингов кода (inline, block, multipage)
+\RequirePackage{csquotes}       % Улучшенная работа с кавычками и цитатами
 \RequirePackage{xcolor}         % Расширенные возможности работы с цветом. Необходим для minted
 \RequirePackage{newfloat}       % Для создания новых плавающих окружений
 \RequirePackage[
@@ -70,5 +71,7 @@
     style=gost-numeric,         % Стиль оформления: ГОСТ, нумерованный список
     sorting=none,               % Сортировка в порядке упоминания в тексте (требование ГОСТ)
     language=auto,
-    autolang=russian
+    autolang=other,
+    bibencoding=utf8,
+    label=brackets              % Квадратные скобки для ссылок в тексте
 ]{biblatex}                     % Для библиографии
