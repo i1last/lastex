@@ -12,10 +12,15 @@
 \newcommand{\TeacherName}{Шпекторов А. Г.}
 \newcommand{\Year}{2025}
 
+% Включение библиографии
+% bibtex автоматически будет включен в процесс сборки документа
+% при обнаружении файла references.bib в директории с основным _report.tex файлом
+\addbibresource{references.bib}  % Имя файла references.bib не следует менять! Используется оптимизация скрипта сборки документа
+
 % === СБОРКА ДОКУМЕНТА ===
 \begin{document}
 
-
+ 
 
 % --- ТИТУЛЬНЫЙ ЛИСТ ---
 \input{template/title_template.tex}
@@ -23,9 +28,7 @@
 
 
 % --- ОГЛАВЛЕНИЕ ---
-\begin{center}
-    \tableofcontents
-\end{center}
+\tableofcontents
 \thispagestyle{empty}
 \newpage
 
@@ -40,7 +43,7 @@
 
 
 % --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
-\input{main_part.tex}
+\input{main.tex}
 % --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
 
 
@@ -52,7 +55,8 @@
 \centeredsection{\uppercase{Заключение}}
 \input{conclusion.tex}
 
-...Для поиска по графу рекомендуется применять алгоритм Форда-Беллмана \cite{korn_algorithms}. 
+\newpage
+...Для поиска по графу рекомендуется применять алгоритм Форда-Беллмана \cite{korn}. 
 Подробное описание алгоритма можно найти в интернет-источниках \cite{wiki_ford_bellman}. 
 Все расчеты были выполнены в среде Matlab \cite{dyakonov_matlab}...
 
@@ -60,12 +64,8 @@
 \newpage
 \addcontentsline{toc}{section}{Список использованных источников}
 \phantomsection
-% \centeredsection{\uppercase{Список использованных источников}}
-% \addbibresource{references.bib}  % Имя файла references.bib не следует менять! Используется оптимизация скрипта сборки документа
-% \printbibliography
-\renewcommand{\bibsection}{\centering\textbf{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}} % смена названия библиографии по умолчанию
-\bibliography{references}
-
+\centeredsection{\uppercase{Список использованных источников}}
+\printbibliography
 
 
 % --- ПРИЛОЖЕНИЯ ---
