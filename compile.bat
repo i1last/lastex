@@ -16,6 +16,7 @@ REM === КОНФИГУРАЦИЯ ===
 set IMAGE_NAME=latex-compiler-env
 set CONTAINER_NAME=latex-daemon
 set DEFAULT_FILENAME=_report.tex
+set BIB_FILE=references.bib
 
 
 
@@ -104,17 +105,28 @@ if exist "%DOCKERFILE%" (
 
     docker inspect --type=image !TAG! >nul 2>&1
     if ERRORLEVEL 1 (
-        echo 🔨 Изменился Dockerfile. Пересборка образа...
-        docker build -t !TAG! "%BUILD_CONTEXT%" || (
-            echo ❌ Ошибка сборки!
+        echo Изменился Dockerfile. Пересборка образа...
+
+        REM === СБОРКА БЕЗ ПОДАВЛЕНИЯ ОШИБОК ===
+        docker build -t !TAG! -t %IMAGE_NAME%:latest "%BUILD_CONTEXT%"
+        if ERRORLEVEL 1 (
+            echo.
+            echo ОШИБКА СБОРКИ!
             exit /b 1
         )
+
+        REM Сохраняем ID нового образа
+        for /f %%i in ('docker images !TAG! --format "{{.ID}}"') do set "NEW_ID=%%i"
+
         docker stop %CONTAINER_NAME% 2>nul
         docker rm %CONTAINER_NAME% 2>nul
+
+        REM Удаляем старые образы (кроме нового)
+        docker images %IMAGE_NAME% -q --no-trunc ^| findstr /v "!NEW_ID!" ^| docker rmi -f 2>nul
     )
-    set "IMAGE_TAG=!TAG!"
+    set "IMAGE_TAG=%IMAGE_NAME%:latest"
 ) else (
-    echo ❌ Dockerfile не найден: %DOCKERFILE%
+    echo Dockerfile не найден: %DOCKERFILE%
     exit /b 1
 )
 
@@ -186,7 +198,8 @@ if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 
 REM === КОМАНДЫ КОМПИЛЯЦИИ ===
 set "COMPILE_CMD="
-set "LATEX_OPTS=-shell-escape -output-directory=out -interaction=nonstopmode"
+set "LATEX_OPTS=-shell-escape -output-directory=out -interaction=nonstopmode -synctex=0"
+set "BIBER_NEEDED=0"
 
 IF "%COMPILE_MODE%"=="fast" (
     echo ⚡ ЧЕРНОВАЯ КОМПИЛЯЦИЯ...
@@ -195,7 +208,23 @@ IF "%COMPILE_MODE%"=="fast" (
 
 IF "%COMPILE_MODE%"=="full" (
     echo 🔧 ПОЛНАЯ КОМПИЛЯЦИЯ...
-    set "COMPILE_CMD=lualatex %LATEX_OPTS% -synctex=1 %TEX_FILE%"
+    set "BASENAME=!TEX_FILE:.tex=!"
+
+    set "LATEX_CMD_PASS=lualatex %LATEX_OPTS% !TEX_FILE!"
+
+    
+    if exist "%PROJECT_PATH%\%BIB_FILE%" (
+        findstr /C:"\\addbibresource" "%PROJECT_PATH%\!TEX_FILE!" >nul 2>&1
+        if not errorlevel 1 set "BIBER_NEEDED=1"
+    )
+
+    if "!BIBER_NEEDED!"=="1" (
+        echo 📚 Обнаружена библиография, будет запущен Biber.
+        set "COMPILE_CMD=!LATEX_CMD_PASS! && biber !BASENAME! && !LATEX_CMD_PASS!"
+    ) else (
+        echo 📘 Библиография не используется, Biber пропускается.
+        set "COMPILE_CMD=!LATEX_CMD_PASS!"
+    )
 )
 
 if "!COMPILE_CMD!"=="" (
@@ -221,7 +250,15 @@ set START_TIME=%TIME%
 
 echo 🔄 Компилирую...
 docker exec -e "TEXINPUTS=.:/tmp/latex-template//:" -w "/workdir/%DOCKER_PATH%" %CONTAINER_NAME% bash -c "!COMPILE_CMD!"
-
+if "!BIBER_NEEDED!"=="1" (
+    echo.
+    echo.
+    echo 📚 Запуск сборки библиографии...
+    
+    docker exec -e "TEXINPUTS=.:/tmp/latex-template//:" -w "/workdir/%DOCKER_PATH%" %CONTAINER_NAME% bash -c "biber out/!BASENAME!"
+    echo 📚 Не забудьте скомпилировать еще раз, если это была первая компиляция,
+    echo потому что необходимо три прохода: lualatex -> biber -> lualatex.
+)
 
 
 

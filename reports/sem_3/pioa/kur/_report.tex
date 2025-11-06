@@ -1,0 +1,78 @@
+% === ПОДКЛЮЧЕНИЕ ОБЩЕЙ ПРЕАМБУЛЫ ===
+\input{template/preambula.tex}
+
+% === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
+\newcommand{\Department}{КСУ}
+\newcommand{\WorkType}{курсовой работе}
+\newcommand{\Discipline}{программирование и основы алгоритмизации}
+\newcommand{\WorkTitle}{СОСТАВЛЕНИЕ АЛГОРИТМА И НАПИСАНИЕ ПРОГРАММ ОБРАБОТКИ МАССИВА ДАННЫХ}
+\newcommand{\Group}{4494}
+\newcommand{\Variant}{1.9.ФБ}
+\newcommand{\StudentName}{Рахметов А. Р.}
+\newcommand{\TeacherName}{Шпекторов А. Г.}
+\newcommand{\Year}{2025}
+
+% === СБОРКА ДОКУМЕНТА ===
+\begin{document}
+
+
+
+% --- ТИТУЛЬНЫЙ ЛИСТ ---
+\input{template/title_template.tex}
+
+
+
+% --- ОГЛАВЛЕНИЕ ---
+\begin{center}
+    \tableofcontents
+\end{center}
+\thispagestyle{empty}
+\newpage
+
+
+
+% --- ВВЕДЕНИЕ ---
+\newpage
+\addcontentsline{toc}{section}{Введение}
+\phantomsection
+\centeredsection{\uppercase{Введение}}
+\input{introduction.tex}
+
+
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+\input{main_part.tex}
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+
+
+
+% --- ЗАКЛЮЧЕНИЕ ---
+\newpage
+\addcontentsline{toc}{section}{Заключение}
+\phantomsection
+\centeredsection{\uppercase{Заключение}}
+\input{conclusion.tex}
+
+...Для поиска по графу рекомендуется применять алгоритм Форда-Беллмана \cite{korn_algorithms}. 
+Подробное описание алгоритма можно найти в интернет-источниках \cite{wiki_ford_bellman}. 
+Все расчеты были выполнены в среде Matlab \cite{dyakonov_matlab}...
+
+% --- СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ ---
+\newpage
+\addcontentsline{toc}{section}{Список использованных источников}
+\phantomsection
+% \centeredsection{\uppercase{Список использованных источников}}
+% \addbibresource{references.bib}  % Имя файла references.bib не следует менять! Используется оптимизация скрипта сборки документа
+% \printbibliography
+\renewcommand{\bibsection}{\centering\textbf{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}} % смена названия библиографии по умолчанию
+\bibliography{references}
+
+
+
+% --- ПРИЛОЖЕНИЯ ---
+\begin{appendices}
+    % \input{appendix.tex} % Приложения
+\end{appendices}
+
+
+
+\end{document}

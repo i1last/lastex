@@ -2,7 +2,7 @@
     "Section": {
         "prefix": "sec",
         "body": [
-            "\\section*{${1:title}}",
+            "\\section${1:*}{${2:title}}",
             "$0"
         ],
         "description": "Create a new section"
@@ -10,7 +10,7 @@
     "SubSection": {
         "prefix": "ssec",
         "body": [
-            "\\subsection*{${1:title}}",
+            "\\subsection${1:*}{${2:title}}",
             "$0"
         ],
         "description": "Create a new subsection"
@@ -18,7 +18,7 @@
     "SubSubSection": {
         "prefix": "sssec",
         "body": [
-            "\\subsubsection*{${1:title}}",
+            "\\subsubsection${1:*}{${2:title}}",
             "$0"
         ],
         "description": "Create a new subsubsection"
@@ -37,7 +37,7 @@
             "\\centeredsection{${1:title}}",
             "$0"
         ],
-        "description": "Create a new centered section"
+        "description": "Create a new centered section without numbering"
     },
     "Enumerate": {
         "prefix": "enum",
@@ -54,6 +54,15 @@
             "\\begin{itemize}",
             "    \\item $0",
             "\\end{itemize}"
+        ],
+        "description": ""
+    },
+    "Description": {
+        "prefix": "desc",
+        "body": [
+            "\\begin{description",
+            "    \\item[${1:FirstItem}] $0",
+            "\\end{description}"
         ],
         "description": ""
     },
@@ -277,5 +286,11 @@
         ],
         "description": ""
     },
-    
+    "Label": {
+        "prefix": "lbl",
+        "body": [
+            "\\label{${1:label}}"
+        ],
+        "description": ""
+    },
 }

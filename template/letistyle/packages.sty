@@ -63,3 +63,12 @@
 \RequirePackage{longtable}      % Таблицы, которые могут переноситься на несколько страниц
 \RequirePackage{array}          % Расширяет возможности работы с таблицами и выравниваниями
 \RequirePackage{makecell}       % Многострочные ячейки в таблицах
+
+
+\usepackage[
+    backend=biber,              % Используем современный обработчик Biber
+    style=gost-numeric,         % Стиль оформления: ГОСТ, нумерованный список
+    sorting=none,               % Сортировка в порядке упоминания в тексте (требование ГОСТ)
+    language=auto,
+    autolang=russian
+]{biblatex}                     % Для библиографии

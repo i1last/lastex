@@ -11,31 +11,32 @@ RUN rm -rf /var/lib/apt/lists/*
 
 RUN tlmgr update --self
 RUN tlmgr install \
-        collection-latexrecommended \
-        collection-luatex \
-        collection-langcyrillic \
-        collection-context && \
-    tlmgr path add
+    collection-latexrecommended \
+    collection-luatex \
+    collection-langcyrillic \
+    collection-context \ 
+    collection-bibtexextra
 RUN tlmgr install \
-        tabularray \
-        xurl \
-        zref \
-        xcolor \
-        ninecolors \
-        cleveref \
-        enumitem \
-        makecell \
-        was \
-        multirow \
-        tocloft \
-        titlesec \
-        minted \
-        appendix \
-        enotez \
-        translations && \
-    tlmgr path add
+    biber \
+    biblatex \
+    biblatex-gost \
+    tabularray \
+    xurl \
+    zref \
+    ninecolors \
+    cleveref \
+    enumitem \
+    makecell \
+    was \
+    multirow \
+    tocloft \
+    titlesec \
+    minted \
+    appendix \
+    enotez \
+    translations
 
-RUN mktexlsr
+RUN mktexlsr && tlmgr path add && fmtutil-sys --all
 
 # --- УСТАНОВКА ЛОКАЛЬНЫХ ШРИФТОВ ---
 RUN mkdir -p /usr/local/share/fonts/truetype/times-new-roman
