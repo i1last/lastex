@@ -140,7 +140,6 @@
             "",
             "    \\begin{tblr}{",
             "        colspec = {| Q[c, m] | Q[c, m] | X[j, h] | },",
-            "        width = \\linewidth,",
             "        hlines = 1, vlines = 1,",
             "        row{1} = {font=\\bfseries},",
             "    }",
@@ -157,7 +156,6 @@
             "    caption = {${1:caption}},",
             "    label = {table:${2:label}},",
             "]{",
-            "    width = \\linewidth,",
             "    colspec = { | X[j,m] | X[j,m] | X[j,m] | X[j,h] | },",
             "    hlines,",
             "    rowhead = 1,",
@@ -195,7 +193,7 @@
     "MonoText": {
         "prefix": "ic",
         "body": [
-            "\\mintinline{${1:x}}!${0:code}!"
+            "\\mintinline{${1:text}}§${0:code}§"
         ],
         "description": ""
     },
@@ -231,7 +229,7 @@
             "        % firstline      = 1,",
             "        % lastline       = 10,",
             "        % highlightlines = {1-10},",
-            "    ]{${2:matlab}}{code/${3:filename.m}}",
+            "    ]{${2:text}}{code/${3:filename.txt}}",
             "\\end{listing}",
             "$0"
         ],
