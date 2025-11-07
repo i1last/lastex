@@ -18,7 +18,7 @@ function [varargout] = table_1_func(x_range_from, x_range_to, x1_len, x2_len)
         result.y = y;
         
         varargout{1} = result;
-    else if nargout == 3
+    elseif nargout == 3
         varargout{1} = x1;
         varargout{2} = x2;
         varargout{3} = y;
