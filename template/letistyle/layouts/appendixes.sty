@@ -4,11 +4,14 @@
 \renewcommand{\appendixname}{Приложение}
 
 % Этот код сработает автоматически, как только вы напишете \begin{appendices}
-\AtBeginEnvironment{appendices}{%
-    % Меняем нумерацию секций на русские буквы (А, Б, В...)
-    % \renewcommand{\thesection}{\asbuk{section}}
+\AtBeginEnvironment{appendices}{
+    % Делаем так, чтобы ссылки на секции-приложения работали корректно
+    \crefalias{section}{appendix}
     
-    \renewcommand{\section}[1]{%
+    \renewcommand{\section}[1]{
+        % Меняем нумерацию секций на пользовательские русские буквы
+        \renewcommand{\thesection}{\appendixAsbuk{\value{section}}}
+
         \clearpage
         
         \refstepcounter{section}

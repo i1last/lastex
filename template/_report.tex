@@ -2,28 +2,74 @@
 \input{template/preambula.tex}
 
 % === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
-\newcommand{\Department}{физики}
-\newcommand{\WorkType}{лабораторной работе №3}
-\newcommand{\Discipline}{физика}
-\newcommand{\WorkTitle}{ВНУТРЕННИЙ ФОТОЭФФЕКТ}
+\newcommand{\Department}{КАФЕДРА}     % Кафедра <\Department>
+\newcommand{\WorkType}{ТИП_РАБОТЫ}    % По <\WorkType> (напр: По лабораторной работе №1)
+\newcommand{\Discipline}{ДИСЦИПЛИНА}  % По дисциплине <\Discipline>
+\newcommand{\WorkTitle}{ТЕМА РАБОТЫ}
 \newcommand{\Group}{4494}
-\newcommand{\Variant}{11}
-\newcommand{\StudentName}{Рахметов А. Р.}
-\newcommand{\TeacherName}{Черёмухина И. А.}
+\newcommand{\Variant}{ВАРИАНТ_СТУДЕНТА}
+\newcommand{\StudentName}{ФИО_СТУДЕНТА}
+\newcommand{\TeacherName}{ФИО_ПРЕПОДАВАТЕЛЯ}
 \newcommand{\Year}{2025}
+
+% Включение библиографии
+% bibtex автоматически будет включен в процесс сборки документа
+% при обнаружении файла references.bib в директории с основным _report.tex файлом
+% \addbibresource{references.bib}  % Имя файла references.bib не следует менять! Используется оптимизация скрипта сборки документа
 
 % === СБОРКА ДОКУМЕНТА ===
 \begin{document}
 
+ 
+
+% --- ТИТУЛЬНЫЙ ЛИСТ ---
 \input{template/title_template.tex}
 
-% Содержание
-% \begin{center}
-%     \tableofcontents
-% \end{center}
+
+
+% --- ОГЛАВЛЕНИЕ ---
+% \tableofcontents
 % \thispagestyle{empty}
 % \newpage
 
-\input{main.tex} % Основное содержание
+
+
+% --- ВВЕДЕНИЕ ---
+% \newpage
+% \addcontentsline{toc}{section}{Введение}
+% \phantomsection
+% \centeredsection{\uppercase{Введение}}
+% \input{introduction.tex}
+
+
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+\input{main.tex}
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+
+
+
+% --- ЗАКЛЮЧЕНИЕ ---
+% \newpage
+% \addcontentsline{toc}{section}{Заключение}
+% \phantomsection
+% \centeredsection{\uppercase{Заключение}}
+% \input{conclusion.tex}
+
+
+
+% --- СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ ---
+% \newpage
+% \addcontentsline{toc}{section}{Список использованных источников}
+% \phantomsection
+% \centeredsection{\uppercase{Список использованных источников}}
+% \printbibliography
+
+
+% --- ПРИЛОЖЕНИЯ ---
+% \begin{appendices}
+%     \input{appendix.tex}
+% \end{appendices}
+
+
 
 \end{document}
