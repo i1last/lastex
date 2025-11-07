@@ -1,116 +1,86 @@
-% ========================================================================================
-% ФАЙЛ С ПРИЛОЖЕНИЯМИ
-% ----------------------------------------------------------------------------------------
-% ПРИМЕЧАНИЕ: Команды ,  и 
-% расставляются вручную для полного контроля над версткой документа.
-% Если после компиляции разрыв страницы окажется в другом месте,
-% просто переместите эти команды.
-% ========================================================================================
+\section{main.m}
+\label{app:main.m}
+
+\begin{codemultipage}
+    % \captionof{listing}{caption\label{lst:label}}
+    \inputminted{matlab}{code/main.m}
+\end{codemultipage}
 
 
 
-% --- ПРИЛОЖЕНИЕ А ---
-\section{Задание на курсовую работу}
-\label{app:task_sheet}
+\section{buildGraph.m}
+\label{app:buildGraph.m}
 
-На \cref{fig:task_sheet} представлен скан-образ индивидуального задания на курсовую работу.
-
-\begin{figure}[H]
-    \centering
-    % ВНИМАНИЕ: Убедитесь, что путь к файлу 'images/cond_kur.png' корректен.
-    \includegraphics[width=0.9\textwidth]{images/cond_kur.png}
-    \caption{Задание на курсовую работу (Вариант 1.9.ФБ)}
-    \label{fig:task_sheet}
-\end{figure}
-% Данное приложение, скорее всего, уместится на одной странице,
-% поэтому команды  и  не требуются.
-
-
-% --- ПРИЛОЖЕНИЕ Б ---
- % Начинаем следующее приложение с новой страницы
-\section{Результаты работы программы}
-\label{app:results}
-
-В данном приложении представлены результаты работы программы для тестового набора данных, разработанного для проверки всех сценариев.
-
-\begin{listing}[H]
-    % ВНИМАНИЕ: Убедитесь, что путь к файлу 'data/refueling_points.txt' корректен.
-    \inputminted{text}{data/refueling_points.txt}
-    \caption{Содержимое файла входных данных \texttt{refueling\_points.txt}}
-    \label{lst:input_data}
-\end{listing}
-
-\begin{listing}[H]
-    % ВНИМАНИЕ: Убедитесь, что путь к файлу 'results/result.txt' корректен.
-    \inputminted{text}{results/result.txt}
-    \caption{Содержимое файла результатов \texttt{result.txt}}
-    \label{lst:output_data}
-\end{listing}
-
-% ПРЕДПОЛАГАЕМЫЙ РАЗРЫВ СТРАНИЦЫ: График, скорее всего, начнется на новой странице.
+\begin{codemultipage}
+    % \captionof{listing}{caption\label{lst:label}}
+    \inputminted{matlab}{code/functions/buildGraph.m}
+\end{codemultipage}
 
 
 
-\begin{figure}[H]
-    \centering
-    % ВНИМАНИЕ: Убедитесь, что путь к файлу 'results/optimal_route.png' корректен.
-    \includegraphics[width=\textwidth]{results/optimal_route.png}
-    \caption{График, сгенерированный программой}
-    \label{fig:result_plot}
-\end{figure}
+\section{findOptimalPathByFordBellman.m}
+\label{app:findOptimalPathByFordBellman.m}
 
-% Ставим "Окончание" в конце этого многостраничного приложения.
+\begin{codemultipage}
+    % \captionof{listing}{caption\label{lst:label}}
+    \inputminted{matlab}{code/functions/findOptimalPathByFordBellman.m}
+\end{codemultipage}
 
 
 
-% --- ПРИЛОЖЕНИЕ В ---
- % Начинаем следующее приложение с новой страницы
-\section{Листинги программ}
-\label{app:listings}
+\section{generateNmeaMessages.m}
+\label{app:generateNmeaMessages.m}
 
-\begin{listing}[H]
-    % ВНИМАНИЕ: Убедитесь, что пути к файлам кода верны.
-    \inputminted{matlab}{main.m}
-    \caption{Листинг основного скрипта \texttt{main.m}}
-    \label{lst:main_script}
-\end{listing}
-
-\begin{listing}[H]
-    \inputminted{matlab}{functions/buildGraph.m}
-    \caption{Листинг функции \texttt{buildGraph.m}}
-    \label{lst:buildGraph}
-\end{listing}
-
-% ПРЕДПОЛАГАЕМЫЙ РАЗРЫВ СТРАНИЦЫ
+\begin{codemultipage}
+    % \captionof{listing}{caption\label{lst:label}}
+    \inputminted{matlab}{code/functions/generateNmeaMessages.m}
+\end{codemultipage}
 
 
 
-\begin{listing}[H]
-    \inputminted{matlab}{functions/findOptimalPathByFordBellman.m}
-    \caption{Листинг функции \texttt{findOptimalPathByFordBellman.m}}
-    \label{lst:fordBellman}
-\end{listing}
+\section{plotRoute.m}
+\label{app:plotRoute.m}
 
-\begin{listing}[H]
-    \inputminted{matlab}{functions/generateNmeaMessages.m}
-    \caption{Листинг функции \texttt{generateNmeaMessages.m}}
-    \label{lst:generateNmea}
-\end{listing}
-
-% ПРЕДПОЛАГАЕМЫЙ РАЗРЫВ СТРАНИЦЫ
+\begin{codemultipage}
+    % \captionof{listing}{caption\label{lst:label}}
+    \inputminted{matlab}{code/functions/plotRoute.m}
+\end{codemultipage}
 
 
 
-\begin{listing}[H]
-    \inputminted{matlab}{functions/plotRoute.m}
-    \caption{Листинг функции \texttt{plotRoute.m}}
-    \label{lst:plotRoute}
-\end{listing}
+\section{saveResults.m}
+\label{app:saveResults.m}
 
-\begin{listing}[H]
-    \inputminted{matlab}{functions/saveResults.m}
-    \caption{Листинг функции \texttt{saveResults.m}}
-    \label{lst:saveResults}
-\end{listing}
+\begin{codemultipage}
+    % \captionof{listing}{caption\label{lst:label}}
+    \inputminted{matlab}{code/functions/saveResults.m}
+\end{codemultipage}
 
-% Ставим "Окончание" в конце этого многостраничного приложения.
+
+
+\section{refueling\_points.txt}
+\label{app:refueling_points.txt}
+
+\begin{codemultipage}
+    % \captionof{listing}{caption\label{lst:label}}
+    \inputminted{matlab}{code/data/refueling_points.txt}
+\end{codemultipage}
+
+
+
+\section{refueling\_points\_extended.txt}
+\label{app:refueling_points_extxended.txt}
+
+\begin{codemultipage}
+    % \captionof{listing}{caption\label{lst:label}}
+    \inputminted{matlab}{code/data/refueling_points_extended.txt}
+\end{codemultipage}
+
+
+\section{ФВЫВВ\_points\_extended.txt}
+\label{app:refueling_points_extended.txt}
+
+\begin{codemultipage}
+    % \captionof{listing}{caption\label{lst:label}}
+    \inputminted{matlab}{code/data/refueling_points_extended.txt}
+\end{codemultipage}
