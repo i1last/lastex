@@ -1,4 +1,4 @@
-function [varargout] = ex3_1(matrix)
+function result = ex3_1(matrix)
     % ex3_1 находит минимальный элемент и столбец с ним
     %   matrix - входная матрица
     %   Выходы:
@@ -13,13 +13,8 @@ function [varargout] = ex3_1(matrix)
     [min_value, min_index] = min(matrix(:));
     [~, col_index] = ind2sub(size(matrix), min_index);
 
-    % Формирование результата в зависимости от числа выходов
-    if nargout <= 1
-        result.min_value = min_value;
-        result.col_index = col_index;
-        varargout{1} = result;
-    else
-        varargout{1} = min_value;
-        varargout{2} = col_index;
-    end
+    % Формирование результата
+    result.min_value = min_value;
+    result.col_index = col_index;
+    result.col = matrix(:, col_index);
 end
