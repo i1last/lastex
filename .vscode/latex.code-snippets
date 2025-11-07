@@ -60,7 +60,7 @@
     "Description": {
         "prefix": "desc",
         "body": [
-            "\\begin{description",
+            "\\begin{description}",
             "    \\item[${1:FirstItem}] $0",
             "\\end{description}"
         ],
