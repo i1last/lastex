@@ -10,3 +10,6 @@
 }
 
 \RenewDocumentCommand{\texttt}{m}{\mintinline{text}§#1§}
+
+% Корректное отображение нелатинских символов в URL в библиографии
+\DeclareFieldFormat{url}{\href{\thefield{url}}{\url{\thefield{urlraw}}}}
