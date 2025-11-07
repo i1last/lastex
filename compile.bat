@@ -126,7 +126,7 @@ set "DEFAULT_PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 set "BASH_CMD="
 set "BASH_CMD=!BASH_CMD! export PATH=!TEXLIVE_BIN_PATH!:!DEFAULT_PATH! && "
 set "BASH_CMD=!BASH_CMD! export TEXINPUTS=.:/tmp/latex-template//:: && "
-set "BASH_CMD=!BASH_CMD! make -f /workdir/Makefile %MAKE_TARGET% TEX_FILE='!TEX_FILE!' BIB_FILE='!BIB_FILE!'"
+set "BASH_CMD=!BASH_CMD! make -f /workdir/Makefile --always-make %MAKE_TARGET% TEX_FILE='!TEX_FILE!' BIB_FILE='!BIB_FILE!'"
 
 docker exec -w "/workdir/%PROJECT_PATH:\=/%" %CONTAINER_NAME% bash -c "!BASH_CMD!"
 
