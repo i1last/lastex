@@ -1,14 +1,10 @@
-function [ ] = table_2_func()
+function [ ] = table_2_func(range_start, range_end, count_of_dots, figure_type)
     % Функция для вычисления значений функции из таблицы 2 для варианта 3
-    
-    file = fopen('./src/table_2.csv', 'r');
-    file_output = textscan(file, '%f;%f;%d;%s', 'HeaderLines', 1);
-    fclose(file);
-
-    range_start = file_output{1};
-    range_end = file_output{2};
-    count_of_dots = file_output{3};
-    figure_type = file_output{4}{1};
+    % Входные параметры:
+    %   range_start - начальное значение диапазона
+    %   range_end - конечное значение диапазона
+    %   count_of_dots - количество точек
+    %   figure_type - тип графика ('semilogx', 'semilogy', 'loglog', 'plot')
 
     
     w = logspace(log10(range_start), log10(range_end), count_of_dots);
