@@ -114,6 +114,48 @@
         ],
         "description": "Insert a figure environment"
     },
+    "SubFigures": {
+        "prefix": "subfig",
+        "body": [
+            "\\begin{figure}[h!]",
+            "    \\centering",
+            "",
+            "    \\begin{subfigure}[a]{0.48\\textwidth}",
+            "        \\centering",
+            "        \\includegraphics[width=\\textwidth]{figs/${3:image1}}",
+            "        \\caption{${4:caption1}}",
+            "        \\label{fig:${3:label1}}",
+            "    \\end{subfigure}",
+            "    \\hfill",
+            "    \\begin{subfigure}[a]{0.48\\textwidth}",
+            "        \\centering",
+            "        \\includegraphics[width=\\textwidth]{figs/${7:image2}}",
+            "        \\caption{${8:caption2}}",
+            "        \\label{fig:${7:label2}}",
+            "    \\end{subfigure}",
+            "",
+            "    \\vspace{0.5cm}",
+            "",
+            "    \\begin{subfigure}[a]{0.48\\textwidth}",
+            "        \\centering",
+            "        \\includegraphics[width=\\textwidth]{figs/${3:image1}}",
+            "        \\caption{${4:caption1}}",
+            "        \\label{fig:${3:label1}}",
+            "    \\end{subfigure}",
+            "    \\hfill",
+            "    \\begin{subfigure}[a]{0.48\\textwidth}",
+            "        \\centering",
+            "        \\includegraphics[width=\\textwidth]{figs/${7:image2}}",
+            "        \\caption{${8:caption2}}",
+            "        \\label{fig:${7:label2}}",
+            "    \\end{subfigure}",
+            "",
+            "    \\caption{${1:Overall caption}}",
+            "    \\label{fig:${10:overall_label}}",
+            "\\end{figure}"
+        ],
+        "description": "Insert a many figure environment"
+    },
     "Table": {
         "prefix": "table",
         "body": [
@@ -240,6 +282,7 @@
         "body": [
             "\\begin{codemultipage}",
             "    \\captionof{listing}{${1:caption}\\label{lst:${3:label}}}",
+            "    \\nopagebreak",
             "    \\inputminted{${2:matlab}}{code/${3:filename.m}}",
             "\\end{codemultipage}",
             "$0"
