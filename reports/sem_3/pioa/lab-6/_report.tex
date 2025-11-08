@@ -1,0 +1,29 @@
+% === ПОДКЛЮЧЕНИЕ ОБЩЕЙ ПРЕАМБУЛЫ ===
+\input{template/preambula.tex}
+
+% === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
+\newcommand{\Department}{КСУ}
+\newcommand{\WorkType}{лабораторной работе №6}
+\newcommand{\Discipline}{программирование и основы алгоритмизации}
+\newcommand{\WorkTitle}{Дополнительные возможности графики в MATLAB}
+\newcommand{\Group}{4494}
+\newcommand{\Variant}{3}
+\newcommand{\StudentName}{Рахметов А. Р., Фролов. А. А.}
+\newcommand{\TeacherName}{Шпекторов А. Г.}
+\newcommand{\Year}{2025}
+
+% === СБОРКА ДОКУМЕНТА ===
+\begin{document}
+
+\input{template/title_template.tex}
+
+% Содержание
+% \begin{center}
+%     \tableofcontents
+% \end{center}
+% \thispagestyle{empty}
+% \newpage
+
+\input{main.tex} % Основное содержание
+
+\end{document}
