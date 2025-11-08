@@ -32,6 +32,7 @@ $(OUT_DIR)/$(TARGET).pdf: $(TARGET).tex $(OUT_DIR)/$(TARGET).bbl
 else
 $(OUT_DIR)/$(TARGET).pdf: $(TARGET).tex
 	@echo "\n\n--- [LaTeX] Финальная компиляция (без библиографии) ---"
+	mkdir -p $(OUT_DIR)
 	$(LATEX) $(TARGET).tex
 endif
 
