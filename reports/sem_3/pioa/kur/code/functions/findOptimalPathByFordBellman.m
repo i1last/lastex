@@ -36,21 +36,6 @@ function [optimalPathIndices, optimalPathLength] = findOptimalPathByFordBellman(
     end
 
 
-    % path = [endNodeIndex];
-    % currentNode = endNodeIndex;
-    % while currentNode ~= startNodeIndex
-    %     if isnan(currentNode)
-    %         path = [];
-    %         break;
-    %     end
-
-    %     currentNode = predecessors(currentNode);
-    %     path = [currentNode path];  % Развертываение происходит в обратном порядке
-    % end
-
-
-    % optimalPathIndices = path;
-    % optimalPathLength = distances(endNodeIndex);
     optimalPathLength = distances(endNodeIndex);
     
     if optimalPathLength == inf

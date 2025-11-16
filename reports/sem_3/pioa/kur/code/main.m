@@ -82,6 +82,9 @@ startNodeIndex = 1;             % Т.к. в массив nodes поместил�
 endNodeIndex = size(nodes, 1);  % точки, затем конечную точку endPoint.
 
 graph = buildGraph(nodes, COND.vehicleSpeed, COND.batteryLifeHours, COND.mapScale);
+resultsFilePath = './results/graph_distances.csv';
+writematrix(graph.distances, resultsFilePath);
+
 
 if isVerbose
     disp('Узлы графа (координаты точек):');
