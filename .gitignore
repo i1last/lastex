@@ -37,3 +37,7 @@ fonts/times*.ttf
 
 # Пользовательские файлы "на удаление"
 *.del
+
+# drawio
+*.dtmp
+*.bkp
