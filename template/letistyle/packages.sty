@@ -66,11 +66,13 @@
 
 
 \RequirePackage[
-    backend=biber,              % Используем современный обработчик Biber
-    style=gost-numeric,         % Стиль оформления: ГОСТ, нумерованный список
-    sorting=none,               % Сортировка в порядке упоминания в тексте (требование ГОСТ)
-    language=auto,
-    autolang=other,
-    bibencoding=utf8,
-    label=brackets              % Квадратные скобки для ссылок в тексте
+    backend=biber,              % Компилятор
+    style=gost-numeric,         % Стиль ГОСТ (автоматически включает скобки [1])
+    sorting=none,               % Сортировка по порядку появления
+    language=auto,              % Автоопределение языка
+    autolang=other,             % Переключение языковых правил
+    bibencoding=utf8,           % Кодировка
+    defernumbers=true,          % Корректная нумерация при разрывах
+    movenames=false,            % Не перемещать авторов в конец (стандарт)
+    maxnames=5                  % Максимум имен до сокращения "и др."
 ]{biblatex}                     % Для библиографии
