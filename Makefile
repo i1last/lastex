@@ -1,13 +1,15 @@
-# Makefile для сборки LaTeX-документов (умная и надежная версия v2)
+# Makefile для сборки LaTeX-документов (v3: Dynamic Jobname)
 
 # --- Переменные ---
 TEX_FILE    ?= _report.tex
-TARGET      = $(basename $(TEX_FILE))
+# JOBNAME: имя выходного файла. Если не передано извне, берется имя TEX_FILE без расширения.
+JOBNAME     ?= $(basename $(TEX_FILE))
 BIB_FILE    ?= references.bib
 OUT_DIR     = out
 
 # --- Компиляторы ---
-LATEX       = -lualatex -shell-escape -interaction=nonstopmode -output-directory=$(OUT_DIR)
+# Добавлен флаг -jobname для смены имени выходного файла
+LATEX       = -lualatex -shell-escape -interaction=nonstopmode -output-directory=$(OUT_DIR) -jobname=$(JOBNAME)
 BIBER       = biber
 
 # --- Проверка, используется ли библиография ---
@@ -15,46 +17,44 @@ BIB_EXISTS  = $(shell test -f $(BIB_FILE) && echo true)
 
 # --- Цели ---
 
-# Цель по умолчанию: собрать PDF
 all: pdf
 
-# Основная цель: создать PDF-файл
-pdf: $(OUT_DIR)/$(TARGET).pdf
+# Основная цель теперь ссылается на JOBNAME
+pdf: $(OUT_DIR)/$(JOBNAME).pdf
 
 # --- Правила сборки ---
 
 # Правило №1: Финальная сборка PDF
-# Зависит от .tex файла и, если нужно, от .bbl файла.
+# ВАЖНО: Цель зависит от $(JOBNAME).pdf, но исходник — $(TEX_FILE)
 ifeq ($(BIB_EXISTS),true)
-$(OUT_DIR)/$(TARGET).pdf: $(TARGET).tex $(OUT_DIR)/$(TARGET).bbl
-	@echo "\n\n--- [LaTeX] Финальная компиляция (с библиографией) ---"
-	$(LATEX) $(TARGET).tex
+$(OUT_DIR)/$(JOBNAME).pdf: $(TEX_FILE) $(OUT_DIR)/$(JOBNAME).bbl
+	@echo "\n\n--- [LaTeX] Финальная компиляция (с библиографией) -> $(JOBNAME).pdf ---"
+	$(LATEX) $(TEX_FILE)
 else
-$(OUT_DIR)/$(TARGET).pdf: $(TARGET).tex
-	@echo "\n\n--- [LaTeX] Финальная компиляция (без библиографии) ---"
+$(OUT_DIR)/$(JOBNAME).pdf: $(TEX_FILE)
+	@echo "\n\n--- [LaTeX] Финальная компиляция (без библиографии) -> $(JOBNAME).pdf ---"
 	mkdir -p $(OUT_DIR)
-	$(LATEX) $(TARGET).tex
+	$(LATEX) $(TEX_FILE)
 endif
 
-# Правило №2: Создание .bbl файла (библиографии)
-# Зависит от .aux файла.
-$(OUT_DIR)/$(TARGET).bbl: $(OUT_DIR)/$(TARGET).aux
-	@echo "\n\n--- [Biber] Обработка библиографии ---"
-	$(BIBER) $(OUT_DIR)/$(TARGET)
-	@echo "\n\n--- [LaTeX] Повторная компиляция после Biber ---"
-	$(LATEX) $(TARGET).tex
+# Правило №2: Создание .bbl файла
+# Biber ищет .bcf файл, имя которого совпадает с JOBNAME
+$(OUT_DIR)/$(JOBNAME).bbl: $(OUT_DIR)/$(JOBNAME).aux
+	@echo "\n\n--- [Biber] Обработка библиографии для $(JOBNAME) ---"
+	$(BIBER) $(OUT_DIR)/$(JOBNAME)
+	@echo "\n\n--- [LaTeX] Промежуточная компиляция ---"
+	$(LATEX) $(TEX_FILE)
 
-# Правило №3: Создание .aux файла (первый проход LaTeX)
-# Зависит от .tex файла.
-$(OUT_DIR)/$(TARGET).aux: $(TARGET).tex
+# Правило №3: Создание .aux файла (первый проход)
+# Цель — aux файл с именем JOBNAME, но создается он из TEX_FILE
+$(OUT_DIR)/$(JOBNAME).aux: $(TEX_FILE)
 	@echo "\n\n--- [LaTeX] Первый проход (создание .aux) ---"
 	mkdir -p $(OUT_DIR)
-	$(LATEX) $(TARGET).tex
+	$(LATEX) $(TEX_FILE)
 
-# Цель для очистки
+# Очистка
 clean:
 	@echo "\n\n--- Очистка временных файлов ---"
 	rm -rf $(OUT_DIR)
 
-# Псевдо-цели
 .PHONY: all pdf clean
