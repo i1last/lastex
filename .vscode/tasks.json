@@ -1,29 +1,3 @@
-// {
-//     "version": "2.0.0",
-//     "tasks": [
-//         {
-//             "label": "Compile Current LaTeX Report",
-//             "type": "shell",
-//             "command": "${workspaceFolder}\\compile.bat",
-//             "args": [
-//                 "${relativeFileDirname}"
-//             ],
-//             "problemMatcher": "$latex-workshop", // ERROR!
-//             "presentation": {
-//                 "echo": true,
-//                 "reveal": "always",
-//                 "focus": false,
-//                 "panel": "shared",
-//                 "showReuseMessage": false,
-//                 "clear": true
-//             },
-//             "group": {
-//                 "kind": "build",
-//                 "isDefault": true
-//             }
-//         }
-//     ]
-// }
 {
     "version": "2.0.0",
     "tasks": [
