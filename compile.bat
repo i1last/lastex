@@ -115,6 +115,18 @@ REM === КОПИРОВАНИЕ ШАБЛОНА ===
 echo 📋 Копирую template во временную директорию контейнера...
 docker exec %CONTAINER_NAME% bash -c "if [ -d '/workdir/template' ]; then mkdir -p /tmp/latex-template/template && cp -r /workdir/template/* /tmp/latex-template/template && echo '✅ Template скопирован...'; fi" >nul
 
+REM === ГЕНЕРАЦИЯ ИМЕНИ ФАЙЛА (JOBNAME) ===
+REM Логика: берем путь, отсекаем всё до sem_X включительно, заменяем слэши на подчеркивания.
+REM Пример: reports\sem_3\pioa\kur -> pioa_kur
+set "GEN_JOBNAME="
+for /f "usebackq delims=" %%I in (`powershell -NoProfile -Command "'%PROJECT_PATH%' -replace '^.*sem_\d+[\\/]', '' -replace '[\\/]', '_' "`) do set "GEN_JOBNAME=%%I"
+
+IF "!GEN_JOBNAME!"=="" (
+    echo ⚠️ Не удалось сгенерировать имя из пути. Использую стандартное.
+    set "GEN_JOBNAME=!TEX_FILE:.tex=!"
+)
+echo 🏷️  Имя выходного файла: !GEN_JOBNAME!.pdf
+
 REM === ЗАПУСК MAKE ВНУТРИ КОНТЕЙНЕРА ===
 set START_TIME=%TIME%
 echo 🚀 Запускаю сборку через Makefile (цель: %MAKE_TARGET%)...
@@ -126,14 +138,13 @@ set "DEFAULT_PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 set "BASH_CMD="
 set "BASH_CMD=!BASH_CMD! export PATH=!TEXLIVE_BIN_PATH!:!DEFAULT_PATH! && "
 set "BASH_CMD=!BASH_CMD! export TEXINPUTS=.:/tmp/latex-template//:: && "
-set "BASH_CMD=!BASH_CMD! make -f /workdir/Makefile --always-make %MAKE_TARGET% TEX_FILE='!TEX_FILE!' BIB_FILE='!BIB_FILE!'"
-
+set "BASH_CMD=!BASH_CMD! make -f /workdir/Makefile --always-make %MAKE_TARGET% TEX_FILE='!TEX_FILE!' BIB_FILE='!BIB_FILE!' JOBNAME='!GEN_JOBNAME!'"
 docker exec -w "/workdir/%PROJECT_PATH:\=/%" %CONTAINER_NAME% bash -c "!BASH_CMD!"
 
 REM === ПРОВЕРКА РЕЗУЛЬТАТА ===
 set END_TIME=%TIME%
 set "OUTPUT_DIR=%PROJECT_PATH%\out"
-set "PDF_FILE=!TEX_FILE:.tex=.pdf!"
+set "PDF_FILE=!GEN_JOBNAME!.pdf"
 if exist "%OUTPUT_DIR%\!PDF_FILE!" (
     echo.
     echo ✅ %PDF_FILE%  📁 %PROJECT_PATH%  🎯 %MAKE_TARGET%  ⏱️ %START_TIME% -%END_TIME%
