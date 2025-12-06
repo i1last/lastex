@@ -1,0 +1,75 @@
+% === ПОДКЛЮЧЕНИЕ ОБЩЕЙ ПРЕАМБУЛЫ ===
+\input{template/preambula.tex}
+
+% === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
+\newcommand{\Department}{ЭТПТ}     % Кафедра <\Department>
+\newcommand{\WorkType}{практической работе №2}    % По <\WorkType> (напр: По лабораторной работе №1)
+\newcommand{\Discipline}{возобновляемая энергетика}  % По дисциплине <\Discipline>
+\newcommand{\WorkTitle}{ИССЛЕДОВАНИЕ ВЛИЯНИЯ УГЛА НАКЛОНА ПАНЕЛИ НА ЭФФЕКТИВНОСТЬ ЕЕ РАБОТЫ}
+\newcommand{\Group}{4494}
+\newcommand{\Variant}{--}
+\newcommand{\StudentName}{Рахметов А. Р.}
+\newcommand{\TeacherName}{Ермекова М. Р., Козулина Т. П.}
+\newcommand{\Year}{2025}
+
+% Включение библиографии
+% bibtex автоматически будет включен в процесс сборки документа
+% при обнаружении файла references.bib в директории с основным _report.tex файлом
+% \addbibresource{references.bib}  % Имя файла references.bib не следует менять! Используется оптимизация скрипта сборки документа
+
+% === СБОРКА ДОКУМЕНТА ===
+\begin{document}
+
+ 
+
+% --- ТИТУЛЬНЫЙ ЛИСТ ---
+\input{template/title_template.tex}
+
+
+
+% --- ОГЛАВЛЕНИЕ ---
+% \tableofcontents
+% \thispagestyle{empty}
+% \newpage
+
+
+
+% --- ВВЕДЕНИЕ ---
+% \newpage
+% \addcontentsline{toc}{section}{Введение}
+% \phantomsection
+% \centeredsection{\uppercase{Введение}}
+% \input{introduction.tex}
+
+
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+\input{main.tex}
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+
+
+
+% --- ЗАКЛЮЧЕНИЕ ---
+% \newpage
+% \addcontentsline{toc}{section}{Заключение}
+% \phantomsection
+% \centeredsection{\uppercase{Заключение}}
+% \input{conclusion.tex}
+
+
+
+% --- СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ ---
+% \newpage
+% \addcontentsline{toc}{section}{Список использованных источников}
+% \phantomsection
+% \centeredsection{\uppercase{Список использованных источников}}
+% \printbibliography
+
+
+% --- ПРИЛОЖЕНИЯ ---
+% \begin{appendices}
+%     \input{appendix.tex}
+% \end{appendices}
+
+
+
+\end{document}
