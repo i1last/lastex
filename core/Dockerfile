@@ -9,14 +9,14 @@ RUN apt-get update
 RUN apt-get install -y --no-install-recommends python3 python3-pygments
 RUN rm -rf /var/lib/apt/lists/*
 
-RUN tlmgr update --self
-RUN tlmgr install \
+RUN tlmgr update --self && tlmgr install texfot
+RUN tlmgr update --self && tlmgr install \
     collection-latexrecommended \
     collection-luatex \
     collection-langcyrillic \
     collection-context \ 
     collection-bibtexextra
-RUN tlmgr install \
+RUN tlmgr update --self && tlmgr install \
     biber \
     biblatex \
     biblatex-gost \
