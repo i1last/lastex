@@ -41,14 +41,15 @@ RUN mktexlsr && tlmgr path add && fmtutil-sys --all
 
 # --- УСТАНОВКА ЛОКАЛЬНЫХ ШРИФТОВ ---
 RUN mkdir -p /usr/local/share/fonts/truetype/times-new-roman
-COPY fonts/times.ttf /usr/local/share/fonts/truetype/times-new-roman/
-COPY fonts/timesbd.ttf /usr/local/share/fonts/truetype/times-new-roman/
-COPY fonts/timesi.ttf /usr/local/share/fonts/truetype/times-new-roman/
-COPY fonts/timesbi.ttf /usr/local/share/fonts/truetype/times-new-roman/
-COPY fonts/JetBrainsMono-Regular.ttf /usr/local/share/fonts/truetype/jb-mono/
-COPY fonts/JetBrainsMono-Bold.ttf /usr/local/share/fonts/truetype/jb-mono/
-COPY fonts/JetBrainsMono-Italic.ttf /usr/local/share/fonts/truetype/jb-mono/
-COPY fonts/JetBrainsMono-BoldItalic.ttf /usr/local/share/fonts/truetype/jb-mono/
+COPY core/fonts/times.ttf /usr/local/share/fonts/truetype/times-new-roman/
+COPY core/fonts/timesbd.ttf /usr/local/share/fonts/truetype/times-new-roman/
+COPY core/fonts/timesi.ttf /usr/local/share/fonts/truetype/times-new-roman/
+COPY core/fonts/timesbi.ttf /usr/local/share/fonts/truetype/times-new-roman/
+RUN mkdir -p /usr/local/share/fonts/truetype/jb-mono
+COPY core/fonts/JetBrainsMono-Regular.ttf /usr/local/share/fonts/truetype/jb-mono/
+COPY core/fonts/JetBrainsMono-Bold.ttf /usr/local/share/fonts/truetype/jb-mono/
+COPY core/fonts/JetBrainsMono-Italic.ttf /usr/local/share/fonts/truetype/jb-mono/
+COPY core/fonts/JetBrainsMono-BoldItalic.ttf /usr/local/share/fonts/truetype/jb-mono/
 
 # --- ПРЕДВАРИТЕЛЬНАЯ ГЕНЕРАЦИЯ БАЗ ДАННЫХ ---
 RUN fc-cache -f -v

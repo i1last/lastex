@@ -63,7 +63,7 @@ IF ERRORLEVEL 1 (
 )
 
 REM === ПЕРЕСБОРКА ПРИ ИЗМЕНЕНИИ DOCKERFILE ===
-set "DOCKERFILE=%cd%\Dockerfile"
+set "DOCKERFILE=%cd%\core\Dockerfile"
 set "BUILD_CONTEXT=%cd%"
 if exist "%DOCKERFILE%" (
     for /f "skip=1 delims=" %%i in ('certutil -hashfile "%DOCKERFILE%" SHA256 ^| findstr /r /v /c:"CertUtil"') do set "DOCKER_HASH=%%i"
@@ -72,7 +72,7 @@ if exist "%DOCKERFILE%" (
     docker inspect --type=image !TAG! >nul 2>&1
     if ERRORLEVEL 1 (
         echo 🔨 Изменился Dockerfile. Пересборка образа...
-        docker build -t !TAG! -t %IMAGE_NAME%:latest "%BUILD_CONTEXT%"
+        docker build -f "%DOCKERFILE%" -t !TAG! -t %IMAGE_NAME%:latest "%BUILD_CONTEXT%"
         if ERRORLEVEL 1 (
             echo.
             echo ❌ ОШИБКА СБОРКИ!
@@ -113,7 +113,7 @@ echo.
 
 REM === КОПИРОВАНИЕ ШАБЛОНА ===
 echo 📋 Копирую template во временную директорию контейнера...
-docker exec %CONTAINER_NAME% bash -c "if [ -d '/workdir/template' ]; then mkdir -p /tmp/latex-template/template && cp -r /workdir/template/* /tmp/latex-template/template && echo '✅ Template скопирован...'; fi" >nul
+docker exec %CONTAINER_NAME% bash -c "if [ -d '/workdir/core/templates' ]; then mkdir -p /tmp/latex-template/template && cp -r /workdir/core/templates/* /tmp/latex-template/template && echo '✅ Template скопирован...'; fi" >nul
 
 REM === ГЕНЕРАЦИЯ ИМЕНИ ФАЙЛА (JOBNAME) ===
 REM Логика: берем путь, отсекаем всё до sem_X включительно, заменяем слэши на подчеркивания.
@@ -138,7 +138,7 @@ set "DEFAULT_PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 set "BASH_CMD="
 set "BASH_CMD=!BASH_CMD! export PATH=!TEXLIVE_BIN_PATH!:!DEFAULT_PATH! && "
 set "BASH_CMD=!BASH_CMD! export TEXINPUTS=.:/tmp/latex-template//:: && "
-set "BASH_CMD=!BASH_CMD! make -f /workdir/Makefile --always-make %MAKE_TARGET% TEX_FILE='!TEX_FILE!' BIB_FILE='!BIB_FILE!' JOBNAME='!GEN_JOBNAME!'"
+set "BASH_CMD=!BASH_CMD! make -f /workdir/core/Makefile --always-make %MAKE_TARGET% TEX_FILE='!TEX_FILE!' BIB_FILE='!BIB_FILE!' JOBNAME='!GEN_JOBNAME!'"
 docker exec -w "/workdir/%PROJECT_PATH:\=/%" %CONTAINER_NAME% bash -c "!BASH_CMD!"
 
 REM === ПРОВЕРКА РЕЗУЛЬТАТА ===

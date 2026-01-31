@@ -1,16 +1,16 @@
-% === ПОДКЛЮЧЕНИЕ ОБЩЕЙ ПРЕАМБУЛЫ ===
-\input{template/preambula.tex}
+% === ПОДКЛЮЧЕНИЕ СТИЛЯ ===
+\documentclass{etulab}
 
 % === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
-\newcommand{\Department}{КАФЕДРА}     % Кафедра <\Department>
-\newcommand{\WorkType}{ТИП_РАБОТЫ}    % По <\WorkType> (напр: По лабораторной работе №1)
-\newcommand{\Discipline}{ДИСЦИПЛИНА}  % По дисциплине <\Discipline>
-\newcommand{\WorkTitle}{ТЕМА РАБОТЫ}
-\newcommand{\Group}{4494}
-\newcommand{\Variant}{ВАРИАНТ_СТУДЕНТА}
-\newcommand{\StudentName}{ФИО_СТУДЕНТА}
-\newcommand{\TeacherName}{ФИО_ПРЕПОДАВАТЕЛЯ}
-\newcommand{\Year}{2025}
+\Department{ТОЭ}
+\WorkType{лабораторной работе №1}
+\Discipline{Теоретические основы электротехники}
+\WorkTitle{Переходные процессы второго порядка}
+\Group{4494}
+\Variant{10}
+\StudentName{Рахметов А. Р.}
+\TeacherName{Соклакова М. В.}
+\Year{2026}
 
 % Включение библиографии
 % bibtex автоматически будет включен в процесс сборки документа
@@ -23,7 +23,7 @@
  
 
 % --- ТИТУЛЬНЫЙ ЛИСТ ---
-\input{template/title_template.tex}
+\maketitle
 
 
 

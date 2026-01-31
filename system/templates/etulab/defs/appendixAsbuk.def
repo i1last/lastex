@@ -1,4 +1,0 @@
-\ProvidesFile{appendixAsbuk.def}
-\def\appendixAsbuk#1{%
-  \ifcase#1\or \CYRA\or \CYRB\or \CYRV\or \CYRG\or \CYRD\or \CYRE\or \CYRZH\or \CYRI\or \CYRK\or \CYRL\or \CYRM\or \CYRN\or \CYRP\or \CYRR\or \CYRS\or \CYRT\or \CYRU\or \CYRF\or \CYRH\or \CYRC\or \CYRSH\or \CYRSHCH\or \CYRERE\or \CYRYU\or \CYRYA\else ??\fi%
-}

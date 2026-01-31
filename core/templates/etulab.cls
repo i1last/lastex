@@ -5,10 +5,6 @@
 
 % --- Настройка шрифтов
 \RequirePackage{fontspec}
-\RequirePackage{polyglossia}
-
-\setmainlanguage{russian}
-\setotherlanguage{english}
 
 % \setmainfont{TeX Gyre Termes}  % Свободный аналог Times New Roman, включенный в TeX Live
 \setmainfont{Times New Roman}[
@@ -32,23 +28,23 @@
 
 % --- Импортирование стилей
 % Определения
-\RequirePackage{etulab/defs/cyrillic.def}            % Определения для корректной работы кириллицы
-\RequirePackage{etulab/defs/appendixAsbuk.def}       % Определение счётчика приложений в виде русских букв
+\input{etulab/defs/cyrillic.def}            % Определения для корректной работы кириллицы
+\input{etulab/defs/appendixAsbuk.def}       % Определение счётчика приложений в виде русских букв
 
 % Пакеты-зависимости
-\RequirePackage{etulab/packages.sty}
+\RequirePackage{etulab/packages}
 
 % Настройки оформления
-\RequirePackage{etulab/layouts/appendixes.sty}       % Настройка приложений
-\RequirePackage{etulab/layouts/code.sty}             % Настройка листингов
-\RequirePackage{etulab/layouts/figures.sty}          % Настройка рисунков
-\RequirePackage{etulab/layouts/refs.sty}             % Настройка ссылок
-\RequirePackage{etulab/layouts/tableOfContents.sty}  % Настройка Содержания
-\RequirePackage{etulab/layouts/tables.sty}           % Настройка таблиц
-\RequirePackage{etulab/layouts/typography.sty}       % Настройка типографики
+\RequirePackage{etulab/layouts/appendixes}       % Настройка приложений
+\RequirePackage{etulab/layouts/code}             % Настройка листингов
+\RequirePackage{etulab/layouts/figures}          % Настройка рисунков
+\RequirePackage{etulab/layouts/refs}             % Настройка ссылок
+\RequirePackage{etulab/layouts/tableOfContents}  % Настройка Содержания
+\RequirePackage{etulab/layouts/tables}           % Настройка таблиц
+\RequirePackage{etulab/layouts/typography}       % Настройка типографики
 
 % Определение пользовательских команд
-\RequirePackage{etulab/commands.sty}
+\RequirePackage{etulab/commands}
 
 
 % --- Интерфейс данных
