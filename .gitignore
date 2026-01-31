@@ -41,3 +41,7 @@ fonts/times*.ttf
 # drawio
 *.dtmp
 *.bkp
+
+# python
+__pycache__/
+*.pyc
