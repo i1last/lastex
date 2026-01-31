@@ -1,0 +1,56 @@
+\ProvidesFile{letistyle/layouts/tables.sty}
+
+\captionsetup[table]{
+    position=top,              % Подпись над таблицей
+    justification=raggedright, % Выравнивание по левому краю
+    labelsep=endash,           % Разделитель "Таблица 1 –" (тире)
+    singlelinecheck=false,     % Принудительное выравнивание по левому краю
+    font=normalsize,           % Обычный размер шрифта (не курсив)
+    skip=6pt                   % Отступ перед таблицей
+}
+
+
+% --- Настройки tabularray
+\UseTblrLibrary{booktabs}
+
+\DeclareTblrTemplate{middlehead,lasthead}{default}{
+    \UseTblrTemplate{conthead}{default}
+}
+\DefTblrTemplate{caption}{default}{
+    \raggedright
+    \parindent=0pt
+    \UseTblrTemplate{caption-tag}{}{Таблица~\thetable}
+    \UseTblrTemplate{caption-sep}{}{--}
+    \UseTblrTemplate{caption-text}{default}
+}
+
+\DeclareTblrTemplate{contfoot-text}{normal}{\textit{Продолжение на следующей странице}}
+\DeclareTblrTemplate{conthead-text}{normal}{\textit{Продолжение табл. \thetable}}
+\SetTblrTemplate{contfoot-text}{normal}
+\SetTblrTemplate{conthead-text}{normal}
+
+\NewTblrTheme{mytable}{  % Глобальный стиль
+  \SetTblrInner[
+    caption = {template = my-caption},
+    caption-pos = t,
+    caption-skip = 6pt,
+    conthead-text = default
+  ]
+}
+
+% --- Принудительный отступ для окружения table ---
+% Добавляем 18pt (примерно одна пустая строка) перед каждой таблицей
+\BeforeBeginEnvironment{table}{\addvspace{\baselineskip}}
+
+% Добавляем отступ после таблицы (по желанию)
+\AfterEndEnvironment{table}{\addvspace{\baselineskip}}
+
+% === ВНИМАНИЕ! Последующие настройки таблиц нужны для сохранения
+% === обратной совместимости. В реальность используется tabularray
+% === выше.
+
+% --- Настройка новых типов колонок для tabularx
+\renewcommand{\tabularxcolumn}[1]{m{#1}}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcolumntype{L}{>{\arraybackslash}X}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}

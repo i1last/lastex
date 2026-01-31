@@ -1,0 +1,78 @@
+\ProvidesFile{letistyle/packages.sty}
+
+\RequirePackage{microtype}      % Пакет microtype улучшает разбивку на строки и общую "серость" текста, что позволяет избежать больших пробелов между словами. Это замена для \sloppy.
+\RequirePackage{fontspec}       % Пакет для работы с любыми системными шрифтами. Заменяет устаревшие inputenc и fontenc.
+\RequirePackage[
+    russian
+]{babel}                        % Поддержка русского языка: переносы, названия и т.д.
+\RequirePackage{bm}             % Жирный шрифт для математических символов
+\RequirePackage{setspace}       % Пакет для гибкого управления межстрочными интервалами
+\RequirePackage[
+    left=3cm,
+    right=1cm,
+    top=2cm,
+    bottom=2cm
+]{geometry}                     % Поля документа
+\RequirePackage{indentfirst}    % Красная строка для первого абзаца после заголовка
+\RequirePackage{pdflscape}      % Поддержка горизонтальных страниц
+\RequirePackage{enotez}         % Для работы с сносками (колонтитулами)
+\RequirePackage{tocloft}        % Для настройки оглавления (содержания)
+\RequirePackage{titlesec}       % Для настройки заголовков
+\RequirePackage{appendix}       % Для работы с приложениями
+\RequirePackage{etoolbox}       % Для различных полезных инструментов (например, для надежного изменения команд)
+\RequirePackage{xurl}           % Для переноса длинных URL. IMPORTANT: ОБЯЗАТЕЛЬНО должен быть загружен ДО hyperref
+\RequirePackage{hyperref}       % Для работы с гиперссылками
+
+% Требования к оформлению устанавливают, что длинные формулы должны переноситься на следующую строку
+% с выравниванием. Для этого используется окружение align:
+% Знак умножения "x" в LaTeX - это \times
+% \begin{align*}
+%     C_1+C_2+C_3+C_4 &= A_1 \cdot A_2 \cdot A_3 \times \\
+%     &\quad \times (A_1+B_1) \cdot (A_2+B_2) \cdot (B_1+B_2)
+% \end{align*}
+% &=:            Выравнивание по знаку равенства.
+% \\:            Перенос строки.
+% &\quad \times: Выравнивание второй строки по знаку & из первой, \quad добавляет отступ, а \times повторяет знак умножения.
+\RequirePackage{amsmath}        % Основные математические окружения
+\RequirePackage{amsfonts}       % Математические шрифты
+\RequirePackage{amssymb}        % Дополнительные математические символы
+\RequirePackage{mathtools}      % Расширение для amsmath с исправлением ошибок и новыми командами
+\RequirePackage{icomma}         % Корректная работа запятой как десятичного разделителя в формулах. Автоматически ставит правильные пробелы после запятых в математическом режиме
+
+\RequirePackage{graphicx}       % Для вставки изображений
+\RequirePackage{float}          % Для точного позиционирования объектов с опцией [H]
+\RequirePackage{caption}        % Гибкая настройка подписей к рисункам и таблицам
+\RequirePackage{subcaption}     % Подписи для подрисунков и подтаблиц
+\RequirePackage{tabularray}     % Современный пакет для создания таблиц
+\RequirePackage{booktabs}       % Профессиональное оформление таблиц (горизонтальные линии \toprule, \midrule, \bottomrule)
+\RequirePackage{enumitem}       % Для настройки списков
+\RequirePackage[
+    newfloat=true
+]{minted}                       % Для вставки листингов кода (inline, block, multipage)
+\RequirePackage{csquotes}       % Улучшенная работа с кавычками и цитатами
+\RequirePackage{xcolor}         % Расширенные возможности работы с цветом. Необходим для minted
+\RequirePackage{newfloat}       % Для создания новых плавающих окружений
+\RequirePackage[
+    russian
+]{cleveref}                     % Умные ссылки (вместо \ref). IMPORTANT: ОБЯЗАТЕЛЬНО должен быть загружен ПОСЛЕ hyperref
+
+
+% --- Пакеты обратной поддержки
+\RequirePackage{multirow}       % Улучшенное форматирование таблиц
+\RequirePackage{tabularx}       % Таблицы с автоматическим расчетом ширины колонок
+\RequirePackage{longtable}      % Таблицы, которые могут переноситься на несколько страниц
+\RequirePackage{array}          % Расширяет возможности работы с таблицами и выравниваниями
+\RequirePackage{makecell}       % Многострочные ячейки в таблицах
+
+
+\RequirePackage[
+    backend=biber,              % Компилятор
+    style=gost-numeric,         % Стиль ГОСТ (автоматически включает скобки [1])
+    sorting=none,               % Сортировка по порядку появления
+    language=auto,              % Автоопределение языка
+    autolang=other,             % Переключение языковых правил
+    bibencoding=utf8,           % Кодировка
+    defernumbers=true,          % Корректная нумерация при разрывах
+    movenames=false,            % Не перемещать авторов в конец (стандарт)
+    maxnames=5                  % Максимум имен до сокращения "и др."
+]{biblatex}                     % Для библиографии
