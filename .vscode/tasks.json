@@ -4,8 +4,10 @@
         {
             "label": "Compile Current LaTeX Report",
             "type": "shell",
-            "command": "${workspaceFolder}\\compile.bat",
+            "command": "python",
             "args": [
+                "${workspaceFolder}/lastex.py",
+                "build",
                 "${relativeFileDirname}"
             ],
             "problemMatcher": [],
@@ -23,23 +25,23 @@
             }
         },
         {
-            "label": "Run LaCHECK",
+            "label": "Clean Temporary Files",
             "type": "shell",
-            "command": "lacheck",
+            "command": "python",
             "args": [
-                "${file}"
+                "${workspaceFolder}/lastex.py",
+                "clean",
+                "${relativeFileDirname}"
             ],
-            "problemMatcher": {
-                "owner": "latex",
-                "fileLocation": ["relative", "${workspaceFolder}"],
-                "pattern": {
-                    "regexp": "^.*\"(.*)\", line (\\d+): (.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "message": 3
-                }
-            },
-            "group": "test"
+            "problemMatcher": [],
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            }
         }
     ]
 }
