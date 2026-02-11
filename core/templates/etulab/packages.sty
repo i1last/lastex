@@ -65,14 +65,28 @@
 \RequirePackage{makecell}       % Многострочные ячейки в таблицах
 
 
-\RequirePackage[
-    backend=biber,              % Компилятор
-    style=gost-numeric,         % Стиль ГОСТ (автоматически включает скобки [1])
-    sorting=none,               % Сортировка по порядку появления
-    language=auto,              % Автоопределение языка
-    autolang=other,             % Переключение языковых правил
-    bibencoding=utf8,           % Кодировка
-    defernumbers=true,          % Корректная нумерация при разрывах
-    movenames=false,            % Не перемещать авторов в конец (стандарт)
-    maxnames=5                  % Максимум имен до сокращения "и др."
-]{biblatex}                     % Для библиографии
+\IfFileExists{references.bib}{  % --- Если файл references.bib СУЩЕСТВУЕТ ---
+    \RequirePackage[
+        backend=biber,          % Компилятор
+        style=gost-numeric,     % Стиль ГОСТ (автоматически включает скобки [1])
+        sorting=none,           % Сортировка по порядку появления
+        language=auto,          % Автоопределение языка
+        autolang=other,         % Переключение языковых правил
+        bibencoding=utf8,       % Кодировка
+        defernumbers=true,      % Корректная нумерация при разрывах
+        movenames=false,        % Не перемещать авторов в конец (стандарт)
+        maxnames=5              % Максимум имен до сокращения "и др."
+    ]{biblatex}                 % Для библиографии
+    
+    % Автоматическое подключение ресурса
+    \addbibresource{references.bib}
+}{  % --- Если файл references.bib ОТСУТСТВУЕТ ---
+    % Создаем пустые команды-заглушки, чтобы LaTeX не выдавал ошибку,
+    % если пользователь оставил \printbibliography в тексте.
+    
+    \newcommand{\printbibliography}[1][]{}
+    \newcommand{\addbibresource}[1]{}
+    
+    % Сообщение в лог для информации
+    \typeout{Warning: 'references.bib' not found. Bibliography disabled.}
+}

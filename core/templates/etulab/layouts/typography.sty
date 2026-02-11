@@ -40,11 +40,13 @@
 
 \numberwithin{equation}{section}  % Нумерация формул по секциям
 
-% Убираем заголовок "Список литературы", который biblatex добавляет по умолчанию
-\defbibheading{bibliography}[\refname]{}
+\@ifpackageloaded{biblatex}{
+    % Убираем заголовок "Список литературы", который biblatex добавляет по умолчанию
+    \defbibheading{bibliography}[\refname]{}
 
-% Нумерация библиографии в квадратных скобках
-\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
+    % Нумерация библиографии в квадратных скобках
+    \DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
+}{}
 
 \hypersetup{
     unicode=true,
