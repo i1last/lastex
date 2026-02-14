@@ -114,6 +114,18 @@
         ],
         "description": "Insert a figure environment"
     },
+    "PGF": {
+        "prefix": "pgf",
+        "body": [
+            "\\begin{figure}[${1:H}]",
+            "    \\centering",
+            "    \\input{pgfs/${3:graph}}",
+            "    \\caption{${2:caption}}",
+            "    \\label{fig:${4:label}}",
+            "\\end{figure}"
+        ],
+        "description": "Insert a figure environment"
+    },
     "SubFigures": {
         "prefix": "subfig",
         "body": [

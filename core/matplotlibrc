@@ -1,0 +1,49 @@
+# Backend: pgf для генерации LaTeX-кода
+backend: pgf
+
+# Настройки PGF
+pgf.texsystem: lualatex
+pgf.preamble: \usepackage{fontspec}\setmainfont{Times New Roman}\usepackage[english,russian]{babel}\usepackage{amsmath}
+
+# Шрифты
+text.usetex: False
+font.family: serif
+font.serif: Times New Roman
+
+# Размер шрифта
+font.size: 14
+axes.labelsize: 14
+legend.fontsize: 12
+xtick.labelsize: 12
+ytick.labelsize: 12 
+
+# Автоматическая подгонка элементов (аналог plt.tight_layout())
+figure.autolayout: True
+
+# Принудительное сохранение только видимой области
+savefig.bbox: tight
+
+# Небольшой отступ от края (в дюймах), чтобы избежать обрезания по краям
+savefig.pad_inches: 0.05
+
+# Размеры фигуры (ширина ~16см для A4)
+figure.figsize: 6.0, 4.0
+
+# -- Толщины --
+lines.linewidth: 2
+axes.linewidth: 1.0
+
+# --- Сетка ---
+axes.grid: True
+grid.color: gray
+grid.alpha: 0.5
+grid.linestyle: -
+grid.linewidth: 0.5
+
+
+# --- Оси (Spines) ---
+# Скрываем верхнюю и правую границы рамки
+axes.spines.top: False
+axes.spines.right: False
+xtick.direction: out
+ytick.direction: out

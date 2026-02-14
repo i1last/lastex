@@ -8,7 +8,7 @@
             "args": [
                 "${workspaceFolder}/lastex.py",
                 "build",
-                "${relativeFileDirname}"
+                "${relativeFile}"
             ],
             "problemMatcher": [],
             "presentation": {

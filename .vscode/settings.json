@@ -13,4 +13,6 @@
     "latex-workshop.linting.lacheck.exec.path": "C:\\programs\\LACheck.exe",
 
     "latex-workshop.latex.outDir": "./out",
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python-envs.pythonProjects": [],
 }

@@ -36,7 +36,17 @@ RUN tlmgr update --self && tlmgr install \
     appendix \
     enotez \
     translations
-
+RUN tlmgr update --self && tlmgr install \
+    circuitikz \
+    pgf \
+    pgfplots
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-numpy \
+    python3-matplotlib \
+    python3-scipy \
+    && rm -rf /var/lib/apt/lists/*
+    
 RUN mktexlsr && tlmgr path add && fmtutil-sys --all
 
 # --- УСТАНОВКА ЛОКАЛЬНЫХ ШРИФТОВ ---
@@ -50,6 +60,9 @@ COPY core/fonts/JetBrainsMono-Regular.ttf /usr/local/share/fonts/truetype/jb-mon
 COPY core/fonts/JetBrainsMono-Bold.ttf /usr/local/share/fonts/truetype/jb-mono/
 COPY core/fonts/JetBrainsMono-Italic.ttf /usr/local/share/fonts/truetype/jb-mono/
 COPY core/fonts/JetBrainsMono-BoldItalic.ttf /usr/local/share/fonts/truetype/jb-mono/
+
+# --- КОПИРОВАНИЕ КОНФИГА MATPLOTLIB ---
+COPY core/matplotlibrc /etc/matplotlibrc
 
 # --- ПРЕДВАРИТЕЛЬНАЯ ГЕНЕРАЦИЯ БАЗ ДАННЫХ ---
 RUN fc-cache -f -v
