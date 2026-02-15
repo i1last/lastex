@@ -1,0 +1,65 @@
+\section*{Цель работы}
+Изучение связи между видом свободного процесса в электрической цепи и расположением ее собственных частот (корней характеристического уравнения) на комплексной плоскости; экспериментальное определение собственных частот и добротности RLC-контура по осциллограммам
+
+\section*{Исследуемые цепи}
+\begin{figure}[H]
+    \centering
+    
+    % --- Схема а ---
+    \begin{subfigure}[b]{0.3\linewidth}
+        \centering
+        \begin{circuitikz}%[american]
+            \node[ground] at (7.5, 7){};
+            \draw (6, 7) to[american current source, l={$i_0(t)$}] (6, 10);
+            \draw (7.5, 7) to[capacitor, l={$C$}] (7.5, 10);
+            \draw (6, 10) -- (9, 10);
+            \draw (9, 7) -- (6, 7);
+            \draw (9, 10) to[european resistor, l_={$R$}] (9, 7);
+        \end{circuitikz}
+        \caption{} % Автоматически поставит (а)
+        \label{fig:circuit_a}
+    \end{subfigure}
+    \hfill
+    % --- Схема б ---
+    \begin{subfigure}[b]{0.3\linewidth}
+        \centering
+        \begin{circuitikz}
+            \node[ground] at (7.5, 7){};
+            \draw (6, 7) to[american current source, l={$i_0(t)$}] (6, 11);
+            \draw (7.5, 7) to[capacitor, l={$C$}] (7.5, 11);
+            \draw (6, 11) -- (9, 11);
+            \draw (9, 7) -- (6, 7);
+            \draw (9, 11) to[american inductor, l_={$L$}] (9, 9);
+            \draw (9, 9) to[variable european resistor, invert, l_={$R_1$}] (9, 7);
+        \end{circuitikz}
+        \caption{} % Автоматически поставит (б)
+        \label{fig:circuit_b}
+    \end{subfigure}
+    \hfill
+    % --- Схема в ---
+    \begin{subfigure}[b]{0.35\linewidth}
+        \centering
+        \begin{tikzpicture}
+            % Paths, nodes and wires:
+            \node[ground] at (7.25, 7){};
+            \draw (6, 7) to[american current source] (6, 10);
+            \draw (6, 10) -- (8.5, 10);
+            \draw (10.5, 7) -- (6, 7);
+            \draw (8.5, 10) to[european resistor, l={$R$}] (8.5, 7);
+            \draw (8.5, 10) to[european resistor, l_={$R$}] (10.5, 10);
+            \draw (8.5, 11) to[capacitor] (10.5, 11);
+            \draw (10.5, 10) to[american inductor, l_={$L$}] (10.5, 8.5);
+            \draw (10.5, 8.5) to[variable european resistor, invert, l_={$R_1$}] (10.5, 7);
+            \draw (8.5, 11) -| (8.5, 10);
+            \draw (10.5, 11) -| (10.5, 10);
+            \draw (7.25, 7) to[capacitor, l_={$C$}] (7.25, 10);
+            \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm](N1) at (6.5, 9.25){} node[anchor=center] at (N1.text){$i_0(t)$};
+            \node[shape=rectangle, minimum width=0.465cm, minimum height=0.465cm](N2) at (10, 10.75){} node[anchor=center] at (N2.text){$C$};
+        \end{tikzpicture}
+        \caption{} % Автоматически поставит (в)
+        \label{fig:circuit_c}
+    \end{subfigure}
+
+    \caption{Схемы цепей} % Основная подпись: Рис. 1: Схемы цепей
+    \label{fig:all_circuits}
+\end{figure}
