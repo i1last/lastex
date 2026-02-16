@@ -1,0 +1,93 @@
+\section*{Цель}
+Познакомиться с программой Quartus II и освоить методику построения схемы, заданной логическим выражением.
+
+\section*{Логическое выражение}
+Дано логическое выражение:
+
+\begin{equation}
+    f = x_3 \land \overline{x_2 \lor x_1}
+    \label{формула:исходное-логическое-выражение}
+\end{equation}
+
+\section*{Таблица истинности заданного логического выражения}
+\begin{table}[H]
+    \centering
+    \caption{Таблица истинности для \cref{формула:исходное-логическое-выражение}}
+    \label{таблица:таблица-истинности}
+    \begin{tabular}{ccc|c}
+            $x_1$ & $x_2$ & $x_3$ & $f$ \\
+        \hline
+            0 & 0 & 0 & 0 \\
+            0 & 0 & 1 & 1 \\
+            0 & 1 & 0 & 0 \\
+            0 & 1 & 1 & 0 \\
+            1 & 0 & 0 & 0 \\
+            1 & 0 & 1 & 0 \\
+            1 & 1 & 0 & 0 \\
+            1 & 1 & 1 & 0 \\ 
+    \end{tabular}
+\end{table}
+
+\section*{Работа в программе Quartus II}
+Заданная логическая цепь была собрана (\cref{fig:core.png}) и протестирована на наличие ошибок. Quartus II не выявил критических ошибок. Результат анализа схемы представлен на \cref{fig:rtl-viewer.png}.
+
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[width=\linewidth]{figs/core.png}
+    \caption{Логическая цепь}
+    \label{fig:core.png}
+\end{figure}
+
+\begin{figure}[hbt]
+    \centering
+    \includegraphics[width=\linewidth]{figs/rtl-viewer.png}
+    \caption{RTL Viewer}
+    \label{fig:rtl-viewer.png}
+\end{figure}
+
+Была построена временная диаграмма при следующих параметрах:
+\begin{itemize}
+    \item $\text{Grid size} = 20 \text{ns}$
+    \item $\text{End time} = 160 \text{ns}$
+\end{itemize}
+
+Результат симуляции без задержек представлен на \cref{изображение:вд-без-задержки}, с задержкой --- на \cref{изображение:вд-с-задержкой}
+
+\begin{figure}[hbt]
+    \centering
+    
+    \begin{subfigure}[a]{\linewidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/waveform.png}
+        \caption{Без задержки}
+        \label{изображение:вд-без-задержки}
+    \end{subfigure}
+    \hfill
+    \vspace{0.5cm}
+    \hfill
+    \begin{subfigure}[a]{\linewidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/waveform-delay.png}
+        \caption{С задержкой}
+        \label{изображение:вд-с-задержкой}
+    \end{subfigure}
+
+    \caption{Временные диаграммы}
+    \label{изображение:временные-диаграммы}
+\end{figure}
+
+Сравнительный анализ временной диаграммы без задержки (\cref{изображение:вд-без-задержки}) и таблицы истинности (\cref{таблица:таблица-истинности}) показывает, что таблица истинности соответствует составленной схеме.
+
+Действительно, если упростить \cref{формула:исходное-логическое-выражение} по закону де Моргана
+\begin{equation}
+    x_3 \land \overline{x_2 \lor x_1} = 
+    x_3 \land \overline{x_2} \land \overline{x_1} = 
+    \overline{x_1} \land \overline{x_2} \land x_3,
+    \label{формула:упрощенное-логическое-выражение}
+\end{equation}
+то можно заметить, что единственный возможный случай, при котором $f$ примет значение Истина, --- это комбинация $(x_1,x_2,x_3)=(0,0,1)$.
+
+\section*{Вывод}
+В ходе данной лабораторной работы были освоены основы работы в программе Quartus II для моделирования логических схем.
+
+Корректность составленной схемы в Quartus II (\cref{fig:core.png,fig:rtl-viewer.png}) и результаты таблицы истинности (\cref{таблица:таблица-истинности}) были проверены путем упрощения исходного логического выражения (\cref{формула:упрощенное-логическое-выражение}).
