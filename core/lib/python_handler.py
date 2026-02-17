@@ -6,37 +6,49 @@ from core.lib.config import DEFAULT_FILENAME, CONTAINER_NAME
 from core.lib.utils import sync_matplotlib_config
 
 def run_single_python(script_path):
-    """Запускает один скрипт и перемещает результат в /pgfs/."""
+    """Запускает один скрипт и перемещает ВСЕ созданные pgf в /pgfs/."""
     ensure_container_running()
     sync_matplotlib_config()
     
-    # 1. Поиск корня проекта (где лежит _report.tex)
     script_abs = os.path.abspath(script_path)
     project_dir = os.path.dirname(script_abs)
+    # Поиск корня проекта
     while project_dir != os.path.dirname(project_dir):
         if os.path.exists(os.path.join(project_dir, DEFAULT_FILENAME)):
             break
         project_dir = os.path.dirname(project_dir)
     
-    # 2. Подготовка путей для Docker
     docker_project_path = normalize_docker_path(project_dir)
     rel_script_from_project = os.path.relpath(script_abs, project_dir).replace('\\', '/')
-    script_base = os.path.splitext(os.path.basename(script_abs))[0]
     script_dir_rel = os.path.dirname(rel_script_from_project)
+    
+    # Абсолютный путь к папке pgfs внутри контейнера
+    abs_pgfs_path = f"/workdir/{docker_project_path}/pgfs"
 
     print(f"🐍 Запуск: {rel_script_from_project} (Корень: {docker_project_path})")
     
-    # 3. Команда: создать pgfs, выполнить скрипт в его папке, переместить результат
+    # Команда обновлена:
+    # 1. Переходим в папку скрипта.
+    # 2. Запускаем скрипт.
+    # 3. Проверяем наличие *.pgf.
+    # 4. Если есть -> mkdir pgfs -> mv *.pgf
     cmd = (
-        f"cd /workdir/{docker_project_path} && mkdir -p pgfs && "
-        f"cd {script_dir_rel} && python3 {os.path.basename(script_abs)} && "
-        f"if [ -f {script_base}.pgf ]; then mv {script_base}.pgf ../pgfs/{script_base}.pgf; fi"
+        f"cd /workdir/{docker_project_path}/{script_dir_rel} && "
+        f"python3 {os.path.basename(script_abs)} && "
+        f"count=`ls *.pgf 2>/dev/null | wc -l`; "
+        f"if [ $count -gt 0 ]; then "
+        f"  mkdir -p {abs_pgfs_path}; "
+        f"  mv *.pgf {abs_pgfs_path}/; "
+        f"fi"
     )
     
     result = subprocess.run(["docker", "exec", CONTAINER_NAME, "bash", "-c", cmd], capture_output=True, text=True)
     
     if result.returncode == 0:
-        print(f"✅ График pgfs/{script_base}.pgf обновлен.")
+        print(f"✅ Скрипт выполнен.")
+        if result.stderr:
+             # Выводим stderr (предупреждения matplotlib и т.д.)
+             print(f"📄 Log:\n{result.stderr}")
     else:
-        print(f"❌ Ошибка:\n{result.stderr}"); sys.exit(1)
-    
+        print(f"❌ Ошибка выполнения скрипта:\n{result.stderr}")
+        sys.exit(1)

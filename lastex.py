@@ -19,7 +19,6 @@ from core.lib.utils import get_jobname
 from core.lib.utils import sync_matplotlib_config
 
 
-
 def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
     start_time = time.time()
     
@@ -34,7 +33,7 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
     sync_matplotlib_config()
     copy_templates_to_tmp()
 
-    # --- 2. Настройка Latexmk (.latexmkrc) ---
+    # --- 2. Настройка Latexmk ---
     root_dir = os.path.dirname(os.path.abspath(__file__))
     global_rc_path = os.path.join(root_dir, 'core', '.latexmkrc')
     
@@ -45,7 +44,6 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
     else:
         print(f"⚠️  Глобальный конфиг {global_rc_path} не найден.")
 
-    # Проверка библиографии
     bib_path = os.path.join(project_path, BIB_FILE)
     if not os.path.exists(bib_path):
         rc_content += "\n$bibtex_use = 0;\n"
@@ -53,7 +51,6 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
     else:
         print("📚 Библиография найдена.")
 
-    # Инъекция конфига
     try:
         subprocess.run(
             ["docker", "exec", "-i", CONTAINER_NAME, "sh", "-c", "cat > /root/.latexmkrc"],
@@ -65,27 +62,50 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
         sys.exit(1)
 
     # --- 3. Генерация графиков (Python) ---
-    # Запускаем ТОЛЬКО если это не очистка
     clean_project_path = normalize_docker_path(project_path)
 
     if target != "clean":
         print(f"📊 Обновление графиков в: {project_path}")
-        clean_project_path = normalize_docker_path(project_path)
-
-        # Скрипт ищет все .py, заходит в их папки, запускает и переносит результат в /pgfs
+        
+        # Абсолютный путь к папке pgfs внутри контейнера
+        abs_pgfs_path = f"/workdir/{clean_project_path}/pgfs"
+        
+        # Сложная команда bash для xargs.
+        # 1. Находим все .py файлы.
+        # 2. xargs запускает bash для каждого файла параллельно.
+        # 3. Внутри bash: переход в папку, запуск, проверка наличия .pgf, перемещение.
+        # Используем `ls *.pgf >/dev/null 2>&1` для проверки существования файлов без вывода ошибок.
+        
         py_cmd = (
-            f"cd /workdir/{clean_project_path} && mkdir -p pgfs && "
-            "find . -maxdepth 2 -name '*.py' | while read f; do "
-            "  dir=$(dirname \"$f\"); base=$(basename \"$f\" .py); "
-            "  echo \"   Running $f...\"; "
-            "  (cd \"$dir\" && python3 \"$base.py\"); "
-            "  if [ -f \"$dir/$base.pgf\" ]; then mv \"$dir/$base.pgf\" \"pgfs/$base.pgf\"; fi; "
-            "done"
+            f"cd /workdir/{clean_project_path} && "
+            f"find . -maxdepth 2 -name '*.py' -print0 | "
+            f"xargs -0 -n1 -P$(nproc) -I {{}} bash -c '"
+            f"  script=\"{{}}\"; "
+            f"  dir=$(dirname \"$script\"); "
+            f"  base=$(basename \"$script\" .py); "
+            f"  echo \"   Running $script...\"; "
+            f"  (cd \"$dir\" && python3 \"$base.py\"); "
+            f"  ret=$?; "
+            f"  if [ $ret -ne 0 ]; then echo \"❌ Error in $script\"; exit $ret; fi; "
+            f"  count=`ls \"$dir\"/*.pgf 2>/dev/null | wc -l`; "
+            f"  if [ $count -gt 0 ]; then "
+            f"      mkdir -p \"{abs_pgfs_path}\"; "
+            f"      mv \"$dir\"/*.pgf \"{abs_pgfs_path}/\"; "
+            f"  fi"
+            f"'"
         )
         
+        # capture_output=False, чтобы видеть вывод параллельных процессов в реальном времени (или True, если нужен чистый лог)
+        # Здесь лучше capture_output=True, чтобы не смешивать потоки вывода, а потом вывести stderr если есть ошибки.
         py_result = subprocess.run(["docker", "exec", CONTAINER_NAME, "bash", "-c", py_cmd], capture_output=True, text=True)
+        
         if py_result.returncode != 0:
-            print(f"❌ Ошибка графиков:\n{py_result.stderr}"); sys.exit(1)
+            print(f"❌ Ошибка при генерации графиков:\n{py_result.stderr}")
+            # Не выходим, если ошибка не критична? Нет, лучше выйти, если графики сломались.
+            sys.exit(1)
+        elif py_result.stderr and "Traceback" in py_result.stderr:
+             # Иногда python пишет в stderr даже предупреждения, но если там Traceback - это проблема.
+             print(f"⚠️  Warnings/Errors:\n{py_result.stderr}")
 
     # --- 4. Сборка LaTeX ---
     print(f"📁 Проект:   {project_path}")
@@ -96,15 +116,21 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
 
     if target == "clean":
         out_dir = os.path.join(project_path, "out")
+        pgfs_dir = os.path.join(project_path, "pgfs")
+        
         if os.path.exists(out_dir):
             shutil.rmtree(out_dir)
+        
+        # Удаляем папку pgfs при очистке
+        if os.path.exists(pgfs_dir):
+             shutil.rmtree(pgfs_dir)
+             
         latexmk_args = "-C"
-        print("🧹 Очистка временных файлов...")
+        print("🧹 Очистка временных файлов и графиков...")
     else:
         latexmk_args = f"-pdflua -jobname='{jobname}'"
         print(f"🏷️  Имя выходного файла: {jobname}.pdf")
 
-    # Команда сборки
     bash_cmd = (
         f"export PATH={TEXLIVE_BIN}:$PATH && "
         f"export TEXINPUTS={TEXINPUTS} && "
@@ -126,8 +152,6 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
         sys.exit(result.returncode)
 
 
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="LasTeX CLI")
     parser.add_argument("command", choices=["build", "clean", "stop", "status"], help="Команда")
@@ -135,7 +159,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # --- Обработка команд без пути ---
     if args.command == "stop":
         stop_container()
         sys.exit(0)
@@ -143,7 +166,6 @@ if __name__ == "__main__":
         print(get_container_status())
         sys.exit(0)
 
-    # --- Проверка пути ---
     if not args.path:
         print("❌ Ошибка: Не указан путь к файлу или проекту.")
         sys.exit(1)
@@ -153,7 +175,6 @@ if __name__ == "__main__":
         print(f"❌ Путь не найден: {args.path}")
         sys.exit(1)
 
-    # --- Маршрутизация по типу файла ---
     if os.path.isfile(abs_path):
         filename = os.path.basename(abs_path)
         ext = os.path.splitext(filename)[1].lower()
@@ -161,7 +182,6 @@ if __name__ == "__main__":
         if ext == '.py' and args.command == "build":
             run_single_python(abs_path)
         elif ext == '.tex':
-            # Находим корень лабы для этого файла
             project_dir = os.path.dirname(abs_path)
             while project_dir != os.path.dirname(project_dir):
                 if os.path.exists(os.path.join(project_dir, DEFAULT_FILENAME)):
@@ -172,5 +192,4 @@ if __name__ == "__main__":
             sys.exit(1)
             
     elif os.path.isdir(abs_path):
-        # РЕЖИМ 3: Сборка папки (ищем DEFAULT_FILENAME, обычно _report.tex)
         build_project(abs_path, tex_file=DEFAULT_FILENAME, target=args.command)
