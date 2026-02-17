@@ -40,10 +40,10 @@
 
 % --- Принудительный отступ для окружения table ---
 % Добавляем 18pt (примерно одна пустая строка) перед каждой таблицей
-\BeforeBeginEnvironment{table}{\addvspace{\baselineskip}}
+\BeforeBeginEnvironment{table}{\addvspace{0.5\baselineskip}}
 
 % Добавляем отступ после таблицы (по желанию)
-\AfterEndEnvironment{table}{\addvspace{\baselineskip}}
+\AfterEndEnvironment{table}{\addvspace{0.5\baselineskip}}
 
 % === ВНИМАНИЕ! Последующие настройки таблиц нужны для сохранения
 % === обратной совместимости. В реальность используется tabularray
