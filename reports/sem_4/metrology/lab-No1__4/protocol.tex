@@ -1,0 +1,49 @@
+\begin{table}[hbt]
+    \centering
+    \caption{ Погрешность коэффициента $k_o$}
+    \begin{tabular}{| l | c | c |}
+        \hline
+        $k_o$, В/дел & \hspace{1.5cm} & \hspace{1.5cm} \\ \hline
+        $L_{2A}$     & & \\ \hline
+        $U$, В       & & \\ \hline
+        $\delta_{k_o}$ & & \\ \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[hbt]
+    \centering
+    \caption{АЧХ в области ВЧ}
+    \label{table:vc}
+    \begin{tblr}{
+        colspec = {X[2,l] *{11}{X[c]}},
+        hlines,
+        vlines,
+    }
+        \SetCell[c=12]{c} {Область верхних частот} \\
+        \hline
+        $f$, МГц & 0.001 & 2 & 4 & 6 & 8 & 10 & 12 & 14 & 16 & 18 & 20 \\
+        $L_{2A}(f)$, дел. & & & & & & & & & & & \\ 
+        $K(f)$ & & & & & & & & & & & \\ \hline
+        \SetCell[c=6]{l} $k_o = \text{\hspace{1cm} В/дел}$ & & & & & & \SetCell[c=6]{l} $f_{\text{в}} = \text{\hspace{1cm} МГц}$ & & & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[hbt]
+    \centering
+    \caption{АЧХ в области НЧ}
+    \label{table:nc}
+    \begin{tblr}{
+        colspec = {X[2.5,l] *{10}{X[c]}},
+        hlines,
+        vlines,
+    }
+        \SetCell[c=11]{c} {Область нижних частот} \\ \hline
+        $f$, Гц & 1000 & 800 & 100 & 50 & 40 & 10 & 8 & 6 & 4 & 2 \\
+        $L_{2A}(f)$, закр. вх., дел. & & & & & & & & & & \\
+        $K(f)$, закр. вх. & & & & & & & & & & \\ \hline
+        \SetCell[c=6]{l} $k_o = \text{\hspace{1cm} В/дел}$ & & & & & & \SetCell[c=5]{l} Для закрытого $f_{\text{н}} = \text{\hspace{0.5cm} МГц}$ & & & & \\ \hline
+        $L_{2A}(f)$, откр. вх., дел. & & & & & & & & & & \\
+        $K(f)$, откр. вх. & & & & & & & & & & \\ \hline
+        \SetCell[c=6]{l} $k_o = \text{\hspace{1cm} В/дел}$ & & & & & & \SetCell[c=5]{l} Для открытого $f_{\text{н}} = \text{\hspace{0.5cm} МГц}$ & & & & \\
+    \end{tblr}
+\end{table}

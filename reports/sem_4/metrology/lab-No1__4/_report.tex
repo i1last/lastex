@@ -1,0 +1,98 @@
+% === ПОДКЛЮЧЕНИЕ СТИЛЯ ===
+\documentclass{etulab}
+
+% === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
+\Department{ИИСТ}
+\WorkType{лабораторной работе №4}
+\Discipline{метрология}
+\WorkTitle{ЭЛЕКТРОННО-ЛУЧЕВОЙ ОСЦИЛЛОГРАФ}
+\Group{4494}
+\Variant{---}
+\StudentName{Рахметов А. Р.}
+\TeacherName{Чикин А. К.}
+\Year{2026}
+
+% Включение библиографии
+% bibtex автоматически будет включен в процесс сборки документа
+% при обнаружении файла references.bib в директории с основным _report.tex файлом
+
+% === КОНФИГУРАЦИЯ ДОКУМЕНТА
+% --- Если нужна нумерация формул НЕ по разделам.
+% --- Было: 0.1, 0.2, ..., 1.1, 1.2, ...
+% --- Будет: 1, 2, 3, ...
+\renewcommand{\theequation}{\arabic{equation}}
+
+% === СБОРКА ДОКУМЕНТА ===
+\begin{document}
+
+ 
+
+% --- ТИТУЛЬНЫЙ ЛИСТ ---
+\maketitle
+
+
+
+% --- ОГЛАВЛЕНИЕ ---
+% \tableofcontents
+% \thispagestyle{empty}
+% \newpage
+
+
+
+% --- ВВЕДЕНИЕ ---
+% \newpage
+% \addcontentsline{toc}{section}{Введение}
+% \phantomsection
+% \centeredsection{\uppercase{Введение}}
+% \input{introduction.tex}
+
+
+
+% --- ПРОТОКОЛ ---
+\newpage
+\thispagestyle{empty}
+\centeredsection{ПРОТОКОЛ НАБЛЮДЕНИЙ}
+
+\input{protocol.tex}
+
+\vfill
+\noindent
+\makeatletter
+    \@StudentName, гр. \@Group ~~\hrulefill~~ «\rule{1cm}{0.4pt}» \rule{3cm}{0.4pt} 20\rule{0.75cm}{0.4pt} г.
+\makeatother
+\newpage
+% --- ПРОТОКОЛ ---
+
+
+
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+\input{main.tex}
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+
+
+
+% --- ЗАКЛЮЧЕНИЕ ---
+% \newpage
+% \addcontentsline{toc}{section}{Заключение}
+% \phantomsection
+% \centeredsection{\uppercase{Заключение}}
+% \input{conclusion.tex}
+
+
+
+% --- СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ ---
+% \newpage
+% \addcontentsline{toc}{section}{Список использованных источников}
+% \phantomsection
+% \centeredsection{\uppercase{Список использованных источников}}
+% \printbibliography
+
+
+% --- ПРИЛОЖЕНИЯ ---
+% \begin{appendices}
+%     \input{appendix.tex}
+% \end{appendices}
+
+
+
+\end{document}
