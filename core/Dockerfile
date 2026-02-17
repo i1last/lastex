@@ -39,7 +39,8 @@ RUN tlmgr update --self && tlmgr install \
 RUN tlmgr update --self && tlmgr install \
     circuitikz \
     pgf \
-    pgfplots
+    pgfplots \
+    wrapfig
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-numpy \
