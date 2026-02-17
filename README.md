@@ -150,7 +150,7 @@ python lastex.py build reports/sem_4/physics/lab_01
 
 ### 3. Таблицы
 Используй окружение `table` с размещением `[hbt]`.
-*   **Пакет:** Используй `tabularx`  с шириной `\linewidth` (или `tabular`, если таблица не должна занимать всю ширину страницы).
+*   **Пакет:** Используй `tblr`  с шириной `\linewidth`.
 *   **Кастомные колонки:** В проекте определены специальные типы колонок:
     *   `C` — центрированная, растягивающаяся (X).
     *   `L` — по левому краю, растягивающаяся (X).
@@ -163,16 +163,16 @@ python lastex.py build reports/sem_4/physics/lab_01
     ```latex
     \begin{table}[H]
         \centering
-        \caption{Результаты измерений}
-        \label{tab:measurements}
-        \begin{tabularx}{\linewidth}{ L C C }
-            \toprule
-            Параметр & Значение 1 & Значение 2 \\
-            \midrule
-            Напряжение, В & 10.5 & 11.0 \\
-            Ток, А       & 0.5  & 0.55 \\
-            \bottomrule
-        \end{tabularx}
+        \caption{caption}
+        \label{table:label}
+
+        \begin{tblr}{
+            colspec = {| Q[c, m] | Q[c, m] | X[j, h] | },
+            hlines = 1, vlines = 1,
+            row{1} = {font=\bfseries},
+        }
+            rows
+        \end{tblr}
     \end{table}
     ```
 
