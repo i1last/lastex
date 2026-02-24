@@ -1,0 +1,98 @@
+% === ПОДКЛЮЧЕНИЕ СТИЛЯ ===
+\documentclass{etulab}
+
+% === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
+\Department{ТОЭ}
+\WorkType{курсовой работе}
+\Discipline{теоретические основы электротехники}
+\WorkTitle{Исследование искажений сигналов на выходе фильтра нижних частот}
+\Group{4494}
+\Variant{10}
+\StudentName{Рахметов А. Р.}
+\TeacherName{Соклакова М. В.}
+\Year{2026}
+
+% Включение библиографии
+% bibtex автоматически будет включен в процесс сборки документа
+% при обнаружении файла references.bib в директории с основным _report.tex файлом
+% \addbibresource{references.bib}  % Имя файла references.bib не следует менять! Используется оптимизация скрипта сборки документа
+
+% === СБОРКА ДОКУМЕНТА ===
+\begin{document}
+
+ 
+
+% --- ТИТУЛЬНЫЙ ЛИСТ ---
+\maketitle
+\newpage
+
+
+% --- ТЕХНИЧЕСКОЕ ЗАДАНИЕ
+\input{terms.tex}
+\newpage
+
+
+% --- ОГЛАВЛЕНИЕ ---
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+
+
+% --- ВВЕДЕНИЕ ---
+\newpage
+\addcontentsline{toc}{section}{Введение}
+\phantomsection
+\centeredsection{\uppercase{Введение}}
+\input{introduction.tex}
+
+
+
+% --- ПРОТОКОЛ ---
+% \newpage
+% % \thispagestyle{empty}
+% \centeredsection{ПРОТОКОЛ НАБЛЮДЕНИЙ}
+% \input{protocol.tex}
+% \newpage 
+% --- ПРОТОКОЛ ---
+
+
+
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+\input{main.tex}
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+
+
+
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ
+% \clearpage
+% \centeredsection{\MakeUppercase{Обработка результатов измерений}}
+% \input{processing.tex}
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ
+
+
+% --- ЗАКЛЮЧЕНИЕ ---
+\newpage
+\addcontentsline{toc}{section}{Заключение}
+\phantomsection
+\centeredsection{\uppercase{Заключение}}
+\input{conclusion.tex}
+
+
+
+% --- СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ ---
+\newpage
+\addcontentsline{toc}{section}{Список использованных источников}
+\phantomsection
+\centeredsection{\uppercase{Список использованных источников}}
+\printbibliography
+
+
+% --- ПРИЛОЖЕНИЯ ---
+% \begin{appendices}
+%     \input{appendix.tex}
+% \end{appendices}
+
+
+
+\end{document}
