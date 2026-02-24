@@ -1,0 +1,51 @@
+
+\section*{Исходные данные}
+\begin{table}[H]
+    \centering
+    \caption{Параметры установки и условия эксперимента}
+    \label{tab:initial_data}
+    \begin{tblr}{
+        colspec = { X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        Образцовое сопротивление $R_0$, Ом & Относит. погрешность $\delta_{R_0}$, \% & Относит. погрешность вольтметра $\delta_V$, \% & Число измерений $n$ & Доверительная вероятность $P$ \\
+        & & & & \\
+    \end{tblr}
+\end{table}
+
+\section*{Таблицы снятия данных}
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты однократных измерений}
+    \label{tab:single_measurements}
+    \begin{tblr}{
+        colspec = { X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        Напряжение на делителе $U$ (поз. 1), В & Напряжение на $R_0$ $U_0$ (поз. 2), В \\
+        & \\
+    \end{tblr}
+\end{table}
+
+\begin{longtblr}[
+    caption = {Результаты многократных измерений со случайной погрешностью},
+    label = {tab:multiple_measurements},
+]{
+    width = 0.8\linewidth,
+    colspec = { Q[c,m, 3em] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1
+}
+    Номер $i$ & Напряжение $U_{1i}$ (поз. 1), В & Напряжение $U_{2i}$ (поз. 2), В \\
+    $1$ & & \\
+    $2$ & & \\
+    $3$ & & \\
+    $4$ & & \\
+    $5$ & & \\
+    $6$ & & \\
+    $7$ & & \\
+    $8$ & & \\
+    $9$ & & \\
+    $10$ & & \\
+\end{longtblr}
