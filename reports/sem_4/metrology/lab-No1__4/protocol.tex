@@ -1,49 +1,56 @@
-\begin{table}[hbt]
+\begin{table}[H]
     \centering
-    \caption{ Погрешность коэффициента $k_o$}
-    \begin{tabular}{| l | c | c |}
-        \hline
-        $k_o$, В/дел & \hspace{1.5cm} & \hspace{1.5cm} \\ \hline
-        $L_{2A}$     & & \\ \hline
-        $U$, В       & & \\ \hline
-        $\delta_{k_o}$ & & \\ \hline
-    \end{tabular}
+    \caption{Начальные данные}
+    \label{tab:general-src}
+    \begin{tblr}{
+            colspec = { | c | c || l | c || l | c | c | c | },
+            vlines, hlines,
+            rows = {m},
+        }
+        \SetCell[c=2]{c} {$\delta_\text{н.а.}$; $\delta_\text{н.р.}$} &               & $k_o$, В/дел         & {1}   & \SetCell[c=4]{c} {$k_\text{р} = {0.5} \text{ мс}/\text{дел}$; $T = {2} \text{ кл} \cdot {5} \text{ мс}}$ &         &         &         \\
+        $L_{Y1}={3.0}$                                                & $L_{Y}={2.8}$ & $L_{2A}$             & {6}   & $n$                                                                                                     & 1       & 2       & 3       \\
+        $L_{X1}={1.1}$                                                & $L_{X}={1.0}$ & $U_{1A}$, В          & {2.8} & $L_{nT}$, кл                                                                                            & {6.8}   & {8.0}   & {8.6}   \\
+        \SetCell[c=2]{c} ---                                          &               & \SetCell[c=2]{c} --- &       & $f_n$, Гц                                                                                               & {300}   & {500}   & {700}   \\
+        \SetCell[c=2]{c} ---                                          &               & \SetCell[c=2]{c} --- &       & $k_{pn}$, мс                                                                                            & {0.493} & {0.500} & {0.498} \\
+    \end{tblr}
 \end{table}
 
-\begin{table}[hbt]
+\begin{table}[H]
     \centering
     \caption{АЧХ в области ВЧ}
     \label{table:vc}
     \begin{tblr}{
-        colspec = {X[2,l] *{11}{X[c]}},
-        hlines,
-        vlines,
-    }
-        \SetCell[c=12]{c} {Область верхних частот} \\
+            colspec = {X[2,l] *{11}{X[c]}},
+            hlines,
+            vlines,
+            rows = {m},
+        }
+        \SetCell[c=12]{c} {Область верхних частот}                                                                                                               \\
         \hline
-        $f$, МГц & 0.001 & 2 & 4 & 6 & 8 & 10 & 12 & 14 & 16 & 18 & 20 \\
-        $L_{2A}(f)$, дел. & & & & & & & & & & & \\ 
-        $K(f)$ & & & & & & & & & & & \\ \hline
-        \SetCell[c=6]{l} $k_o = \text{\hspace{1cm} В/дел}$ & & & & & & \SetCell[c=6]{l} $f_{\text{в}} = \text{\hspace{1cm} МГц}$ & & & & & \\
+        $f$, МГц                                & 0.001 & 2   & 4   & 6   & 8   & 10                                               & 12  & 14  & 16  & 18  & 20  \\
+        $L_{2A}(f)$, дел.                       & 6     & 5.8 & 5.6 & 5.2 & 5.0 & 4.8                                              & 4.4 & 3.8 & 3.2 & 2.8 & 2.6 \\
+        % $K(f)$                                             &       &   &   &   &   &                                                           &    &    &    &    &    \\ \hline
+        \SetCell[c=12]{l} $k_o = 1\text{ В/дел}$ &       &     &     &     &     &  &     &     &     &     &     \\
     \end{tblr}
 \end{table}
 
-\begin{table}[hbt]
+\begin{table}[H]
     \centering
     \caption{АЧХ в области НЧ}
     \label{table:nc}
     \begin{tblr}{
-        colspec = {X[2.5,l] *{10}{X[c]}},
-        hlines,
-        vlines,
-    }
-        \SetCell[c=11]{c} {Область нижних частот} \\ \hline
-        $f$, Гц & 1000 & 800 & 100 & 50 & 40 & 10 & 8 & 6 & 4 & 2 \\
-        $L_{2A}(f)$, закр. вх., дел. & & & & & & & & & & \\
-        $K(f)$, закр. вх. & & & & & & & & & & \\ \hline
-        \SetCell[c=6]{l} $k_o = \text{\hspace{1cm} В/дел}$ & & & & & & \SetCell[c=5]{l} Для закрытого $f_{\text{н}} = \text{\hspace{0.5cm} МГц}$ & & & & \\ \hline
-        $L_{2A}(f)$, откр. вх., дел. & & & & & & & & & & \\
-        $K(f)$, откр. вх. & & & & & & & & & & \\ \hline
-        \SetCell[c=6]{l} $k_o = \text{\hspace{1cm} В/дел}$ & & & & & & \SetCell[c=5]{l} Для открытого $f_{\text{н}} = \text{\hspace{0.5cm} МГц}$ & & & & \\
+            colspec = {X[2.5,l] *{10}{X[c]}},
+            hlines,
+            vlines,
+            rows = {m},
+        }
+        \SetCell[c=11]{c} {Область нижних частот}                                                            \\ \hline
+        $f$, Гц                                  & 1000 & 800 & 100 & 50 & 40 & 10   & 8   & 6   & 4   & 2   \\
+        $L_{2A}(f)$, закр. вх., дел. (AC)        & 6    & 6   & 6   & 6  & 6  & 5.75 & 5.6 & 5.2 & 4.8 & 3.8 \\
+        % $K(f)$, закр. вх.                                  &      &     &     &    &    &                                                                           &   &   &   &   \\ \hline
+        \SetCell[c=11]{l} $k_o = 1\text{ В/дел}$ &      &     &     &    &    &      &     &     &     &     \\ \hline
+        $L_{2A}(f)$, откр. вх., дел. (DC)        & 6    & 6   & 6   & 6  & 6  & 6    & 6   & 6   & 6   & 6   \\
+        % $K(f)$, откр. вх.                                  &      &     &     &    &    &                                                                           &   &   &   &   \\ \hline
+        \SetCell[c=11]{l} $k_o = 1\text{ В/дел}$ &      &     &     &    &    &      &     &     &     &     \\
     \end{tblr}
 \end{table}
