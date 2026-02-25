@@ -1,0 +1,108 @@
+% === ПОДКЛЮЧЕНИЕ СТИЛЯ ===
+\documentclass{etulab}
+
+% === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
+\Department{ТОЭ}
+\WorkType{лабораторной работе №4}
+\Discipline{теоретические основы электротехники}
+\WorkTitle{ИССЛЕДОВАНИЕ ПЕРЕХОДНЫХ ПРОЦЕССОВ В ЛИНЕЙНЫХ ЦЕПЯХ}
+\Group{4494}
+\Variant{---}
+\StudentName{\parbox[t]{4cm}{\raggedleft 
+        Рахметов А. Р. \\
+        Фролов А. А. 
+    }}
+\TeacherName{Балданова Ю. А.}
+\Year{2026}
+
+% Включение библиографии
+% bibtex автоматически будет включен в процесс сборки документа
+% при обнаружении файла references.bib в директории с основным _report.tex файлом
+% \addbibresource{references.bib}  % Имя файла references.bib не следует менять! Используется оптимизация скрипта сборки документа
+
+% === КОНФИГУРАЦИЯ ДОКУМЕНТА
+% --- Если нужна нумерация формул НЕ по разделам.
+% --- Было: 0.1, 0.2, ..., 1.1, 1.2, ...
+% --- Будет: 1, 2, 3, ...
+\renewcommand{\theequation}{\arabic{equation}}
+
+% === СБОРКА ДОКУМЕНТА ===
+\begin{document}
+
+ 
+
+% --- ТИТУЛЬНЫЙ ЛИСТ ---
+\maketitle
+
+
+
+% --- ОГЛАВЛЕНИЕ ---
+% \tableofcontents
+% \thispagestyle{empty}
+% \newpage
+
+
+
+% --- ВВЕДЕНИЕ ---
+% \newpage
+% \addcontentsline{toc}{section}{Введение}
+% \phantomsection
+% \centeredsection{\uppercase{Введение}}
+% \input{introduction.tex}
+
+
+
+% --- ПРОТОКОЛ ---
+\newpage
+\centeredsection{ПРОТОКОЛ НАБЛЮДЕНИЙ}
+
+\input{protocol.tex}
+
+\vfill
+\noindent
+\makeatletter
+    \@StudentName, гр. \@Group ~~\hrulefill~~ «\rule{1cm}{0.4pt}» \rule{3cm}{0.4pt} 20\rule{0.75cm}{0.4pt} г.
+\makeatother
+\newpage
+% --- ПРОТОКОЛ ---
+
+
+
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+\input{main.tex}
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+
+
+
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ
+\clearpage
+\centeredsection{\MakeUppercase{Обработка результатов измерений}}
+\input{processing.tex}
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ
+
+
+% --- ЗАКЛЮЧЕНИЕ ---
+% \newpage
+% \addcontentsline{toc}{section}{Заключение}
+% \phantomsection
+% \centeredsection{\uppercase{Заключение}}
+% \input{conclusion.tex}
+
+
+
+% --- СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ ---
+% \newpage
+% \addcontentsline{toc}{section}{Список использованных источников}
+% \phantomsection
+% \centeredsection{\uppercase{Список использованных источников}}
+% \printbibliography
+
+
+% --- ПРИЛОЖЕНИЯ ---
+% \begin{appendices}
+%     \input{appendix.tex}
+% \end{appendices}
+
+
+
+\end{document}
