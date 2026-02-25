@@ -1,7 +1,14 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{etulab}[2025/01/31 v1.0 ETU Lab Report Class]
 
-\LoadClass[a4paper,14pt,russian]{extarticle}
+% --- Размер шрифта можно передавать в [12pt].
+% Значение по умолчанию - 14pt.
+\PassOptionsToClass{14pt}{extarticle}
+\DeclareOption*{%
+  \PassOptionsToClass{\CurrentOption}{extarticle}%
+}
+\ProcessOptions\relax
+\LoadClass[a4paper,russian]{extarticle}
 
 % --- Настройка шрифтов
 \RequirePackage{fontspec}
