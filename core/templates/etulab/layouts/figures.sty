@@ -8,3 +8,11 @@
     font=normalsize,           % Обычный размер шрифта (не курсив)
     skip=6pt                   % Отступ после подписи
 }
+
+% --- Оптимизация работы tikz с pgf
+\usetikzlibrary{external}
+% Переопределение системного вызова для использования LuaLaTeX вместо pdfLaTeX
+\tikzset{
+    external/system call={lualatex \tikzexternalcheckshellescape -haltexit -interaction=batchmode -jobname "\image" "\texsource"}
+}
+\tikzexternalize[prefix=pgfs/cache/]% Указание директории для кэша (слеш в конце обязателен)

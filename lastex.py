@@ -195,6 +195,7 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
         f"export PATH={TEXLIVE_BIN}:$PATH && "
         f"export TEXINPUTS={TEXINPUTS} && "
         f"cd /workdir/{clean_project_path} && "
+        f"mkdir -p pgfs/cache && "
         f"{texfot_path} {latexmk_path} {latexmk_args} '{tex_file}'"
     )
     
