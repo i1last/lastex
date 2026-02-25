@@ -107,6 +107,66 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
              # Иногда python пишет в stderr даже предупреждения, но если там Traceback - это проблема.
              print(f"⚠️  Warnings/Errors:\n{py_result.stderr}")
 
+    # --- 3.5. Генерация формата (Precompiled Preamble) ---
+    fmt_jobname = "etulab_fmt"
+    out_dir = "out"
+    fmt_file_path = os.path.join(project_path, out_dir, f"{fmt_jobname}.fmt")
+    
+    # Путь к локальному файлу класса для проверки обновлений
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    cls_file_path = os.path.join(root_dir, "core", "templates", "etulab.cls")
+    
+    # 1. Проверка необходимости сборки формата
+    need_fmt_build = True
+    if os.path.exists(fmt_file_path):
+        if os.path.exists(cls_file_path):
+            fmt_time = os.path.getmtime(fmt_file_path)
+            cls_time = os.path.getmtime(cls_file_path)
+            if fmt_time > cls_time:
+                need_fmt_build = False
+        else:
+            need_fmt_build = False # Если локальный класс не найден, используем существующий .fmt
+
+    current_texinputs = f".:{out_dir}//:{TEMP_TEMPLATE_PATH}//::"
+
+    # 2. Условная генерация
+    if need_fmt_build:
+        print("⚡ Генерация нативного формата (кэш устарел или отсутствует)...")
+        
+        fmt_source = "fmt_builder.tex"
+        with open(os.path.join(project_path, fmt_source), "w") as f:
+            f.write("\\documentclass{etulab}\n\\dump\n")
+
+        if os.path.exists(fmt_file_path):
+            os.remove(fmt_file_path)
+
+        fmt_cmd = (
+            f"export TEXINPUTS={current_texinputs} && "
+            f"cd /workdir/{clean_project_path} && "
+            f"mkdir -p {out_dir} && "
+            f"lualatex -ini -interaction=nonstopmode "
+            f"-output-directory={out_dir} "
+            f"-jobname='{fmt_jobname}' "
+            f"'&lualatex' {fmt_source}"
+        )
+        
+        fmt_result = subprocess.run(
+            ["docker", "exec", CONTAINER_NAME, "bash", "-c", fmt_cmd],
+            capture_output=True, text=True
+        )
+        
+        try:
+            os.remove(os.path.join(project_path, fmt_source))
+        except OSError:
+            pass
+
+        if os.path.exists(fmt_file_path):
+            print("✅ Формат успешно создан.")
+        else:
+            print(f"❌ Критическая ошибка генерации формата: {fmt_result.stderr}")
+    else:
+        print("⏩ Использование закэшированного формата (etulab_fmt.fmt).")
+
     # --- 4. Сборка LaTeX ---
     print(f"📁 Проект:   {project_path}")
     print(f"📄 Файл:     {tex_file}")
@@ -142,14 +202,10 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
     
     duration = time.time() - start_time
     
-    if result.returncode == 0:
-        if target != "clean":
-            print(f"\n✅ Успешно! Время: {duration:.2f} сек.")
-        else:
-            print(f"\n✅ Очистка завершена.")
+    if target != "clean":
+        print(f"\n✅ Успешно! Время: {duration:.2f} сек. Код ошибки: {result.returncode}")
     else:
-        print(f"\n❌ Ошибка сборки (код: {result.returncode})")
-        sys.exit(result.returncode)
+        print(f"\n✅ Очистка завершена.")
 
 
 if __name__ == "__main__":

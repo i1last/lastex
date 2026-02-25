@@ -1,5 +1,9 @@
-% === ПОДКЛЮЧЕНИЕ СТИЛЯ ===
-\documentclass{etulab}
+%&etulab_fmt
+\ifdefined\Department
+\else
+    \documentclass{etulab}
+\fi
+% <- ПОДКЛЮЧЕНИЕ СТИЛЯ
 
 % === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
 \Department{ТОЭ}
