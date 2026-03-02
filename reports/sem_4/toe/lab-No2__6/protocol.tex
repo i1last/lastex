@@ -1,0 +1,36 @@
+\begin{table}[H]
+    \centering
+    \caption{Данные измерений для $RC$- и $RL$-цепей. Результаты прямых измерений в двухполюсниках}
+    \label{tab:measurements_rc_rl}
+    \begin{tblr}{
+        width = \linewidth,
+        colspec = {Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m]},
+        hlines, vlines,
+        rows = {m, font=\small},
+        rowhead = 1
+    }
+        Тип цепи & $f$, кГц & $U_0$, В & $I$, мА & $U_R$, В & $U_{C/L}$, В & $\varphi_{\text{осц}}$, град \\
+        \SetCell[r=2]{c} $RC$ & 7.5 & & & & & \\
+                              & 15.0 & & & & & \\
+        \SetCell[r=2]{c} $RL$ & 7.5 & & & & & \\
+                              & 15.0 & & & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Данные измерений для $RLC$-цепи. Исследование резонанса напряжений}
+    \label{tab:measurements_rlc}
+    \begin{tblr}{
+        width = \linewidth,
+        colspec = {Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m]},
+        hlines, vlines,
+        rows = {m, font=\small},
+        rowhead = 1
+    }
+        Режим & $f$, кГц & $U_0$, В & $I$, мА & $U_R$, В & $U_C$, В & $U_L$, В & $\varphi_{\text{осц}}$, град \\
+        $f = f_0$ & & & & & & & \\
+        $f = 2f_0$ & & & & & & & \\
+        $f = 0.5f_0$ & & & & & & & \\
+    \end{tblr}
+\end{table}
