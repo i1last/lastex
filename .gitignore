@@ -9,6 +9,7 @@
 *.fdb_latexmk
 *.synctex.gz
 *.synctex(busy)
+*.auxlock
 *.fmt
 *.bbl
 *.blg
