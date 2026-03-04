@@ -1,3 +1,4 @@
+---@diagnostic disable: need-check-nil, param-type-mismatch
 -- Вспомогательные функции
 function read_csv_single(filename)
     local f = io.open(filename, "r")
