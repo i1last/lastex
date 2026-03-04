@@ -1,0 +1,117 @@
+\subsection*{Параметры исследования}
+\begin{table}[H]
+    \centering
+    \caption{Исходные данные для выполнения работы}
+    \label{tab:initial_params}
+    \begin{tblr}{
+        colspec = { X[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        Тип звена & Номинальный коэф. передачи $k_H$ & Допустимая погрешность установления, \% \\
+        ФНЧ 2-го порядка & 1 & 5 \\
+    \end{tblr}
+\end{table}
+
+\subsection*{1. Исследование переходного процесса (Ступенчатое воздействие)}
+
+\begin{table}[H]
+    \centering
+    \caption{Параметры звена для п. 1}
+    \label{tab:params_step}
+    \begin{tblr}{
+        colspec = { Q[r,m] Q[l,m] Q[r,m] Q[l,m] },
+    }
+        $f_0 =$ & \_\_\_\_\_ Гц & $\beta =$ & \_\_\_\_\_ \\
+    \end{tblr}
+\end{table}
+
+\begin{longtblr}[
+    caption = {Результаты измерений при ступенчатом воздействии},
+    label = {tab:step_response},
+]{
+    width = \linewidth,
+    colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    № точки & Время $t_i$, мс & Вход $u_{\text{вх} i}$, В & Выход $u_{\text{вых} i}$, В \\
+    1 & & & \\
+    2 & & & \\
+    3 & & & \\
+    4 & & & \\
+    5 & & & \\
+    6 & & & \\
+    7 & & & \\
+    8 & & & \\
+    9 & & & \\
+    10 & & & \\
+\end{longtblr}
+
+\subsection*{2. Зависимость времени установления}
+
+\begin{table}[H]
+    \centering
+    \caption{Зависимость $t_y = F(f_{0i})$ при $\beta = \text{const}$}
+    \label{tab:settling_freq}
+    \begin{tblr}{
+        colspec = { Q[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        № опыта & Частота $f_{0i}$ (условн. ед. / Гц) & Время установления $t_y$, мс \\
+        1 & & \\
+        2 & & \\
+        3 & & \\
+        4 & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Зависимость $t_y = F(\beta_i)$ при $f_0 = \text{const}$}
+    \label{tab:settling_beta}
+    \begin{tblr}{
+        colspec = { Q[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        № опыта & Коэф. демпфирования $\beta_i$ & Время установления $t_y$, мс \\
+        1 & & \\
+        2 & & \\
+        3 & & \\
+        4 & & \\
+    \end{tblr}
+\end{table}
+
+\subsection*{3. Исследование синусоидального воздействия}
+
+\begin{table}[H]
+    \centering
+    \caption{Параметры звена для п. 3}
+    \label{tab:params_sine}
+    \begin{tblr}{
+        colspec = { Q[r,m] Q[l,m] Q[r,m] Q[l,m] },
+    }
+        $f_0 =$ & \_\_\_\_\_ Гц & $\beta =$ & \_\_\_\_\_ \\
+    \end{tblr}
+\end{table}
+
+\begin{longtblr}[
+    caption = {Результаты измерений при синусоидальном воздействии},
+    label = {tab:sine_response},
+]{
+    width = \linewidth,
+    colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    № точки & Время $t_i$, мс & Вход $u_{\text{вх} i}$, В & Выход $u_{\text{вых} i}$, В \\
+    1 & & & \\
+    2 & & & \\
+    3 & & & \\
+    4 & & & \\
+    5 & & & \\
+    6 & & & \\
+    7 & & & \\
+    8 & & & \\
+    9 & & & \\
+    10 & & & \\
+\end{longtblr}
