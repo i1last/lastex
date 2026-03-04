@@ -9,6 +9,8 @@ RUN apt-get update
 RUN apt-get install -y --no-install-recommends python3 python3-pygments
 RUN rm -rf /var/lib/apt/lists/*
 
+RUN tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2025/tlnet-final/
+
 RUN tlmgr update --self && tlmgr install texfot latexmk
 RUN tlmgr update --self && tlmgr install \
     collection-latexrecommended \
@@ -40,7 +42,8 @@ RUN tlmgr update --self && tlmgr install \
     circuitikz \
     pgf \
     pgfplots \
-    wrapfig
+    wrapfig \
+    luacode
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-numpy \
