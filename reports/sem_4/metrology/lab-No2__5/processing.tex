@@ -1,0 +1,254 @@
+\directlua{dofile('processing.lua')}
+
+\section{Прямые однократные измерения}
+
+Абсолютная погрешность измерения напряжения $\Delta U$ определяется приборной погрешностью вольтметра, заданной в исходных данных:
+\begin{equation}
+    \Delta U = \Delta_V = \directlua{tex.print(Delta_instr)} \text{ В}
+\end{equation}
+
+Относительная погрешность измерения напряжения $\delta_U$ рассчитывается по формуле:
+\begin{equation}
+    \delta_U = \frac{\Delta U}{U} \cdot 100\% = \frac{\directlua{tex.print(Delta_instr)}}{\directlua{tex.print(U_s)}} \cdot 100\% = \directlua{tex.print(round(rel_delta_U, 4))} \%
+\end{equation}
+
+Результат однократного измерения напряжения:
+\begin{equation*}
+    { U_x = (\directlua{tex.print(U_s)} \pm \directlua{tex.print(Delta_instr)}) \text{ В}, \quad \delta_U = \directlua{tex.print(round(rel_delta_U, 3))} \% }
+\end{equation*}
+
+\section{Косвенные однократные измерения}
+
+\subsection{Измерение тока}
+Ток $I$, протекающий через делитель, рассчитывается по падению напряжения $U_0$ на образцовом резисторе $R_0 = \directlua{tex.print(R0)}$ Ом.
+
+\begin{equation}
+    I = \frac{U_0}{R_0} = \frac{\directlua{tex.print(U0_s)}}{\directlua{tex.print(R0)}} = \directlua{tex.print(round(I_s, 5))} \text{ А}
+\end{equation}
+
+Абсолютная погрешность измерения напряжения на образцовом резисторе равна приборной погрешности: $\Delta U_0 = \directlua{tex.print(Delta_instr)}$ В.
+Относительная погрешность измерения напряжения $\delta_{U_0}$:
+\begin{equation}
+    \delta_{U_0} = \frac{\Delta U_0}{U_0} \cdot 100\% = \frac{\directlua{tex.print(Delta_instr)}}{\directlua{tex.print(U0_s)}} \cdot 100\% = \directlua{tex.print(round(rel_delta_U0, 2))} \%
+\end{equation}
+
+Относительная погрешность косвенного измерения тока $\delta_I$ (сумма относительных погрешностей аргументов):
+\begin{equation}
+    \delta_I = \delta_{U_0} + \delta_{R_0} = \directlua{tex.print(round(rel_delta_U0, 2))} + \directlua{tex.print(delta_R0)} = \directlua{tex.print(round(delta_I_rel, 2))} \%
+\end{equation}
+
+Абсолютная погрешность тока $\Delta I$:
+\begin{equation}
+    \Delta I = I \cdot \frac{\delta_I}{100} = \directlua{tex.print(round(I_s, 5))} \cdot \frac{\directlua{tex.print(round(delta_I_rel, 3))}}{100} = \directlua{tex.print(round(abs_delta_I, 6))} \text{ А}
+\end{equation}
+
+Результат измерения тока:
+\begin{equation*}
+    { I_x = (\directlua{tex.print(round(I_s, 3))} \pm \directlua{tex.print(round(abs_delta_I, 3))}) \text{ А} }
+\end{equation*}
+
+\subsection{Измерение мощности}
+Мощность $P_M$, выделяемая на участке делителя:
+\begin{equation}
+    P_M = U \cdot I = \directlua{tex.print(U_s)} \cdot \directlua{tex.print(round(I_s, 5))} = \directlua{tex.print(round(P_s, 4))} \text{ Вт}
+\end{equation}
+
+Относительная погрешность мощности $\delta_P$:
+\begin{equation}
+    \delta_P = \delta_U + \delta_I = \directlua{tex.print(round(rel_delta_U, 3))} + \directlua{tex.print(round(delta_I_rel, 3))} = \directlua{tex.print(round(delta_P_rel, 3))} \%
+\end{equation}
+
+Абсолютная погрешность $\Delta P_M$:
+\begin{equation}
+    \Delta P_M = P_M \cdot \frac{\delta_P}{100} = \directlua{tex.print(round(math.abs(P_s), 4))} \cdot \frac{\directlua{tex.print(round(delta_P_rel, 3))}}{100} = \directlua{tex.print(round(abs_delta_P, 4))} \text{ Вт}
+\end{equation}
+
+Результат измерения мощности:
+\begin{equation*}
+    { P_{Mx} = (\directlua{tex.print(round(P_s, 3))} \pm \directlua{tex.print(round(abs_delta_P, 3))}) \text{ Вт} }
+\end{equation*}
+
+\section{Обработка многократных измерений (Напряжение)}
+
+Число наблюдений $n = \directlua{tex.print(n)}$. Доверительная вероятность $P = \directlua{tex.print(prob_P)}$. Коэффициент Стьюдента $t_p(n-1) = \frac{t_{95\%}(8) + t_{95\%}(10)}{2} = \frac{\directlua{tex.print(t_8)} + \directlua{tex.print(t_10)}}{2} = \directlua{tex.print(t_val)}$.
+
+Оценка математического ожидания (среднее арифметическое):
+\begin{equation}
+    \bar{U} = \frac{1}{n}\sum_{i=1}^{n} U_{1i} = \directlua{tex.print(round(U_mean, 4))} \text{ В}
+\end{equation}
+
+Оценка среднеквадратического отклонения (СКО) результата наблюдений $S[U]$ и среднего арифметического $S[\bar{U}]$:
+\begin{equation}
+    S[U] = \sqrt{\frac{\sum (U_{1i} - \bar{U})^2}{n-1}} = \directlua{tex.print(round(S_U, 4))} \text{ В}
+\end{equation}
+\begin{equation}
+    S[\bar{U}] = \frac{S[U]}{\sqrt{n}} = \frac{\directlua{tex.print(round(S_U, 4))}}{\sqrt{\directlua{tex.print(n)}}} = \directlua{tex.print(round(S_U_mean, 4))} \text{ В}
+\end{equation}
+
+\begin{luacode*}
+    function t89()
+        for i = 1, #U1_arr do
+            local ui = U1_arr[i]
+            local diff = ui - U_mean
+            local diff_sq = diff * diff
+            tex.print(string.format("%d & %.3f & %.3f & %.6f \\\\", i, ui, diff, diff_sq))
+        end
+    end
+\end{luacode*}
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерений и вычислений для напряжения}
+    \label{tab:5_1}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m, 3em] X[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        Номер измерения & $U_{1i}, \text{В}$ & $(U_{1i} - \bar{U}), \text{В}$ & $(U_{1i} - \bar{U})^2, \text{В}^2$ \\
+        \directlua{t89()}
+    \end{tblr}
+\end{table}
+
+Доверительный интервал $\Delta U$ (случайная составляющая):
+\begin{equation}
+    \Delta U = t_p(f) \cdot S[\bar{U}] = \directlua{tex.print(t_val)} \cdot \directlua{tex.print(round(S_U_mean, 4))} = \directlua{tex.print(round(delta_U_multi, 4))} \text{ В}
+\end{equation}
+
+Результат многократных измерений напряжения:
+\begin{equation*}
+    { U_x = (\directlua{tex.print(round(U_mean, 2))} \pm \directlua{tex.print(round(delta_U_multi, 2))}) \text{ В}, \quad P = \directlua{tex.print(prob_P)} }
+\end{equation*}
+
+\section{Многократные косвенные измерения}
+
+\subsection{Ток}
+Массив значений тока получен как $I_i = U_{2i} / R_0$ (\cref{tab:current_massive}).
+
+\begin{luacode*}
+    function t104()
+        local n = #U2_arr
+        local half = math.ceil(n / 2)
+        for i = 1, half do
+            local i2 = i + half
+            local val1 = string.format("%.5f", U2_arr[i] / R0)
+            
+            -- Проверка существования элемента для второй колонки
+            local idx2 = ""
+            local val2 = ""
+            if i2 <= n then
+                idx2 = tostring(i2)
+                val2 = string.format("%.5f", U2_arr[i2] / R0)
+            end
+            
+            tex.print(string.format("%d & %s & %s & %s \\\\", i, val1, idx2, val2))
+            
+        end
+    end
+\end{luacode*}
+ 
+\begin{table}[H]
+    \centering
+    \caption{Массив расчетных значений тока $I_i$, А}
+    \label{tab:current_massive}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m, 2em] X[c,m] Q[c,m, 2em] X[c,m] },
+        hlines, vlines,
+    }
+        № & $I_i$ & № & $I_i$ \\
+        \directlua{t104()}
+    \end{tblr}
+\end{table}
+
+Среднее значение тока:
+\begin{equation}
+    \bar{I} = \frac{1}{n}\sum_{i=1}^{n} I_i = \directlua{tex.print(round(I_mean, 5))} \text{ А}
+\end{equation}
+
+\begin{luacode*}
+    function t168()
+        for i = 1, #U1_arr do
+            local u1 = U1_arr[i]
+            local u2 = U2_arr[i]
+            local diff_u = u1 - U_mean
+            local cur_i = u2 / R0
+            local diff_i = cur_i - I_mean
+            tex.print(string.format("%d & %.3f & %.3f & %.3f & %.5f & %.5f \\\\", 
+                i, u1, diff_u, u2, cur_i, diff_i))
+        end
+    end
+\end{luacode*}
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерений и вычислений для тока}
+    \label{tab:5_3}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m, 2em] *{5}{X[c,m]} },
+        hlines, vlines,
+        rows = {font=\small},
+    }
+        Номер & $U_{1i}, \text{В}$ & $(U_{1i} - \bar{U}), \text{В}$ & $U_{2i}, \text{В}$ & $I_i, \text{А}$ & $(I_i - \bar{I}), \text{А}$ \\
+        \directlua{t168()}
+    \end{tblr}
+\end{table}
+
+СКО среднего арифметического тока:
+\begin{equation}
+    S[\bar{I}] = \frac{S[I]}{\sqrt{n}} = \frac{\directlua{tex.print(round(S_I, 6))}}{\directlua{tex.print(round(math.sqrt(n), 6))}} = \directlua{tex.print(round(S_I_mean, 6))} \text{ А}
+\end{equation}
+
+Доверительный интервал для тока ($t_p = \directlua{tex.print(t_val)}$):
+\begin{equation}
+    \Delta I = t_p \cdot S[\bar{I}] = \directlua{tex.print(t_val)} \cdot \directlua{tex.print(round(S_I_mean, 6))} = \directlua{tex.print(round(delta_I_multi, 5))} \text{ А}
+\end{equation}
+
+Результат:
+\begin{equation*}
+    { I_x = (\directlua{tex.print(round(I_mean, 5))} \pm \directlua{tex.print(round(delta_I_multi, 5))}) \text{ А} }
+\end{equation*}
+\begin{equation*}
+    { I_x = (\directlua{tex.print(round(I_mean, 3))} \pm \directlua{tex.print(round(delta_I_multi, 3))}) \text{ А} }
+\end{equation*}
+
+\subsection{Мощность}
+Средняя мощность:
+\begin{equation}
+    P_M = \bar{U} \cdot \bar{I} = \directlua{tex.print(round(U_mean, 4))} \cdot \directlua{tex.print(round(I_mean, 5))} = \directlua{tex.print(round(P_multi_mean, 4))} \text{ Вт}
+\end{equation}
+
+Оценка СКО косвенного измерения мощности:
+\begin{equation}
+    S[P_M] = \sqrt{\bar{U}^2 S^2[\bar{I}] + \bar{I}^2 S^2[\bar{U}]} = \directlua{tex.print(round(S_Pm, 5))} \text{ Вт}
+\end{equation}
+
+Эффективное число степеней свободы $f_{\text{эф}}$:
+\begin{equation}
+    f_{\text{эф}} = (n+1)\frac{(\bar{U}^2 S^2[\bar{I}] + \bar{I}^2 S^2[\bar{U}])^2}{\bar{U}^4 S^4[\bar{I}] + \bar{I}^4 S^4[\bar{U}]} - 2 = \directlua{tex.print(math.floor(f_eff))}
+\end{equation}
+
+Коэффициент Стьюдента для $f_{\text{эф}} = \directlua{tex.print(math.floor(f_eff))}$ равен $k_p = \directlua{tex.print(t_val_eff)}$.
+Доверительный интервал:
+\begin{equation}
+    \Delta P_M = k_p \cdot S[P_M] = \directlua{tex.print(t_val_eff)} \cdot \directlua{tex.print(round(S_Pm, 5))} = \directlua{tex.print(round(delta_P_multi, 4))} \text{ Вт}
+\end{equation}
+
+Результат:
+\begin{equation*}
+    { P_{Mx} = (\directlua{tex.print(round(P_multi_mean, 4))} \pm \directlua{tex.print(round(delta_P_multi, 4))}) \text{ Вт}, \quad P = \directlua{tex.print(prob_P)} }
+\end{equation*}
+\begin{equation*}
+    { P_{Mx} = (\directlua{tex.print(round(P_multi_mean, 2))} \pm \directlua{tex.print(round(delta_P_multi, 2))}) \text{ Вт}, \quad P = \directlua{tex.print(prob_P)} }
+\end{equation*}
+
+\section*{Выводы}
+
+\begin{enumerate}
+    \item В ходе прямых и косвенных однократных измерений установлено влияние отношения измеряемой величины к точноти измерений прибора. Относительная погрешность прямого измерения напряжения составила $\delta_U = \directlua{tex.print(round(rel_delta_U, 3))}\%$, при этом погрешность косвенного измерения тока достигла $\delta_I = \directlua{tex.print(round(delta_I_rel, 3))}\%$. Данное расхождение вызвано тем, что измеряемое падение напряжения на образцовом резисторе ($U_0 = \directlua{tex.print(U0_s*1000)} \text{ мВ}$) соизмеримо с абсолютной инструментальной погрешностью вольтметра ($\Delta_V = \directlua{tex.print(abs_delta_U0 * 1000)} \text{ мВ}$).
+    
+    \item При обработке многократных измерений установлено, что наличие случайных погрешностей существенно увеличивает разброс результатов. При сильном зашумлении сигнала (где относительная погрешность измерения тока достигает $\delta_I = \directlua{tex.print(round(delta_I_multi / I_mean * 100, 2))}\%$) использование статистических методов обработки позволяет корректно определить доверительный интервал для истинного значения измеряемой величины с заданной вероятностью $P = 0.95 \%$.
+    
+    \item При косвенных многократных измерениях мощности расчет эффективного числа степеней свободы ($f_{\text{эф}} = \directlua{tex.print(round(f_eff, 0))}$) подтвердил, что итоговая дисперсия результата формируется аргументами неравномерно. Анализ дисперсионных слагаемых показал, что определяющий вклад в погрешность измерения мощности вносит высокая дисперсия измерения тока.
+    
+    \item Оформление конечных результатов подтвердило физическую бессмысленность сохранения избыточных значащих цифр в условиях высокой дисперсии. Метрологическое округление доверительных интервалов до одной значащей цифры строго ограничивает разрядность среднего значения, что наглядно отражено в итоговой записи для мощности:
+    $$P_{Mx} = (\directlua{tex.print(round(P_multi_mean, 2))} \pm \directlua{tex.print(round(delta_P_multi, 2))}) \text{ Вт}$$
+\end{enumerate}

@@ -1,15 +1,32 @@
+\begin{luacode*}
+function csv2tblr(filename, num)
+    local use_num = num or false
+
+    local file = io.open(filename, 'r')
+    local i = 0
+    for line in file:lines() do
+        i = i + 1
+        local numeration = (use_num and tostring(i) .. " & ") or ""
+        local data = line:gsub(';', ' & ') .. ' \\\\'
+        tex.print(numeration .. data)
+    end
+    file:close()
+end
+\end{luacode*}
+
+%%
 
 \section*{Исходные данные}
 \begin{table}[H]
     \centering
     \caption{Параметры установки и условия эксперимента}
     \label{tab:initial_data}
-    \begin{tblr}{
+    \begin{tblr}[expand=\directlua]{
         colspec = { X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] },
         hlines, vlines,
     }
-        Образцовое сопротивление $R_0$, Ом & Относит. погрешность $\delta_{R_0}$, \% & Относит. погрешность вольтметра $\delta_V$, \% & Число измерений $n$ & Доверительная вероятность $P$ \\
-        & & & & \\
+        Образцовое сопротивление $R_0$, Ом & Относит. погрешность $\delta_{R_0}$, \% & Приборная погрешность вольтметра $\Delta_V$, В & Число измерений $n$ & Доверительная вероятность $P$ \\
+        \directlua{csv2tblr('p1.csv')}
     \end{tblr}
 \end{table}
 
@@ -19,18 +36,19 @@
     \centering
     \caption{Результаты однократных измерений}
     \label{tab:single_measurements}
-    \begin{tblr}{
+    \begin{tblr}[expand=\directlua]{
         colspec = { X[c,m] X[c,m] },
         hlines, vlines,
     }
         Напряжение на делителе $U$ (поз. 1), В & Напряжение на $R_0$ $U_0$ (поз. 2), В \\
-        & \\
+        \directlua{csv2tblr('p2.csv')}
     \end{tblr}
 \end{table}
 
 \begin{longtblr}[
     caption = {Результаты многократных измерений со случайной погрешностью},
     label = {tab:multiple_measurements},
+    expand = \directlua,
 ]{
     width = 0.8\linewidth,
     colspec = { Q[c,m, 3em] X[c,m] X[c,m] },
@@ -38,14 +56,5 @@
     rowhead = 1
 }
     Номер $i$ & Напряжение $U_{1i}$ (поз. 1), В & Напряжение $U_{2i}$ (поз. 2), В \\
-    $1$ & & \\
-    $2$ & & \\
-    $3$ & & \\
-    $4$ & & \\
-    $5$ & & \\
-    $6$ & & \\
-    $7$ & & \\
-    $8$ & & \\
-    $9$ & & \\
-    $10$ & & \\
+    \directlua{csv2tblr('p3.csv', true)}
 \end{longtblr}
