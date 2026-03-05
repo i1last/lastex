@@ -27,9 +27,9 @@
 \end{equation}
 
 Абсолютная погрешность измерения напряжения на образцовом резисторе равна приборной погрешности: $\Delta U_0 = \directlua{tex.print(Delta_instr)}$ В.
-Относительная погрешность измерения напряжения $\delta_{U_0}$:
+Относительная погрешность измерения напряжения $\delta_{U_0}$ согласно документации вольтметра $\delta_{U_o}=c + d\cdot\left[ \frac{X_k}{X} - 1 \right]$, где $X_k$ --- пределы измерения; $X$ --- измеренная величина; $c$ и $d$ -- класс точности: 
 \begin{equation}
-    \delta_{U_0} = \frac{\Delta U_0}{U_0} \cdot 100\% = \frac{\directlua{tex.print(Delta_instr)}}{\directlua{tex.print(U0_s)}} \cdot 100\% = \directlua{tex.print(round(rel_delta_U0, 2))} \%
+    \delta_{U_0} = \directlua{tex.print(ktc)} + \directlua{tex.print(ktd)}\cdot\left[ \frac{\directlua{tex.print(X_k)}}{\directlua{tex.print(U0_s)}} - 1 \right] = \directlua{tex.print(round(rel_delta_U0, 2))} \%
 \end{equation}
 
 Относительная погрешность косвенного измерения тока $\delta_I$ (сумма относительных погрешностей аргументов):
@@ -39,12 +39,14 @@
 
 Абсолютная погрешность тока $\Delta I$:
 \begin{equation}
-    \Delta I = I \cdot \frac{\delta_I}{100} = \directlua{tex.print(round(I_s, 5))} \cdot \frac{\directlua{tex.print(round(delta_I_rel, 3))}}{100} = \directlua{tex.print(round(abs_delta_I, 6))} \text{ А}
+    \Delta I = I \cdot \frac{\delta_I}{100} = \directlua{tex.print(round(I_s, 5))} \cdot \frac{\directlua{tex.print(round(delta_I_rel, 3))}}{100} = 
+    \luaexec{tex.print(string.format('\%.8f', abs_delta_I))}
+    \text{ А}
 \end{equation}
 
 Результат измерения тока:
 \begin{equation*}
-    { I_x = (\directlua{tex.print(round(I_s, 3))} \pm \directlua{tex.print(round(abs_delta_I, 3))}) \text{ А} }
+    { I_x = (\directlua{tex.print(round(I_s, 5)*1000)} \pm \luaexec{tex.print(string.format('\%.2f', round(abs_delta_I, 5)*1000))}) \cdot 10^3\text{ А} }
 \end{equation*}
 
 \subsection{Измерение мощности}
@@ -91,7 +93,7 @@
             local ui = U1_arr[i]
             local diff = ui - U_mean
             local diff_sq = diff * diff
-            tex.print(string.format("%d & %.3f & %.3f & %.6f \\\\", i, ui, diff, diff_sq))
+            tex.print(string.format("$%d$ & $% .6f$ & $%.6f$ & $%.6f$ \\\\", i, ui, diff, diff_sq))
         end
     end
 \end{luacode*}
@@ -140,7 +142,7 @@
                 val2 = string.format("%.5f", U2_arr[i2] / R0)
             end
             
-            tex.print(string.format("%d & %s & %s & %s \\\\", i, val1, idx2, val2))
+            tex.print(string.format("$%d$ & $%s$ & $%s$ & $%s$ \\\\", i, val1, idx2, val2))
             
         end
     end
@@ -172,7 +174,8 @@
             local diff_u = u1 - U_mean
             local cur_i = u2 / R0
             local diff_i = cur_i - I_mean
-            tex.print(string.format("%d & %.3f & %.3f & %.3f & %.5f & %.5f \\\\", 
+            tex.print(string.format("$%d$ & $%.3f$ & $%.3f$ & $%.3f$ & $%.5f$ & $%.5f$
+             \\\\", 
                 i, u1, diff_u, u2, cur_i, diff_i))
         end
     end
@@ -204,9 +207,6 @@
 
 Результат:
 \begin{equation*}
-    { I_x = (\directlua{tex.print(round(I_mean, 5))} \pm \directlua{tex.print(round(delta_I_multi, 5))}) \text{ А} }
-\end{equation*}
-\begin{equation*}
     { I_x = (\directlua{tex.print(round(I_mean, 3))} \pm \directlua{tex.print(round(delta_I_multi, 3))}) \text{ А} }
 \end{equation*}
 
@@ -234,21 +234,15 @@
 
 Результат:
 \begin{equation*}
-    { P_{Mx} = (\directlua{tex.print(round(P_multi_mean, 4))} \pm \directlua{tex.print(round(delta_P_multi, 4))}) \text{ Вт}, \quad P = \directlua{tex.print(prob_P)} }
-\end{equation*}
-\begin{equation*}
     { P_{Mx} = (\directlua{tex.print(round(P_multi_mean, 2))} \pm \directlua{tex.print(round(delta_P_multi, 2))}) \text{ Вт}, \quad P = \directlua{tex.print(prob_P)} }
 \end{equation*}
 
 \section*{Выводы}
 
 \begin{enumerate}
-    \item В ходе прямых и косвенных однократных измерений установлено влияние отношения измеряемой величины к точноти измерений прибора. Относительная погрешность прямого измерения напряжения составила $\delta_U = \directlua{tex.print(round(rel_delta_U, 3))}\%$, при этом погрешность косвенного измерения тока достигла $\delta_I = \directlua{tex.print(round(delta_I_rel, 3))}\%$. Данное расхождение вызвано тем, что измеряемое падение напряжения на образцовом резисторе ($U_0 = \directlua{tex.print(U0_s*1000)} \text{ мВ}$) соизмеримо с абсолютной инструментальной погрешностью вольтметра ($\Delta_V = \directlua{tex.print(abs_delta_U0 * 1000)} \text{ мВ}$).
+    \item В ходе прямых и косвенных однократных измерений установлено влияние отношения измеряемой величины к точноти измерений прибора. Относительная погрешность прямого измерения напряжения составила $\delta_U = \directlua{tex.print(round(rel_delta_U, 3))}\%$, при этом погрешность косвенного измерения тока достигла $\delta_I = \directlua{tex.print(round(delta_I_rel, 3))}\%$. Данное расхождение вызвано тем, что измеряемое падение напряжения на образцовом резисторе ($U_0 = \directlua{tex.print(U0_s)} \text{ В}$) соизмеримо с абсолютной инструментальной погрешностью вольтметра ($\Delta_V = \directlua{tex.print(abs_delta_U0)} \text{ В}$).
     
-    \item При обработке многократных измерений установлено, что наличие случайных погрешностей существенно увеличивает разброс результатов. При сильном зашумлении сигнала (где относительная погрешность измерения тока достигает $\delta_I = \directlua{tex.print(round(delta_I_multi / I_mean * 100, 2))}\%$) использование статистических методов обработки позволяет корректно определить доверительный интервал для истинного значения измеряемой величины с заданной вероятностью $P = 0.95 \%$.
+    \item При обработке многократных измерений установлено, что наличие случайных погрешностей существенно увеличивает разброс результатов. При сильном зашумлении сигнала (где относительная погрешность измерения тока достигает $\delta_I = \directlua{tex.print(round(delta_I_rel, 2))}\%$) использование статистических методов обработки позволяет корректно определить доверительный интервал для истинного значения измеряемой величины с заданной вероятностью $P = 0.95 \%$.
     
-    \item При косвенных многократных измерениях мощности расчет эффективного числа степеней свободы ($f_{\text{эф}} = \directlua{tex.print(round(f_eff, 0))}$) подтвердил, что итоговая дисперсия результата формируется аргументами неравномерно. Анализ дисперсионных слагаемых показал, что определяющий вклад в погрешность измерения мощности вносит высокая дисперсия измерения тока.
-    
-    \item Оформление конечных результатов подтвердило физическую бессмысленность сохранения избыточных значащих цифр в условиях высокой дисперсии. Метрологическое округление доверительных интервалов до одной значащей цифры строго ограничивает разрядность среднего значения, что наглядно отражено в итоговой записи для мощности:
-    $$P_{Mx} = (\directlua{tex.print(round(P_multi_mean, 2))} \pm \directlua{tex.print(round(delta_P_multi, 2))}) \text{ Вт}$$
+    \item При косвенных многократных измерениях мощности расчет эффективного числа степеней свободы ($f_{\text{эф}} = \directlua{tex.print(round(f_eff, 0))}$) подтвердил, что итоговая дисперсия результата формируется аргументами неравномерно.
 \end{enumerate}

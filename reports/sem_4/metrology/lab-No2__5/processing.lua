@@ -78,7 +78,11 @@ rel_delta_U = (abs_delta_U / math.abs(U_s)) * 100
 I_s = U0_s / R0
 -- Погрешность измерения U0 (на резисторе R0)
 abs_delta_U0 = Delta_instr
-rel_delta_U0 = (abs_delta_U0 / math.abs(U0_s)) * 100
+ktc = 0.5
+ktd = 0.2
+X_k = 0.2
+rel_delta_U0 = math.abs(ktc + ktd * (X_k / math.abs(U0_s) - 1))
+-- rel_delta_U0 = (abs_delta_U0 / math.abs(U0_s)) * 100
 -- Относительная погрешность тока
 delta_I_rel = rel_delta_U0 + delta_R0
 -- Абсолютная погрешность тока
