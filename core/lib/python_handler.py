@@ -23,7 +23,7 @@ def run_single_python(script_path):
     script_dir_rel = os.path.dirname(rel_script_from_project)
     
     # Абсолютный путь к папке pgfs внутри контейнера
-    abs_pgfs_path = f"/workdir/{docker_project_path}/pgfs"
+    abs_figs_path = f"/workdir/{docker_project_path}/figs"
 
     print(f"🐍 Запуск: {rel_script_from_project} (Корень: {docker_project_path})")
     
@@ -37,8 +37,8 @@ def run_single_python(script_path):
         f"python3 {os.path.basename(script_abs)} && "
         f"count=`ls *.pgf 2>/dev/null | wc -l`; "
         f"if [ $count -gt 0 ]; then "
-        f"  mkdir -p {abs_pgfs_path}; "
-        f"  mv *.pgf {abs_pgfs_path}/; "
+        f"    mkdir -p {abs_figs_path}; "
+        f"    mv *.pgf {abs_figs_path}/; "
         f"fi"
     )
     

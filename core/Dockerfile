@@ -49,6 +49,7 @@ RUN apt-get update && apt-get install -y \
     python3-numpy \
     python3-matplotlib \
     python3-scipy \
+    python3-lupa \
     && rm -rf /var/lib/apt/lists/*
     
 RUN mktexlsr && tlmgr path add && fmtutil-sys --all

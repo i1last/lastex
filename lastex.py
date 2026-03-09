@@ -68,7 +68,7 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
         print(f"📊 Обновление графиков в: {project_path}")
         
         # Абсолютный путь к папке pgfs внутри контейнера
-        abs_pgfs_path = f"/workdir/{clean_project_path}/pgfs"
+        abs_figs_path = f"/workdir/{clean_project_path}/figs"
         
         # Сложная команда bash для xargs.
         # 1. Находим все .py файлы.
@@ -89,8 +89,8 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
             f"  if [ $ret -ne 0 ]; then echo \"❌ Error in $script\"; exit $ret; fi; "
             f"  count=`ls \"$dir\"/*.pgf 2>/dev/null | wc -l`; "
             f"  if [ $count -gt 0 ]; then "
-            f"      mkdir -p \"{abs_pgfs_path}\"; "
-            f"      mv \"$dir\"/*.pgf \"{abs_pgfs_path}/\"; "
+            f"      mkdir -p \"{abs_figs_path}\"; "
+            f"      mv \"$dir\"/*.pgf \"{abs_figs_path}/\"; "
             f"  fi"
             f"'"
         )
@@ -176,14 +176,14 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
 
     if target == "clean":
         out_dir = os.path.join(project_path, "out")
-        pgfs_dir = os.path.join(project_path, "pgfs")
+        figs_dir = os.path.join(project_path, "figs")
         
         if os.path.exists(out_dir):
             shutil.rmtree(out_dir)
         
         # Удаляем папку pgfs при очистке
-        if os.path.exists(pgfs_dir):
-             shutil.rmtree(pgfs_dir)
+        if os.path.exists(figs_dir):
+            shutil.rmtree(figs_dir)
              
         latexmk_args = "-C"
         print("🧹 Очистка временных файлов и графиков...")
@@ -195,7 +195,6 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
         f"export PATH={TEXLIVE_BIN}:$PATH && "
         f"export TEXINPUTS={TEXINPUTS} && "
         f"cd /workdir/{clean_project_path} && "
-        f"mkdir -p pgfs/cache && "
         f"{texfot_path} {latexmk_path} {latexmk_args} '{tex_file}'"
     )
     
