@@ -1,0 +1,206 @@
+\directlua{dofile('processing.lua')}
+
+\begin{luacode*}
+    function print_processed_spectral(mat)
+        local raw
+        local k_R
+        if mat == "CdS" then
+            raw = protocol.SpectralCdS
+            k_R = 1e3 -- Вывод в кОм
+        else
+            raw = protocol.SpectralCdSe
+            k_R = 1e6 -- Вывод в МОм
+        end
+        local proc = processed[mat]
+
+        for i = 1, #raw.Divisions do
+            tex.print(string.format(
+                "$%d$ & $%.3f$ & $%.3f$ & $%.3f$ & $%.3f$ & $%.3f$ & $%.3f$ & $%.3f$ \\\\",
+                raw.Divisions[i],
+                raw.lambda[i] * 1e6,
+                raw.E_lambda[i],
+                raw.R_c[i] / k_R,
+                proc.gamma_c[i],
+                proc.gamma_f[i],
+                proc.gamma_f_prime[i],
+                proc.rel[i]
+            ))
+        end
+    end
+
+    function print_processed_intensity()
+        local raw = protocol.Intensity
+        local proc = processed.Intensity
+        for i = 1, #raw.R_c do
+            tex.print(string.format(
+                "$%.2f$ & $%.4f$ & $%.3f$ & $%.3f$ & $%.3f$ \\\\",
+                raw.d[i] * 1000,
+                raw.R_c[i] / 1e6,
+                proc.gamma_c[i],
+                proc.gamma_f[i],
+                proc.d_rel[i]
+            ))
+        end
+    end
+\end{luacode*}
+
+\begin{luacode*}
+    -- Функция генерации координат для спектральной характеристики
+    function get_pgf_coords_spectral(mat)
+        local raw = protocol["Spectral" .. mat]
+        local proc = processed[mat]
+        local coords = ""
+        for i = 1, #raw.lambda do
+            -- Формат: (x, y)
+            local x = raw.lambda[i] * 1e6
+            local y = proc.rel[i]
+            coords = coords .. string.format("(%.3f, %.4f) ", x, y)
+        end
+        tex.print(coords)
+    end
+
+    -- Функция генерации координат для световой характеристики
+    function get_pgf_coords_intensity()
+        local proc = processed.Intensity
+        local coords = ""
+        for i = 1, #proc.d_rel do
+            local x = proc.d_rel[i]
+            local y = proc.gamma_f[i]
+            -- Отсекаем нулевые или отрицательные значения для логарифмического масштаба
+            if x > 0 and y > 0 then
+                coords = coords .. string.format("(%.4f, %.4f) ", x, y)
+            end
+        end
+        tex.print(coords)
+    end
+\end{luacode*}
+
+\subsection*{ \boxed{\text{ Задание 1. }} }
+\begin{quote}
+    Вычислить проводимость полупроводника на свету, фотопроводимость, приведенную фотопроводимость и относительную фотопроводимость. Построить спектральную зависимость фотопроводимости.
+\end{quote}
+
+Расчет параметров спектральной характеристики производится по следующим формулам. 
+\begin{itemize}
+    \item Световая проводимость $\gamma_\text{с} = \frac{1}{R_\text{с}}$
+    \item Фотопроводимость $\gamma_\text{ф} = \gamma_\text{с} - \gamma_\text{т}$
+    \item Приведенная фотопроводимость $\gamma'_\text{ф} = \frac{\gamma_\text{ф}}{\text{Э}_\lambda}$
+    \item Относительная фотопроводимость $\frac{\gamma'_\text{ф}}{\gamma'_{\text{ф}\max}}$
+\end{itemize}
+
+Результаты вычислений для исследуемых образцов сведены в \cref{tab:proc_spectral_cds} и \cref{tab:proc_spectral_cdse}.
+
+\begin{longtblr}[
+    caption = {Расчет спектральной зависимости фотопроводимости (CdS)},
+    label = {tab:proc_spectral_cds},
+    expand = \directlua,
+]{
+    width = \linewidth,
+    colspec = {X[c] X[c] X[c] X[c] X[c] X[c] X[c] X[c]},
+    hlines, vlines,
+    rows = {m, font=\small},
+    rowhead = 1,
+    stretch = 0.75
+}
+    Дел. & $\lambda$, мкм & $\text{Э}_\lambda$, у.е. & $R_\text{с}$, кОм & $\gamma_\text{с}$, мкСм & $\gamma_\text{ф}$, мкСм & $\gamma'_\text{ф}$, у.е. & $\gamma'_\text{ф} / \gamma'_{\text{ф}\max}$ \\
+    \directlua{print_processed_spectral("CdS")}
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Расчет спектральной зависимости фотопроводимости (CdSe)},
+    label = {tab:proc_spectral_cdse},
+    expand = \directlua,
+]{
+    width = \linewidth,
+    colspec = {X[c] X[c] X[c] X[c] X[c] X[c] X[c] X[c]},
+    hlines, vlines,
+    rows = {m, font=\small},
+    rowhead = 1, 
+    stretch = 0.75
+}
+    Дел. & $\lambda$, мкм & $\text{Э}_\lambda$, у.е. & $R_\text{с}$, МОм & $\gamma_\text{с}$, мкСм & $\gamma_\text{ф}$, мкСм & $\gamma'_\text{ф}$, у.е. & $\gamma'_\text{ф} / \gamma'_{\text{ф}\max}$ \\
+    \directlua{print_processed_spectral("CdSe")}
+\end{longtblr}
+
+На основе полученных данных строятся графики зависимости относительной фотопроводимости от длины волны падающего света $\gamma'_\text{ф} / \gamma'_{\text{ф}\max} = f(\lambda)$ (см. \cref{fig:spectral_plot}).
+ 
+\begin{figure}[H]
+    \centering
+    \input{figs/spectral_plot.pgf}
+    \caption{Спектральные зависимости относительной фотопроводимости образцов CdS и CdSe} 
+    \label{fig:spectral_plot}
+\end{figure}
+
+\subsection*{ \boxed{\text{ Задание 2. }} }
+\begin{quote}
+    По спектральной зависимости определить красную границу $\lambda_\text{пор}$ фоторезистивного эффекта и вычислить энергию активации фотопроводимости.
+\end{quote}
+
+Поскольку экспериментальная характеристика имеет размытую длинноволновую область, за пороговую длину волны принимается значение $\lambda_{1/2}$, при котором фотопроводимость спадает до половины от своего максимального значения на правом склоне графика. Значения получены методом линейной интерполяции между соседними точками измерений.
+
+Пример расчета $\lambda_{1/2}$ для $\text{CdS}$:
+\begin{equation*}
+    \lambda_{1/2} = \lambda_1 + (\lambda_2 - \lambda_1) \cdot \frac{0.5 - \gamma_1}{\gamma_2 - \gamma_1} = 
+    \luaexec{tex.print(string.format('\%.3f', processed.CdS.lambda_half_x1))} +
+    \left( \luaexec{tex.print(string.format('\%.3f', processed.CdS.lambda_half_x2))} - \luaexec{tex.print(string.format('\%.3f', processed.CdS.lambda_half_x1))} \right) \cdot
+    \frac{0.5 - \luaexec{tex.print(string.format('\%.3f', processed.CdS.lambda_half_y1))}}{\luaexec{tex.print(string.format('\%.3f', processed.CdS.lambda_half_y2))} - \luaexec{tex.print(string.format('\%.3f', processed.CdS.lambda_half_y1))}} =
+    \luaexec{tex.print(string.format('\%.3f', processed.CdS.lambda_half))} \text{ мкм},
+\end{equation*}
+где $\gamma_i = \gamma'_\text{ф, i} / \gamma'_{\text{ф}\max}$.
+
+Ширина запрещенной зоны рассчитывается по формуле:
+$$\Delta\text{Э} \approx \frac{1.24}{\lambda_\text{пор} \text{ мкм}}$$
+
+\textit{Для образца CdS:}
+$$ \lambda_\text{пор, CdS} = \luaexec{tex.print(string.format('\%.3f', processed.CdS.lambda_half))} \text{ мкм} $$
+$$ \Delta\text{Э}_\text{CdS} = \frac{1.24}{\luaexec{tex.print(string.format('\%.3f', processed.CdS.lambda_half))}} = \luaexec{tex.print(string.format('\%.3f', processed.CdS.Eg))} \text{ эВ} $$
+
+\textit{Для образца CdSe:}
+$$ \lambda_\text{пор, CdSe} = \luaexec{tex.print(string.format('\%.3f', processed.CdSe.lambda_half))} \text{ мкм} $$
+$$ \Delta\text{Э}_\text{CdSe} = \frac{1.24}{\luaexec{tex.print(string.format('\%.3f', processed.CdSe.lambda_half))}} = \luaexec{tex.print(string.format('\%.3f', processed.CdSe.Eg))} \text{ эВ} $$
+
+\begin{equation*}
+    \boxed{ \Delta\text{Э}_\text{CdS} = \luaexec{tex.print(string.format('\%.3f', processed.CdS.Eg))} \text{ эВ}, \quad \Delta\text{Э}_\text{CdSe} = \luaexec{tex.print(string.format('\%.3f', processed.CdSe.Eg))} \text{ эВ} }
+\end{equation*}
+
+\subsection*{ \boxed{\text{ Задание 3. }} }
+\begin{quote}
+    Вычислить проводимость и фотопроводимость полупроводника для каждого значения ширины щели. Построить световую характеристику в координатах $\lg(d/d_{\max})$ и $\lg \gamma_\text{ф}$.
+\end{quote}
+
+Световая проводимость $\gamma_\text{с}$ и фотопроводимость $\gamma_\text{ф}$ рассчитываются аналогично первому заданию. Относительная интенсивность облучения пропорциональна отношению ширины щели к ее максимальному значению $d_{\max} = 4.0$ мм. Результаты представлены в \cref{tab:proc_intensity}.
+
+\begin{longtblr}[
+    caption = {Расчет световой характеристики (Образец CdSe)},
+    label = {tab:proc_intensity},
+    expand = \directlua,
+]{
+    width = \linewidth,
+    colspec = {X[c] X[c] X[c] X[c] X[c]},
+    hlines, vlines,
+    rows = {m, font=\small},
+    rowhead = 1,
+    stretch = 0.75
+}
+    $d$, мм & $R_\text{с}$, МОм & $\gamma_\text{с}$, мкСм & $\gamma_\text{ф}$, мкСм & $d/d_{\max}$, о.е. \\
+    \directlua{print_processed_intensity()}
+\end{longtblr}
+
+Световая характеристика $\lg \gamma_\text{ф} = f(\lg(d/d_{\max}))$ представлена на \cref{fig:intensity_plot}.
+  
+\begin{figure}[H]
+    \centering
+    \input{figs/intensity_plot.pgf}
+    \caption{Световая характеристика полупроводника CdSe}
+    \label{fig:intensity_plot}
+\end{figure}
+
+\section*{Выводы}
+В ходе выполнения лабораторной работы были исследованы фотоэлектрические свойства полупроводниковых материалов CdS и CdSe.
+\begin{enumerate}
+    \item \textit{Спектральные характеристики.} Экспериментально получены спектральные зависимости относительной фотопроводимости $\gamma'_\text{ф} / \gamma'_{\text{ф}\max} = f(\lambda)$. Установлено, что фотопроводимость материалов имеет максимум в видимой области спектра. Спад фотопроводимости в длинноволновой области обусловлен недостаточной энергией фотонов ($h\nu < \Delta E$) для генерации носителей заряда, а в коротковолновой --- высокой скоростью поверхностной рекомбинации (вследствие неровности поверхности).
+
+    \item \textit{Энергия активации.} По спектральным характеристикам определена пороговая длина волны $\lambda_{\text{пор}}$ (как $\lambda_{1/2}$), соответствующая уровню $0.5$ от максимальной фотопроводимости. Рассчитанная ширина запрещенной зоны исследуемых образцов составляет: $\Delta\text{Э}_\text{CdS} = \luaexec{tex.print(string.format('\%.3f', processed.CdS.Eg))} \text{ эВ}, \Delta\text{Э}_\text{CdSe} = \luaexec{tex.print(string.format('\%.3f', processed.CdSe.Eg))} \text{ эВ}$.
+
+    \item \textit{Световые характеристики.} Построена световая характеристика в логарифмических координатах $\lg \gamma_\text{ф} = f(\lg(d/d_{\max}))$. Установлено, что при малых интенсивностях облучения (малая ширина щели) зависимость близка к линейной.
+\end{enumerate}

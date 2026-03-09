@@ -1,10 +1,45 @@
-\textit{Темновое сопротивление образца CdS:} $_\ast R_{\text{т}} = $ \underline{\hspace{2cm}} МОм.
+\begin{luacode*}
+    dofile('./protocol.lua')
 
-\textit{Темновое сопротивление образца CdSe:} $_\ast R_{\text{т}} = $ \underline{\hspace{2cm}} МОм.
+    function print_spectral_rows(data_key)
+        local data = protocol[data_key]
+        for i = 1, #data.Divisions do
+            -- Считаем дополнительные параметры (пример)
+            if data_key == "SpectralCdS" then
+                k = 1e3
+            else
+                k = 1e6
+            end
+            local Rc_Mohm = data.R_c[i] / k
+            
+            tex.print(string.format(
+                "$%d$ & $%.3f$ & $%.3f$ & $%.3f$ & & & & \\\\", 
+                data.Divisions[i], data.lambda[i] * 1e6, data.E_lambda[i], Rc_Mohm
+            ))
+        end
+    end
+
+    function print_intensity_rows()
+        local data = protocol.Intensity
+        for i = 1, #data.R_c do
+            local Rc_Mohm = data.R_c[i] / 1e6
+            tex.print(string.format(
+                "$%.2f$ & $%.4f$ & & & \\\\", 
+                data.d[i]*1000, Rc_Mohm
+            ))
+        end
+    end
+\end{luacode*}
+ 
+
+\textit{Темновое сопротивление образца CdS:} $_\ast R_{\text{т}} = \directlua{tex.print(protocol.DarkResistanceOfCdS/1e3)}$ кОм.
+
+\textit{Темновое сопротивление образца CdSe:} $_\ast R_{\text{т}} = \directlua{tex.print(protocol.DarkResistanceOfCdSe/1e6)}$ МОм.
 
 \begin{longtblr}[
     caption = {Спектральная зависимость фотопроводимости (Образец CdS)},
     label = {tab:spectral_cds},
+    expand = \directlua,
 ]{
     width = \linewidth,
     colspec = {X[c] X[c] X[c] X[c] X[c] X[c] X[c] X[c]},
@@ -13,42 +48,14 @@
     rowhead = 1,
     stretch = 0.75
 }
-    Дел. & $_\ast_\ast\lambda$, мкм & $_\ast_\ast\text{Э}_\lambda$ & $_\ast\!R_\text{с}$, МОм & $\gamma_\text{с}$, мкСм & $\gamma_\text{ф}$, мкСм & $\gamma'_\text{ф}$, у.е. & $\gamma'_\text{ф} / \gamma'_{\text{ф}\max}$ \\
-    600  & & & & & & & \\
-    700  & & & & & & & \\
-    800  & & & & & & & \\
-    900  & & & & & & & \\
-    1000 & & & & & & & \\
-    1100 & & & & & & & \\
-    1200 & & & & & & & \\
-    1300 & & & & & & & \\
-    1400 & & & & & & & \\
-    1500 & & & & & & & \\
-    1600 & & & & & & & \\
-    1700 & & & & & & & \\
-    1800 & & & & & & & \\
-    1900 & & & & & & & \\
-    2000 & & & & & & & \\
-    2100 & & & & & & & \\
-    2200 & & & & & & & \\
-    2300 & & & & & & & \\
-    2400 & & & & & & & \\
-    2500 & & & & & & & \\
-    2600 & & & & & & & \\
-    2700 & & & & & & & \\
-    2800 & & & & & & & \\
-    2900 & & & & & & & \\
-    3000 & & & & & & & \\
-    3100 & & & & & & & \\
-    3200 & & & & & & & \\
-    3300 & & & & & & & \\
-    3400 & & & & & & & \\
-    3500 & & & & & & & \\
+    Дел. & $_{\ast\ast}\lambda$, мкм & $_{\ast\ast}\text{Э}_\lambda$ & $_\ast\!R_\text{с}$, кОм & $\gamma_\text{с}$, мкСм & $\gamma_\text{ф}$, мкСм & $\gamma'_\text{ф}$, у.е. & $\gamma'_\text{ф} / \gamma'_{\text{ф}\max}$ \\
+    \directlua{print_spectral_rows("SpectralCdS")}
 \end{longtblr}
 
 \begin{longtblr}[
     caption = {Спектральная зависимость фотопроводимости (Образец CdSe)},
     label = {tab:spectral_cdse},
+    expand = \directlua,
 ]{
     width = \linewidth,
     colspec = {X[c] X[c] X[c] X[c] X[c] X[c] X[c] X[c]},
@@ -57,42 +64,14 @@
     rowhead = 1,
     stretch = 0.75
 }
-    Дел. & $_\ast_\ast\lambda$, мкм & $_\ast_\ast\text{Э}_\lambda$ & $_\ast\!R_\text{с}$, МОм & $\gamma_\text{с}$, мкСм & $\gamma_\text{ф}$, мкСм & $\gamma'_\text{ф}$, у.е. & $\gamma'_\text{ф} / \gamma'_{\text{ф}\max}$ \\
-    600  & & & & & & & \\
-    700  & & & & & & & \\
-    800  & & & & & & & \\
-    900  & & & & & & & \\
-    1000 & & & & & & & \\
-    1100 & & & & & & & \\
-    1200 & & & & & & & \\
-    1300 & & & & & & & \\
-    1400 & & & & & & & \\
-    1500 & & & & & & & \\
-    1600 & & & & & & & \\
-    1700 & & & & & & & \\
-    1800 & & & & & & & \\
-    1900 & & & & & & & \\
-    2000 & & & & & & & \\
-    2100 & & & & & & & \\
-    2200 & & & & & & & \\
-    2300 & & & & & & & \\
-    2400 & & & & & & & \\
-    2500 & & & & & & & \\
-    2600 & & & & & & & \\
-    2700 & & & & & & & \\
-    2800 & & & & & & & \\
-    2900 & & & & & & & \\
-    3000 & & & & & & & \\
-    3100 & & & & & & & \\
-    3200 & & & & & & & \\
-    3300 & & & & & & & \\
-    3400 & & & & & & & \\
-    3500 & & & & & & & \\
+    Дел. & $_{\ast\ast}\lambda$, мкм & $_{\ast\ast}\text{Э}_\lambda$ & $_\ast\!R_\text{с}$, МОм & $\gamma_\text{с}$, мкСм & $\gamma_\text{ф}$, мкСм & $\gamma'_\text{ф}$, у.е. & $\gamma'_\text{ф} / \gamma'_{\text{ф}\max}$ \\
+    \directlua{print_spectral_rows("SpectralCdSe")}
 \end{longtblr}
 
 \begin{longtblr}[
     caption = {Зависимость фотопроводимости от интенсивности облучения},
     label = {tab:intensity},
+    expand = \directlua,
 ]{
     width = \linewidth,
     colspec = {X[c] X[c] X[c] X[c] X[c]},
@@ -102,17 +81,7 @@
     stretch = 0.75
 }
     $d$, мм & $_\ast R_\text{с}$, МОм & $\gamma_\text{с}$, мкСм & $\gamma_\text{ф}$, мкСм & $d/d_{\max}$, о.е. \\
-    0.01 & & & & \\
-    0.02 & & & & \\
-    0.03 & & & & \\
-    0.05 & & & & \\
-    0.10 & & & & \\
-    0.20 & & & & \\
-    0.30 & & & & \\
-    0.50 & & & & \\
-    1.00 & & & & \\
-    2.00 & & & & \\
-    4.00 & & & & \\
+    \directlua{print_intensity_rows()}
 \end{longtblr}
 
 \ast обязательно для заполнения
