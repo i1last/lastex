@@ -257,9 +257,9 @@
         "description": ""
     },
     "InlineLuaExec": {
-        "prefix": "el",
+        "prefix": "le",
         "body": [
-            "\\luaexec{${0:tex.print()}"
+            "\\luaexec{${0:tex.print()}}"
         ],
         "description": ""
     },
