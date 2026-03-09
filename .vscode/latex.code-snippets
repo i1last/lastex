@@ -84,6 +84,15 @@
         ],
         "description": ""
     },
+    "LuaCode": {
+        "prefix": "lc",
+        "body": [
+            "\\begin{luacode${1:*}}",
+            "    $0",
+            "\\end{luacode${1:*}}"
+        ],
+        "description": ""
+    },
     "Equation": {
         "prefix": "eq",
         "body": [
@@ -108,18 +117,6 @@
             "\\begin{figure}[${1:H}]",
             "    \\centering",
             "    \\includegraphics[width=${3:0.5}\\textwidth]{figs/${4:image}}",
-            "    \\caption{${2:caption}}",
-            "    \\label{fig:${4:label}}",
-            "\\end{figure}"
-        ],
-        "description": "Insert a figure environment"
-    },
-    "PGF": {
-        "prefix": "pgf",
-        "body": [
-            "\\begin{figure}[${1:H}]",
-            "    \\centering",
-            "    \\input{pgfs/${3:graph}}",
             "    \\caption{${2:caption}}",
             "    \\label{fig:${4:label}}",
             "\\end{figure}"
@@ -249,6 +246,20 @@
         "prefix": "ic",
         "body": [
             "\\mintinline{${1:text}}§${0:code}§"
+        ],
+        "description": ""
+    },
+    "InlineDirectLua": {
+        "prefix": "dl",
+        "body": [
+            "\\directlua{${0:tex.print()}"
+        ],
+        "description": ""
+    },
+    "InlineLuaExec": {
+        "prefix": "el",
+        "body": [
+            "\\luaexec{${0:tex.print()}"
         ],
         "description": ""
     },
