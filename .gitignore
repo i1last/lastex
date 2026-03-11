@@ -22,6 +22,7 @@ _minted/
 # Системные файлы
 .DS_Store
 Thumbs.db
+*.Identifier
 
 # Папки редакторов
 # .vscode/
