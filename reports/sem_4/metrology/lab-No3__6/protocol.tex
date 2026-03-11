@@ -1,3 +1,5 @@
+\directlua{dofile('protocol.lua')}
+
 \subsection*{Параметры исследования}
 \begin{table}[H]
     \centering
@@ -8,7 +10,7 @@
         hlines, vlines,
     }
         Тип звена & Номинальный коэф. передачи $k_H$ & Допустимая погрешность установления, \% \\
-        ФНЧ 2-го порядка & 1 & 5 \\
+        ФНЧ 2-го порядка & \directlua{tex.print(protocol.initial_params.k_H)} & \directlua{tex.print(protocol.initial_params.permissibleSpecificError * 100)} \\
     \end{tblr}
 \end{table}
 
@@ -21,13 +23,37 @@
     \begin{tblr}{
         colspec = { Q[r,m] Q[l,m] Q[r,m] Q[l,m] },
     }
-        $f_0 =$ & \_\_\_\_\_ Гц & $\beta =$ & \_\_\_\_\_ \\
+        $f_0 =$ & \directlua{tex.print(protocol.params_step.f_0)} Гц & $\beta =$ & \directlua{tex.print(protocol.params_step.betta)} \\
     \end{tblr}
 \end{table}
+
+\begin{luacode*}
+function print_step_response_rows()
+    local data = protocol.step_response
+    local num_rows_data = #data.t_i
+    local total_rows = 10
+    
+    for i = 1, num_rows_data do
+        tex.print(string.format(
+            "$%d$ & $%.2f$ & $%.2f$ & $%.2f$ \\\\",
+            i,
+            data.t_i[i] * 1e3, -- в мс
+            data.u_in_i[i],
+            data.u_out_i[i]
+        ))
+    end
+    
+    -- Добавляем пустые строки, если данных меньше 10
+    for i = num_rows_data + 1, total_rows do
+        tex.print(string.format("$%d$ & & & \\\\", i))
+    end
+end
+\end{luacode*}
 
 \begin{longtblr}[
     caption = {Результаты измерений при ступенчатом воздействии},
     label = {tab:step_response},
+    expand = \directlua,
 ]{
     width = \linewidth,
     colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] },
@@ -35,49 +61,62 @@
     rowhead = 1,
 }
     № точки & Время $t_i$, мс & Вход $u_{\text{вх} i}$, В & Выход $u_{\text{вых} i}$, В \\
-    1 & & & \\
-    2 & & & \\
-    3 & & & \\
-    4 & & & \\
-    5 & & & \\
-    6 & & & \\
-    7 & & & \\
-    8 & & & \\
-    9 & & & \\
-    10 & & & \\
+    \directlua{print_step_response_rows()}
 \end{longtblr}
 
 \subsection*{2. Зависимость времени установления}
 
-\begin{table}[H]
-    \centering
-    \caption{Зависимость $t_y = F(f_{0i})$ при $\beta = \text{const}$}
-    \label{tab:settling_freq}
-    \begin{tblr}{
-        colspec = { Q[c,m] X[c,m] X[c,m] },
-        hlines, vlines,
-    }
-        № опыта & Частота $f_{0i}$ (условн. ед. / Гц) & Время установления $t_y$, мс \\
-        1 & & \\
-        2 & & \\
-        3 & & \\
-        4 & & \\
-    \end{tblr}
-\end{table}
+\begin{luacode*}
+function print_settling_freq_rows()
+    local data = protocol.settling_freq
+    for i = 1, #data.f_0_i do
+        tex.print(string.format(
+            "$%d$ & $%.0f$ & $%.1f$ \\\\",
+            i,
+            data.f_0_i[i],
+            data.t_y[i] * 1e3 -- в мс
+        ))
+    end
+end
+\end{luacode*}
 
 \begin{table}[H]
     \centering
-    \caption{Зависимость $t_y = F(\beta_i)$ при $f_0 = \text{const}$}
+    \caption{Зависимость $t_y = F(f_{0i})$ при $\beta = \directlua{tex.print(protocol.settling_freq.betta)} = \text{const}$}
+    \label{tab:settling_freq}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        № опыта & Частота $f_{0i}$, Гц & Время установления $t_y$, мс \\
+        \directlua{print_settling_freq_rows()}
+    \end{tblr}
+\end{table}
+
+\begin{luacode*}
+function print_settling_beta_rows()
+    local data = protocol.settling_beta
+    for i = 1, #data.betta_i do
+        tex.print(string.format(
+            "$%d$ & $%.1f$ & $%.2f$ \\\\",
+            i,
+            data.betta_i[i],
+            data.t_y[i] * 1e3 -- в мс
+        ))
+    end
+end
+\end{luacode*}
+
+\begin{table}[H]
+    \centering
+    \caption{Зависимость $t_y = F(\beta_i)$ при $f_0 = \directlua{tex.print(protocol.settling_beta.f_0)} \text{ Гц} = \text{const}$}
     \label{tab:settling_beta}
-    \begin{tblr}{
+    \begin{tblr}[expand=\directlua]{
         colspec = { Q[c,m] X[c,m] X[c,m] },
         hlines, vlines,
     }
         № опыта & Коэф. демпфирования $\beta_i$ & Время установления $t_y$, мс \\
-        1 & & \\
-        2 & & \\
-        3 & & \\
-        4 & & \\
+        \directlua{print_settling_beta_rows()}
     \end{tblr}
 \end{table}
 
@@ -90,13 +129,29 @@
     \begin{tblr}{
         colspec = { Q[r,m] Q[l,m] Q[r,m] Q[l,m] },
     }
-        $f_0 =$ & \_\_\_\_\_ Гц & $\beta =$ & \_\_\_\_\_ \\
+        $f_0 =$ & \directlua{tex.print(protocol.params_sine.f_0)} Гц & $\beta =$ & \directlua{tex.print(protocol.params_sine.betta)} \\
     \end{tblr}
 \end{table}
+
+\begin{luacode*}
+function print_sine_response_rows()
+    local data = protocol.sine_response
+    for i = 1, #data.t_i do
+        tex.print(string.format(
+            "$%d$ & $%.2f$ & $%.2f$ & $%.2f$ \\\\",
+            i,
+            data.t_i[i] * 1e3, -- в мс
+            data.u_in_i[i],
+            data.u_out_i[i]
+        ))
+    end
+end
+\end{luacode*}
 
 \begin{longtblr}[
     caption = {Результаты измерений при синусоидальном воздействии},
     label = {tab:sine_response},
+    expand = \directlua,
 ]{
     width = \linewidth,
     colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] },
@@ -104,14 +159,5 @@
     rowhead = 1,
 }
     № точки & Время $t_i$, мс & Вход $u_{\text{вх} i}$, В & Выход $u_{\text{вых} i}$, В \\
-    1 & & & \\
-    2 & & & \\
-    3 & & & \\
-    4 & & & \\
-    5 & & & \\
-    6 & & & \\
-    7 & & & \\
-    8 & & & \\
-    9 & & & \\
-    10 & & & \\
+    \directlua{print_sine_response_rows()}
 \end{longtblr}

@@ -1,0 +1,133 @@
+% Включение файлов с данными и расчетами
+\directlua{dofile('protocol.lua')}
+\directlua{dofile('processing.lua')}
+
+\section{Исследование переходного процесса при ступенчатом воздействии}
+Динамическая погрешность $\Delta y(t)$ определяется как разность между реальным выходным сигналом $y(t)$ и идеальным (безынерционным) выходным сигналом $y_u(t)$:
+\begin{equation} \label{eq:dyn_error}
+    \Delta y(t) = y(t) - y_u(t)
+\end{equation}
+Идеальный выходной сигнал для звена с номинальным коэффициентом передачи $k_H$ равен:
+\begin{equation*}
+    y_u(t) = k_H \cdot x(t),
+\end{equation*}
+где $x(t)$ — входной сигнал. В данном случае $y(t) = u_{\text{вых}}(t)$, $x(t) = u_{\text{вх}}(t)$, а $k_H = \directlua{tex.print(protocol.initial_params.k_H)}$ (согласно \cref{tab:initial_params}).
+
+\subsection{Пример расчета для первой точки измерений}
+Для первой точки ($i=1$) из \cref{tab:step_response} имеем: $u_{\text{вх},1} = \luaexec{tex.print(protocol.step_response.u_in_i[1])}$ В, $u_{\text{вых},1} = \luaexec{tex.print(protocol.step_response.u_out_i[1])}$ В.
+Подставляя значения в \cref{eq:dyn_error}, получаем:
+\begin{equation*}
+    \Delta u_1 = u_{\text{вых},1} - k_H \cdot u_{\text{вх},1} = \luaexec{tex.print(protocol.step_response.u_out_i[1])} - \directlua{tex.print(protocol.initial_params.k_H)} \cdot \luaexec{tex.print(protocol.step_response.u_in_i[1])} = \luaexec{tex.print(string.format('\%.2f', results.step_response.delta_y_i[1]))}~\text{В}
+\end{equation*}
+Аналогичные расчеты выполнены для всех точек. Результаты сведены в \cref{tab:step_results}.
+
+\begin{luacode*}
+function print_step_results_table()
+    local p_data = protocol.step_response
+    local r_data = results.step_response
+    for i = 1, #p_data.t_i do
+        tex.print(string.format(
+            "$%d$ & $%.2f$ & $%.2f$ & $%.2f$ & $%.2f$ \\\\",
+            i, p_data.t_i[i] * 1e3, p_data.u_in_i[i], p_data.u_out_i[i], r_data.delta_y_i[i]
+        ))
+    end
+end
+\end{luacode*}
+
+\begin{table}[H]
+    \centering
+    \caption{Расчет динамической погрешности при ступенчатом воздействии}
+    \label{tab:step_results}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] *{4}{X[c,m]} }, hlines, vlines
+    }
+        {№ \\ точки} & {$t_i$, мс} & {$u_{\text{вх} i}$, В} & {$u_{\text{вых} i}$, В} & {$\Delta u_i$, В} \\
+        \directlua{print_step_results_table()}
+    \end{tblr}
+\end{table}
+
+Графики, построенные по данным из \cref{tab:step_results}, представлены на \cref{fig:step_response}.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/step_response.pgf}
+    \caption{Графики переходного процесса и динамической погрешности при ступенчатом воздействии}
+    \label{fig:step_response}
+\end{figure}
+
+\subsection{Выводы}
+Из \cref{fig:step_response} видно, что переходной процесс имеет колебательный характер. Выходной сигнал $u_{\text{вых}}(t)$ достигает установившегося значения не сразу, а после нескольких колебаний с затухающей амплитудой. Это поведение характерно для звена 2-го порядка с коэффициентом демпфирования $\beta < 1$. В данном эксперименте $\beta = \directlua{tex.print(protocol.params_step.betta)}$, что подтверждает наблюдаемую картину. Динамическая погрешность $\Delta u(t)$ максимальна в начальный момент времени и в моменты перерегулирования, после чего она стремится к нулю.
+
+\section{Анализ времени установления}
+Экспериментальные данные для анализа зависимостей времени установления взяты из \cref{tab:settling_freq,tab:settling_beta}. На их основе построены графики, представленные на \cref{fig:settling_freq,fig:settling_beta}.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/settling_freq.pgf}
+    \caption{Зависимость времени установления $t_y$ от частоты собственных колебаний $f_0$}
+    \label{fig:settling_freq}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/settling_beta.pgf}
+    \caption{Зависимость времени установления $t_y$ от коэффициента демпфирования $\beta$}
+    \label{fig:settling_beta}
+\end{figure}
+
+\subsection{Выводы}
+Анализ графиков на \cref{fig:settling_freq,fig:settling_beta} позволяет сделать следующие выводы:
+\begin{enumerate}
+    \item \textit{Влияние частоты собственных колебаний $f_0$ (\cref{fig:settling_freq}):} С увеличением частоты $f_0$ время установления $t_y$ уменьшается. Это объясняется тем, что система с более высокой собственной частотой обладает большим быстродействием. Зависимость близка к обратно пропорциональной ($t_y \sim 1/f_0$).
+    \item \textit{Влияние коэффициента демпфирования $\beta$ (\cref{fig:settling_beta}):} Зависимость $t_y$ от $\beta$ немонотонна. При увеличении $\beta$ от малых значений (колебательный режим) время установления сначала уменьшается, так как затухание колебаний происходит быстрее. Минимальное время установления достигается в области, близкой к критическому демпфированию ($\beta \approx 1$). При дальнейшем увеличении $\beta$ ($\beta > 1$, апериодический режим) система становится более инерционной, и время установления снова возрастает.
+\end{enumerate}
+
+\section{Исследование при синусоидальном воздействии}
+Расчет динамической погрешности при синусоидальном воздействии проводился по \cref{eq:dyn_error}. Исходные данные взяты из \cref{tab:sine_response}.
+
+\subsection{Пример расчета для первой точки измерений}
+Для первой точки ($i=1$) из \cref{tab:sine_response} имеем: $u_{\text{вх},1} = \luaexec{tex.print(protocol.sine_response.u_in_i[1])}$ В, $u_{\text{вых},1} = \luaexec{tex.print(protocol.sine_response.u_out_i[1])}$ В.
+\begin{equation*}
+    \Delta u_1 = u_{\text{вых},1} - k_H \cdot u_{\text{вх},1} = \luaexec{tex.print(protocol.sine_response.u_out_i[1])} - \directlua{tex.print(protocol.initial_params.k_H)} \cdot \luaexec{tex.print(protocol.sine_response.u_in_i[1])} = \luaexec{tex.print(string.format('\%.2f', results.sine_response.delta_y_i[1]))}~\text{В}
+\end{equation*}
+Результаты расчетов для всех точек приведены в \cref{tab:sine_results}.
+
+\begin{luacode*}
+function print_sine_results_table()
+    local p_data = protocol.sine_response
+    local r_data = results.sine_response
+    for i = 1, #p_data.t_i do
+        tex.print(string.format(
+            "$%d$ & $%.2f$ & $%.2f$ & $%.2f$ & $%.2f$ \\\\",
+            i, p_data.t_i[i] * 1e3, p_data.u_in_i[i], p_data.u_out_i[i], r_data.delta_y_i[i]
+        ))
+    end
+end
+\end{luacode*}
+
+\begin{table}[H]
+    \centering
+    \caption{Расчет динамической погрешности при синусоидальном воздействии}
+    \label{tab:sine_results}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] *{4}{X[c,m]} }, hlines, vlines
+    }
+        {№ \\ точки} & {$t_i$, мс} & {$u_{\text{вх} i}$, В} & {$u_{\text{вых} i}$, В} & {$\Delta u_i$, В} \\
+        \directlua{print_sine_results_table()}
+    \end{tblr}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/sine_response.pgf}
+    \caption{Графики процессов и динамической погрешности при синусоидальном воздействии}
+    \label{fig:sine_response}
+\end{figure}
+  
+\subsection{Выводы}
+Из \cref{fig:sine_response} следует, что при подаче на вход синусоидального сигнала выходной сигнал также является синусоидальным, но отличается от входного по амплитуде и фазе. Наблюдается фазовое отставание и изменение амплитуды, что является причиной возникновения динамической погрешности. Погрешность $\Delta u(t)$ также изменяется во времени по гармоническому закону. Максимальное (амплитудное) значение абсолютной динамической погрешности, согласно расчетам, составило \luaexec{tex.print(string.format('\%.2f', results.sine_response.max_abs_delta_y))}~В.
+
+\section{Общие выводы}
+В ходе выполнения лабораторной работы был проведен комплексный анализ динамического режима средства измерений, представленного динамическим звеном 2-го порядка (ФНЧ). 
+
+Динамические свойства средств измерений полностью определяются их параметрами $f_0$ и $\beta$. Для минимизации динамических погрешностей при проектировании и эксплуатации измерительных систем необходимо обеспечивать высокую частоту собственных колебаний $f_0$ и поддерживать коэффициент демпфирования $\beta$ вблизи $1$.
