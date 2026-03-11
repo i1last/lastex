@@ -1,0 +1,55 @@
+\begin{table}[H]
+    \centering
+    \caption{Измерения при резонансе (последовательный контур)}
+    \label{tab:series_res}
+    \begin{tblr}[expand=\directlua]{
+        colspec = {X[c,m] X[c,m] X[c,m] X[c,m] X[c,m]},
+        hlines, vlines,
+    }
+        Параметры & $U$, В & $I_0$, мА & $f_0$, кГц & $U_{C0}$, В \\
+        Малые потери & & & & \\
+        С резистором $R_1$ & & & & \\
+        С емкостью $3C$ & & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Данные для построения АЧХ последовательного контура}
+    \label{tab:series_afc}
+    \begin{tblr}[expand=\directlua]{
+        colspec = {Q[c,m] *{11}{X[c,m]}},
+        hlines, vlines,
+    }
+        $f$, кГц & & & & & & $f_0$ & & & & & \\
+        $I$, мА & & & & & & & & & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Измерения при резонансе (параллельный контур)}
+    \label{tab:parallel_res}
+    \begin{tblr}[expand=\directlua]{
+        colspec = {X[c,m] X[c,m] X[c,m] X[c,m] X[c,m]},
+        hlines, vlines,
+    }
+        Параметры & $I$, мА & $U_0$, В & $f_0$, кГц & $I_{C0}$, мА \\
+        Малые потери & & & & \\
+        С проводимостью $G_2$ & & & & \\
+        С емкостью $3C$ & & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Данные для построения АЧХ параллельного контура}
+    \label{tab:parallel_afc}
+    \begin{tblr}[expand=\directlua]{
+        colspec = {Q[c,m] *{11}{X[c,m]}},
+        hlines, vlines,
+    }
+        $f$, кГц & & & & & & $f_0$ & & & & & \\
+        $U$, В & & & & & & & & & & & \\
+    \end{tblr}
+\end{table}
