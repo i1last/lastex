@@ -1,0 +1,49 @@
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерения активных сопротивлений резисторов}
+    \label{tab:resistors_data}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+        rows = {m, font=\small},
+    }
+        {№ резистора / \\ Номинал} & {$R$, измеритель иммитанса} & {$R$, цифр. вольтметр} & {$R$, электр. вольтметр} & {$R$, тестер (деления)} \\
+        \midrule
+        $R_1 = $ & & & & \\
+        $R_2 = $ & & & & \\
+        $R_3 = $ & & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Данные для оценки погрешности прибора с неравномерной шкалой}
+    \label{tab:non_uniform_scale}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+        rows = {m, font=\small},
+    }
+        {$L_N$, дел.} & {$k$, \%} & {$\Delta L$, дел.} & {$R_1$, Ом} & {$R_2$, Ом} \\
+        \midrule
+        & & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерений параметров реактивных элементов}
+    \label{tab:reactive_elements}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+        rows = {m, font=\small},
+    }
+        {Элемент / \\ Схема} & {$C$ (мкФ) / $L$ (мГн)} & {$\text{tg} \, \delta$ / $Q$} & {$C$ (мкФ) / $L$ (мГн)} & {$\text{tg} \, \delta$ / $Q$} \\
+        \midrule
+        Схема $s$ & & & & \\
+        Схема $p$ & & & & \\
+    \end{tblr}
+\end{table}
+
+\textit{Примечание:} В \cref{tab:reactive_elements} первые две колонки данных относятся к конденсатору, вторые две --- к катушке индуктивности.
