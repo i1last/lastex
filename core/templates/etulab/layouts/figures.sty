@@ -10,9 +10,9 @@
 }
 
 % --- Оптимизация работы tikz с pgf
-\usetikzlibrary{external}
-% Переопределение системного вызова для использования LuaLaTeX вместо pdfLaTeX
-\tikzset{
-    external/system call={lualatex \tikzexternalcheckshellescape -haltexit -interaction=batchmode -jobname "\image" "\texsource"}
-}
-\tikzexternalize[prefix=out/]% Указание директории для кэша (слеш в конце обязателен)
+% \usetikzlibrary{external}
+% % Переопределение системного вызова для использования LuaLaTeX вместо pdfLaTeX
+% \tikzset{
+%     external/system call={lualatex \tikzexternalcheckshellescape -haltexit -interaction=batchmode -jobname "\image" "\texsource"}
+% }
+% \tikzexternalize[prefix=out/]% Указание директории для кэша (слеш в конце обязателен)
