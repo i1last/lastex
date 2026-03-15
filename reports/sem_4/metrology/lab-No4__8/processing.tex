@@ -1,0 +1,145 @@
+\directlua{dofile('processing.lua')}
+\newcommand{\getData}[3]{\directlua{print_val(protocol.#1.#2.#3)}}
+
+\section{ Резистивные элементы }
+\begin{quote}
+    \textit{Выполнить измерение сопротивления резисторов различными типами приборов. Оценить погрешности полученных результатов. Сравнить точность различных методов измерения сопротивления.}
+\end{quote} 
+
+В ходе лабораторной работы были проведены измерения активных сопротивлений двух резисторов ($R_2$ и $RN_2$) с помощью измерителя иммитанса и цифрового вольтметра в режиме омметра.
+
+\subsection{Расчет погрешностей для измерителя иммитанса}
+Согласно паспортным данным прибора, для рабочей частоты $1~\text{кГц}$ и измеренных значений сопротивлений ($R_2 = \directlua{tex.print(protocol.resistors_data.R2.immitanse)}~\text{Ом}$, $RN_2 = \directlua{tex.print(protocol.resistors_data.RN2.immitanse)}~\text{Ом}$) используется диапазон измерений №5 ($100.0 - 1000~\text{Ом}$). Конечное значение шкалы для данного диапазона $R_K = 1000~\text{Ом}$.
+Предел допускаемой основной относительной погрешности $\delta_R$ вычисляется по формуле:
+\begin{equation}
+    \delta_R = \pm \left[ 0.15 + 0.01 \left( \frac{R_K}{R} - 1 \right) \right] \%
+    \label{eq:imm_err_r}
+\end{equation}
+
+\begin{enumerate}
+    \item \textit{Расчет для резистора $R_2$:}
+    \begin{equation*}
+        \delta_{R_2} = 0.15 + 0.01 \left( \frac{1000}{\directlua{tex.print(protocol.resistors_data.R2.immitanse)}} - 1 \right) = \luaexec{tex.print(format_num(results.resistors.R2_imm.delta_rel, 2))}\%
+    \end{equation*}
+    Абсолютная погрешность:
+    \begin{equation*}
+        \Delta R_2 = \frac{\delta_{R_2}}{100\%} \cdot R_2 = \frac{\luaexec{tex.print(format_num(results.resistors.R2_imm.delta_rel, 3))}}{100} \cdot \directlua{tex.print(protocol.resistors_data.R2.immitanse)} = \luaexec{tex.print(format_num(results.resistors.R2_imm.delta_abs, 2))}~\text{Ом}
+    \end{equation*}
+    \textbf{Результат:} $R_2 = (\directlua{tex.print(protocol.resistors_data.R2.immitanse)} \pm \luaexec{tex.print(format_num(results.resistors.R2_imm.delta_abs, 1))})~\text{Ом}$; $\delta_{R_2} = \luaexec{tex.print(format_num(results.resistors.R2_imm.delta_rel, 2))}\%$.
+
+    \item \textit{Расчет для резистора $RN_2$:}
+    \begin{equation*}
+        \delta_{RN_2} = 0.15 + 0.01 \left( \frac{1000}{\directlua{tex.print(protocol.resistors_data.RN2.immitanse)}} - 1 \right) = \luaexec{tex.print(format_num(results.resistors.RN2_imm.delta_rel, 2))}\%
+    \end{equation*}
+    Абсолютная погрешность:
+    \begin{equation*}
+        \Delta RN_2 = \frac{\delta_{RN_2}}{100\%} \cdot RN_2 = \frac{\luaexec{tex.print(format_num(results.resistors.RN2_imm.delta_rel, 3))}}{100} \cdot \directlua{tex.print(protocol.resistors_data.RN2.immitanse)} = \luaexec{tex.print(format_num(results.resistors.RN2_imm.delta_abs, 2))}~\text{Ом}
+    \end{equation*}
+    \textbf{Результат:} $RN_2 = (\directlua{tex.print(protocol.resistors_data.RN2.immitanse)} \pm \luaexec{tex.print(format_num(results.resistors.RN2_imm.delta_abs, 1))})~\text{Ом}$; $\delta_{RN_2} = \luaexec{tex.print(format_num(results.resistors.RN2_imm.delta_rel, 2))}\%$.
+\end{enumerate}
+
+\subsection{Расчет погрешностей для цифрового вольтметра}
+Для цифрового вольтметра в режиме омметра принимается типовая формула погрешности: $\delta = \pm (0.5\% + 2~\text{ед.мл.разр.})$. Абсолютная погрешность вычисляется как:
+\begin{equation}
+    \Delta R = 0.005 \cdot R_{\text{изм}} + 2~\text{Ом},
+    \label{eq:volt_err_r}
+\end{equation}
+где $2~\text{Ом}$ соответствуют двум единицам младшего разряда для измеряемых величин.
+
+\begin{enumerate}
+    \item \textit{Расчет для резистора $R_2$:}
+    \begin{equation*}
+        \Delta R_2 = 0.005 \cdot 904 + 2 = \luaexec{tex.print(format_num(results.resistors.R2_volt.delta_abs, 2))}~\text{Ом}
+    \end{equation*}
+    Относительная погрешность: $\delta_{R_2} = (\Delta R_2 / R_2) \cdot 100\% = \luaexec{tex.print(format_num(results.resistors.R2_volt.delta_rel, 2))}\%$.
+    \newline
+    Результат: $R_2 = (904 \pm \luaexec{tex.print(format_num(results.resistors.R2_volt.delta_abs, 1))})~\text{Ом}$; $\delta_{R_2} = \luaexec{tex.print(format_num(results.resistors.R2_volt.delta_rel, 2))}\%$.
+
+    \item \textit{Расчет для резистора $RN_2$:}
+    \begin{equation*}
+        \Delta RN_2 = 0.005 \cdot 999 + 2 = \luaexec{tex.print(format_num(results.resistors.RN2_volt.delta_abs, 2))}~\text{Ом}
+    \end{equation*}
+    Относительная погрешность: $\delta_{RN_2} = (\Delta RN_2 / RN_2) \cdot 100\% = \luaexec{tex.print(format_num(results.resistors.RN2_volt.delta_rel, 2))}\%$.
+    \newline
+    Результат: $RN_2 = (999 \pm \luaexec{tex.print(format_num(results.resistors.RN2_volt.delta_abs, 1))})~\text{Ом}$; $\delta_{RN_2} = \luaexec{tex.print(format_num(results.resistors.RN2_volt.delta_rel, 2))}\%$.
+\end{enumerate}
+
+\subsection{Сравнительный анализ результатов}
+Сведем полученные данные в \cref{tab:resistor_summary}.
+
+\begin{table}[H]
+    \centering
+    \caption{Сводные результаты измерений активных сопротивлений}
+    \label{tab:resistor_summary}
+    \begin{tblr}{
+        colspec = {Q[c,m] Q[l,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m]},
+        hlines, vlines,
+    }
+        Резистор & Прибор & {$R_{\text{изм}}$, Ом} & {$\Delta R$, Ом} & {$\delta R$, \%} & {Доверит. интервал, Ом} \\
+        \SetCell[r=2]{m} $R_2$ & Иммитанс & \directlua{tex.print(results.resistors.R2_imm.val)} & \directlua{tex.print(format_num(results.resistors.R2_imm.delta_abs, 2))} & \directlua{tex.print(format_num(results.resistors.R2_imm.delta_rel, 2))} & $[\directlua{tex.print(format_num(results.resistors.R2_imm.val - results.resistors.R2_imm.delta_abs, 1))}; \directlua{tex.print(format_num(results.resistors.R2_imm.val + results.resistors.R2_imm.delta_abs, 1))}]$ \\
+        & Вольтметр & \directlua{tex.print(results.resistors.R2_volt.val)} & \directlua{tex.print(format_num(results.resistors.R2_volt.delta_abs, 2))} & \directlua{tex.print(format_num(results.resistors.R2_volt.delta_rel, 2))} & $[\directlua{tex.print(format_num(results.resistors.R2_volt.val - results.resistors.R2_volt.delta_abs, 1))}; \directlua{tex.print(format_num(results.resistors.R2_volt.val + results.resistors.R2_volt.delta_abs, 1))}]$ \\
+        \SetCell[r=2]{m} $RN_2$ & Иммитанс & \directlua{tex.print(results.resistors.RN2_imm.val)} & \directlua{tex.print(format_num(results.resistors.RN2_imm.delta_abs, 2))} & \directlua{tex.print(format_num(results.resistors.RN2_imm.delta_rel, 2))} & $[\directlua{tex.print(format_num(results.resistors.RN2_imm.val - results.resistors.RN2_imm.delta_abs, 1))}; \directlua{tex.print(format_num(results.resistors.RN2_imm.val + results.resistors.RN2_imm.delta_abs, 1))}]$ \\
+        & Вольтметр & \directlua{tex.print(results.resistors.RN2_volt.val)} & \directlua{tex.print(format_num(results.resistors.RN2_volt.delta_abs, 2))} & \directlua{tex.print(format_num(results.resistors.RN2_volt.delta_rel, 2))} & $[\directlua{tex.print(format_num(results.resistors.RN2_volt.val - results.resistors.RN2_volt.delta_abs, 1))}; \directlua{tex.print(format_num(results.resistors.RN2_volt.val + results.resistors.RN2_volt.delta_abs, 1))}]$ \\
+    \end{tblr}
+\end{table}
+
+Из \cref{tab:resistor_summary} следует, что измеритель иммитанса обеспечивает существенно более высокую точность при измерении активных сопротивлений в данном диапазоне. Его относительная погрешность ($= 0.15-0.25\%$) в 3-4 раза ниже, чем у цифрового вольтметра ($= 0.7\%$). Доверительные интервалы для иммитансметра значительно уже, что подтверждает его преимущество как специализированного прибора.
+
+\section{ Реактивные элементы }
+\begin{quote}
+    \textit{Провести измерения параметров реактивных элементов (конденсатора и катушки индуктивности). Оценить погрешности полученных результатов.}
+\end{quote}
+Измерения параметров конденсатора и катушки индуктивности проводились с помощью измерителя иммитанса по последовательной схеме.
+
+\subsection{Расчет погрешностей для конденсатора}
+Измеренное значение емкости $C_s = \directlua{tex.print(protocol.reactive_elements.capacitor.C * 1e9)}~\text{нФ}$ соответствует диапазону №3 ($1.600 - 16.00~\text{нФ}$) с конечным значением $C_K = 16.00~\text{нФ}$.
+Формулы погрешностей:
+\begin{gather}
+    \delta_C = \pm \left[ 0.15 + 0.01 \left( \frac{C_K}{C_s} - 1 \right) \right] \sqrt{1+\tan^2\delta} ~\% \label{eq:imm_err_c} \\
+    \Delta_{\tan\delta} = \pm \left[ \left(2.5 + \frac{C_K}{C_s}\right) \left(1+\tan^2\delta\right) \right] \cdot 10^{-3} \label{eq:imm_err_tand}
+\end{gather}
+Подставляя значения $C_s = \directlua{tex.print(protocol.reactive_elements.capacitor.C * 1e9)} \cdot 10^{-9}~\text{Ф}$, $C_K = 16 \cdot 10^{-9}~\text{Ф}$ и $\tan\delta = \directlua{tex.print(protocol.reactive_elements.capacitor.tandelta)}$:
+\begin{itemize}
+    \item \textit{Погрешность емкости $C_s$:}
+    \begin{equation*}
+        \delta_{C_s} = \luaexec{tex.print(format_num(results.capacitor.C_delta_rel, 3))}\% \quad \implies \quad \Delta C_s = \luaexec{tex.print(format_num(results.capacitor.C_delta_abs * 1e12, 2))}~\text{пФ}
+    \end{equation*}
+    \textbf{Результат:} $C_s = ( \directlua{tex.print(protocol.reactive_elements.capacitor.C * 1e9)} \pm \luaexec{tex.print(format_num(results.capacitor.C_delta_abs * 1e9, 3))})~\text{нФ}$; $\delta_{C_s} = \luaexec{tex.print(format_num(results.capacitor.C_delta_rel, 2))}\%$.
+
+    \item \textit{Погрешность тангенса угла потерь $\tan\delta$:}
+    \begin{equation*}
+        \Delta_{\tan\delta} = \luaexec{tex.print(string.format('\%.5f', results.capacitor.tan_delta_abs))} \quad \implies \quad \delta_{\tan\delta} = \frac{\Delta_{\tan\delta}}{\tan\delta} \cdot 100\% = \luaexec{tex.print(format_num(results.capacitor.tan_delta_rel, 2))}\%
+    \end{equation*}
+    \textbf{Результат:} $\tan\delta = (\directlua{tex.print(protocol.reactive_elements.capacitor.tandelta * 1000)} \pm \luaexec{tex.print(format_num(results.capacitor.tan_delta_abs*1e3, 1))}) \cdot 10^{-3}$; $\delta_{\tan\delta} = \luaexec{tex.print(format_num(results.capacitor.tan_delta_rel, 1))}\%$.
+\end{itemize}
+
+\subsection{Расчет погрешностей для катушки индуктивности}
+Измеренное значение индуктивности $L_s = \directlua{tex.print(protocol.reactive_elements.induction.L * 1000)}~\text{мГн}$ соответствует диапазону №7 ($0.160 - 1.600~\text{мГн}$) с конечным значением $L_K = 1.600~\text{мГн}$.
+Для расчета требуется тангенс угла потерь: $\tan\delta = 1/Q = 1/\directlua{tex.print(protocol.reactive_elements.induction.Q)} = \luaexec{tex.print(format_num(1 / protocol.reactive_elements.induction.Q, 3))}$.
+Формулы погрешностей:
+\begin{gather}
+    \delta_L = \pm \left[ 0.3 + 0.06 \left( \frac{L_K}{L_s} - 1 \right) \right] \sqrt{1+\tan^2\delta} ~\% \label{eq:imm_err_l} \\
+    \delta_Q = \pm \left[ \left(0.25 + 0.1 \frac{L_K}{L_s}\right) \left(Q + \frac{1}{Q}\right) \right] ~\% \label{eq:imm_err_q}
+\end{gather}
+Подставляя значения $L_s = \directlua{tex.print(protocol.reactive_elements.induction.L * 1000)}~\text{мГн}$, $L_K = 1.6 \cdot 10^{-3}~\text{Гн}$ и $Q = \directlua{tex.print(protocol.reactive_elements.induction.Q)}$:
+\begin{itemize}
+    \item \textit{Погрешность индуктивности $L_s$:}
+    \begin{equation*}
+        \delta_{L_s} = \luaexec{tex.print(format_num(results.inductor.L_delta_rel, 3))}\% \quad \implies \quad \Delta L_s = \luaexec{tex.print(format_num(results.inductor.L_delta_abs * 1e6, 2))}~\text{мкГн}
+    \end{equation*}
+    \textbf{Результат:} $L_s = (\directlua{tex.print(protocol.reactive_elements.induction.L * 1000)} \pm \luaexec{tex.print(format_num(results.inductor.L_delta_abs * 1e3, 3))})~\text{мГн}$; $\delta_{L_s} = \luaexec{tex.print(format_num(results.inductor.L_delta_rel, 2))}\%$.
+
+    \item \textit{Погрешность добротности $Q$:}
+    \begin{equation*}
+        \delta_{Q} = \luaexec{tex.print(format_num(results.inductor.Q_delta_rel, 3))}\% \quad \implies \quad \Delta Q = \luaexec{tex.print(format_num(results.inductor.Q_delta_abs, 3))}
+    \end{equation*}
+    \textbf{Результат:} $Q = \directlua{tex.print(protocol.reactive_elements.induction.Q)} \pm \luaexec{tex.print(format_num(results.inductor.Q_delta_abs, 3))}$; $\delta_{Q} = \luaexec{tex.print(format_num(results.inductor.Q_delta_rel, 1))}\%$.
+\end{itemize}
+
+\section{Вывод}
+
+Были проведены измерения сопротивлений двух резисторов ($R_2$ и $RN_{2}$) с помощью измерителя иммитанса и цифрового вольтметра в режиме омметра. Сравнительный анализ показал, что специализированный измеритель иммитанса обеспечивает существенно более высокую точность. Его относительная погрешность в исследуемом диапазоне составила $0.15\%$, что в 3-4 раза ниже погрешности цифрового вольтметра ($0.7\%$).
+
+Также были выполнены измерения параметров конденсатора и катушки индуктивности с использованием последовательной схемы замещения. Анализ результатов подтвердил корректность выбора данной схемы для катушки с низкой добротностью ($Q \ll 10$), поскольку ее физическая модель адекватно описывается последовательным соединением индуктивности и активного сопротивления потерь.
+
+Итак, цели работы достигнуты: освоены методики работы с измерительными приборами, произведена оценка погрешностей на основе их паспортных данных и выполнен сравнительный анализ точности различных средств измерений.
