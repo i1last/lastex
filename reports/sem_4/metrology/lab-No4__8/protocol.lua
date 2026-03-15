@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 protocol = {
     resistors_data = {
         R2 = {
