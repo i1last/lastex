@@ -6,37 +6,20 @@ local function trim(s)
     return s:match("^%s*(.-)%s*$")
 end
 
--- Безопасное разрешение пути (например, "results.table_data.U")
-function LasTeX.resolve_path(path)
-    if not path or path == "" then return nil end
-    local current = _G
+-- Универсальный вычислитель выражений
+function LasTeX.eval(expr)
+    if not expr or expr == "" then return nil end
     
-    -- Регулярное выражение ищет сегменты между точками
-    for part in path:gmatch("[^%.]+") do
-        -- Проверяем, есть ли в сегменте квадратные скобки: имя[индекс]
-        local name, index = part:match("([^%[%]]+)%[(%d+)%]")
-        
-        if name and index then
-            -- Если есть скобки, сначала берем таблицу по имени, затем элемент по индексу
-            current = current[name]
-            if type(current) == "table" then
-                current = current[tonumber(index)]
-            else
-                return nil
-            end
-        else
-            -- Если скобок нет, идем по обычному ключу
-            if type(current) == "table" then
-                current = current[part]
-            else
-                return nil
-            end
+    -- Пытаемся скомпилировать строку как "return <выражение>"
+    local f, err = load("return " .. expr)
+    if f then
+        -- Выполняем функцию в глобальном окружении
+        local status, result = pcall(f)
+        if status then
+            return result
         end
-        
-        if current == nil then return nil end
     end
-    
-    return current
+    return nil
 end
 
 -- Форматирование отдельного значения
@@ -60,13 +43,14 @@ function LasTeX.format_value(val, opt)
 end
 
 -- Вывод одиночного значения
-function LasTeX.print_val(path, opt)
-    tex.sprint(LasTeX.format_value(LasTeX.resolve_path(path), opt))
+function LasTeX.print_val(expr, opt)
+    local val = LasTeX.eval(expr)
+    tex.sprint(LasTeX.format_value(val, opt))
 end
 
 -- Базовая функция извлечения среза массива
 function LasTeX.join_array(path, fmt, sep, start_idx, end_idx)
-    local arr = LasTeX.resolve_path(path)
+    local arr = LasTeX.eval(expr)
     if type(arr) ~= "table" then
         tex.sprint("---")
         return
@@ -98,8 +82,8 @@ end
 
 -- Генерация блока (матрицы)
 function LasTeX.print_block(paths_str, fmts_str, start_idx, end_idx)
-    local paths = {}
-    for p in paths_str:gmatch("[^,]+") do table.insert(paths, trim(p)) end
+    local exprs = {}
+    for e in exprs_str:gmatch("[^,]+") do table.insert(exprs, trim(e)) end
 
     local fmts = {}
     if fmts_str and fmts_str ~= "" then
@@ -108,9 +92,9 @@ function LasTeX.print_block(paths_str, fmts_str, start_idx, end_idx)
 
     local arrays = {}
     local max_len = 0
-    
-    for i, p in ipairs(paths) do
-        local arr = LasTeX.resolve_path(p)
+
+    for i, e in ipairs(exprs) do
+        local arr = LasTeX.eval(e) -- Теперь здесь может быть выражение, возвращающее таблицу
         if type(arr) ~= "table" then arr = { arr } end
         arrays[i] = arr
         if #arr > max_len then max_len = #arr end
