@@ -8,27 +8,26 @@
 % - Одиночное значение
 % Синтаксис: \val[формат]{путь};
 % Форматы: 'exp' - экспоненциальная форма; <число> === %.<число>f
-\NewExpandableDocumentCommand{\val}{O{}m}{%
-    \directlua{LasTeX.print_val('#2', '#1')}%
+\NewExpandableDocumentCommand{\val}{s O{} m}{%
+    \directlua{LasTeX.print_val('#3', '#2', \IfBooleanTF{#1}{true}{false})}%
 }
-
 
 % - Развертывание в строку (через &)
 % Синтаксис: \luarow[формат]{путь}[старт][конец]
-\NewExpandableDocumentCommand{\luarow}{O{}O{1}O{-1}m}{%
-    \directlua{LasTeX.print_row('#4', '#1', #2, #3)}%
+\NewExpandableDocumentCommand{\luarow}{s O{} O{1} O{-1} m}{%
+    \directlua{LasTeX.print_row('#5', '#2', #3, #4, \IfBooleanTF{#1}{true}{false})}%
 }
 
 % - Развертывание в столбец (через \\)
 % Синтаксис: \luacol[формат]{путь}[старт][конец]
-\NewExpandableDocumentCommand{\luacol}{O{}O{1}O{-1}m}{%
-    \directlua{LasTeX.print_col('#4', '#1', #2, #3)}%
+\NewExpandableDocumentCommand{\luacol}{s O{} O{1} O{-1} m}{%
+    \directlua{LasTeX.print_col('#5', '#2', #3, #4, \IfBooleanTF{#1}{true}{false})}%
 }
 
 % - Развертывание блока (матрицы)
 % Синтаксис: \luablock[формат1, формат2, ...]{путь1, путь2, ...}[старт][конец]
-\NewExpandableDocumentCommand{\luablock}{O{}O{1}O{-1}m}{%
-    \directlua{LasTeX.print_block('#4', '#1', #2, #3)}%
+\NewExpandableDocumentCommand{\luablock}{s O{} O{1} O{-1} m}{%
+    \directlua{LasTeX.print_block('#5', '#2', #3, #4, \IfBooleanTF{#1}{true}{false})}%
 }
 
 \endinput
