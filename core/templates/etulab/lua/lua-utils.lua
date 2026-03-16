@@ -10,13 +10,32 @@ end
 function LasTeX.resolve_path(path)
     if not path or path == "" then return nil end
     local current = _G
-    for key in path:gmatch("[^%.]+") do
-        if type(current) == "table" and current[key] ~= nil then
-            current = current[key]
+    
+    -- Регулярное выражение ищет сегменты между точками
+    for part in path:gmatch("[^%.]+") do
+        -- Проверяем, есть ли в сегменте квадратные скобки: имя[индекс]
+        local name, index = part:match("([^%[%]]+)%[(%d+)%]")
+        
+        if name and index then
+            -- Если есть скобки, сначала берем таблицу по имени, затем элемент по индексу
+            current = current[name]
+            if type(current) == "table" then
+                current = current[tonumber(index)]
+            else
+                return nil
+            end
         else
-            return nil
+            -- Если скобок нет, идем по обычному ключу
+            if type(current) == "table" then
+                current = current[part]
+            else
+                return nil
+            end
         end
+        
+        if current == nil then return nil end
     end
+    
     return current
 end
 
