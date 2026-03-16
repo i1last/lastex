@@ -1,0 +1,186 @@
+% Подключение расчетного модуля Lua
+\directlua{dofile('processing.lua')}
+
+\begin{figure}[hb]
+    \centering
+    % Здесь должен быть график, построенный на основе данных.
+    % В данном случае используется заглушка.
+    \includegraphics[width=\textwidth]{figs/stress-strain-plot.png}
+    \caption{Диаграммы условных напряжений для исследованных образцов}
+    \label{fig:stress_strain_src}
+\end{figure}
+
+\section*{ \boxed{\text{ Задание 1. }} }
+\begin{quote}
+    \textit{Вычисление площадей поперечного сечения до ($F_0$) и после ($F_k$) испытания.}
+\end{quote}
+
+Площадь поперечного сечения для образцов с прямоугольным профилем (кожа) вычисляется по формуле:
+\begin{equation*}
+    F = w \cdot h,
+\end{equation*}
+где $w$ --- ширина, $h$ --- толщина образца.
+
+Для образцов с круглым профилем (веревка, проволока) формула имеет вид:
+\begin{equation*}
+    F = \frac{\pi d^2}{4},
+\end{equation*}
+где $d$ --- диаметр образца.
+
+Результаты расчетов сведены в \cref{tab:areas}.
+
+\begin{table}[H]
+    \centering
+    \caption{Расчетные значения площадей поперечного сечения}
+    \label{tab:areas}
+    \begin{tblr}{
+        colspec = { Q[l,m] *{2}{X[c,m]} },
+    }
+        \toprule
+        Образец & Начальная площадь $F_0$, м$^2$ & Конечная площадь $F_k$, м$^2$ \\
+        \midrule
+        Кожа     & \directlua{format_sci(results.leather.F0)} & \directlua{format_sci(results.leather.Fk)} \\
+        Веревка  & \directlua{format_sci(results.rope.F0)}    & \directlua{format_sci(results.rope.Fk)}    \\
+        Проволока& \directlua{format_sci(results.wire.F0)}    & \directlua{format_sci(results.wire.Fk)}    \\
+        \bottomrule
+    \end{tblr}
+\end{table}
+
+\section*{ \boxed{\text{ Задание 2. }} }
+\begin{quote}
+    \textit{Расчет механических характеристик прочности ($\sigma_\text{в}, \sigma_\text{к}$).}
+\end{quote}
+
+Для расчета характеристик прочности используются значения нагрузок, снятые с диаграммы растяжения. Максимальная нагрузка $P_\text{max}$ соответствует временному сопротивлению материала, а нагрузка в момент разрыва $P_k$ --- истинному сопротивлению разрыву.
+
+\begin{table}[H]
+    \centering
+    \caption{Значения нагрузок, определенные по диаграмме растяжения}
+    \label{tab:loads}
+    \begin{tblr}{
+        colspec = { Q[l,m] *{2}{X[c,m]} },
+    }
+        \toprule
+        Образец & $P_\text{max}$, Н & $P_k$, Н \\
+        \midrule
+        Кожа     & \directlua{tex.print(P_values.leather.max)} & \directlua{tex.print(P_values.leather.k)} \\
+        Веревка  & \directlua{tex.print(P_values.rope.max)}    & \directlua{tex.print(P_values.rope.k)} \\
+        Проволока& \directlua{tex.print(P_values.wire.max)}    & \directlua{tex.print(P_values.wire.k)} \\
+        \bottomrule
+    \end{tblr}
+\end{table}
+
+\textit{Временное сопротивление (предел прочности)} $\sigma_\text{в}$ определяется как отношение максимальной нагрузки к начальной площади поперечного сечения:
+\begin{equation}
+    \sigma_\text{в} = \frac{P_\text{max}}{F_0}.
+    \label{eq:sigma_v}
+\end{equation}
+
+\textit{Истинное сопротивление разрыву} $\sigma_\text{к}$ определяется как отношение разрывной нагрузки к площади сечения шейки в момент разрыва:
+\begin{equation}
+    \sigma_\text{к} = \frac{P_k}{F_k}.
+    \label{eq:sigma_k}
+\end{equation}
+
+Пример расчета для образца <<Проволока>>:
+\begin{equation*}
+    \sigma_\text{в} = \frac{\val[0]{P_values.wire.max} \text{ Н}}{\val[exp]{results.wire.F0} \text{ м}^2} \approx \val[exp]{results.wire.sigma_v} \text{ Па}.
+\end{equation*}
+\begin{equation*}
+    \sigma_\text{к} = \frac{\val[0]{P_values.wire.k} \text{ Н}}{\val[exp]{results.wire.Fk} \text{ м}^2} \approx \val[exp]{results.wire.sigma_k} \text{ Па}.
+\end{equation*}
+
+Результаты расчетов для всех образцов приведены в \cref{tab:strength}.
+
+\begin{table}[H]
+    \centering
+    \caption{Характеристики прочности материалов}
+    \label{tab:strength}
+    \begin{tblr}{
+        colspec = { Q[l,m] *{2}{X[c,m]} },
+    }
+        \toprule
+        Образец & Временное сопротивление $\sigma_\text{в}$, МПа & Истинное сопротивление разрыву $\sigma_\text{к}$, МПа \\
+        \midrule
+        Кожа     & \directlua{cell(results.leather.sigma_v / 1e6)} & \directlua{cell(results.leather.sigma_k / 1e6)} \\
+        Веревка  & \directlua{cell(results.rope.sigma_v / 1e6)}    & \directlua{cell(results.rope.sigma_k / 1e6)}    \\
+        Проволока& \directlua{cell(results.wire.sigma_v / 1e6)}    & \directlua{cell(results.wire.sigma_k / 1e6)}    \\
+        \bottomrule
+    \end{tblr}
+\end{table}
+
+
+\section*{ \boxed{\text{ Задание 3. }} }
+\begin{quote}
+    \textit{Расчет характеристик пластичности ($\delta, \psi$).}
+\end{quote}
+
+\textit{Относительное удлинение после разрыва} $\delta$ вычисляется по формуле:
+\begin{equation}
+    \delta = \frac{l_k - l_0}{l_0} \cdot 100\%,
+    \label{eq:delta}
+\end{equation}
+где $l_0$ и $l_k$ --- начальная и конечная расчетная длина образца.
+
+\textit{Относительное сужение после разрыва} $\psi$ вычисляется по формуле:
+\begin{equation}
+    \psi = \frac{F_0 - F_k}{F_0} \cdot 100\%.
+    \label{eq:psi}
+\end{equation}
+
+Результаты расчетов сведены в \cref{tab:plasticity}.
+
+\begin{table}[H]
+    \centering
+    \caption{Характеристики пластичности материалов}
+    \label{tab:plasticity}
+    \begin{tblr}{
+        colspec = { Q[l,m] *{2}{X[c,m]} },
+    }
+        \toprule
+        Образец & Относительное удлинение $\delta$, \% & Относительное сужение $\psi$, \% \\
+        \midrule
+        Кожа     & \directlua{cell(results.leather.delta)} & \directlua{cell(results.leather.psi)} \\
+        Веревка  & \directlua{cell(results.rope.delta)}    & \directlua{cell(results.rope.psi)}    \\
+        Проволока& \directlua{cell(results.wire.delta)}    & \directlua{cell(results.wire.psi)}    \\
+        \bottomrule
+    \end{tblr}
+\end{table}
+
+\section*{ \boxed{\text{ Задание 4. }} }
+\begin{quote}
+    \textit{Построение диаграммы условных напряжений $\sigma = f(\varepsilon)$.}
+\end{quote}
+
+Диаграмма условных напряжений строится путем пересчета осей диаграммы растяжения <<нагрузка-удлинение>>. Ось ординат (напряжение $\sigma$) получается делением нагрузки $P$ на начальную площадь $F_0$. Ось абсцисс (относительная деформация $\varepsilon$) --- делением абсолютного удлинения $\Delta l$ на начальную длину $l_0$.
+\begin{equation*}
+    \sigma = \frac{P}{F_0}, \quad \varepsilon = \frac{\Delta l}{l_0}.
+\end{equation*}
+Качественный вид диаграммы $\sigma(\varepsilon)$ повторяет вид исходной диаграммы $P(\Delta l)$, представленной в условии. На \cref{fig:stress_strain} показан результат такого пересчета.
+ 
+\begin{figure}[H]
+    \centering
+    % Здесь должен быть график, построенный на основе данных.
+    % В данном случае используется заглушка.
+    \input{figs/stress-strain-plot.pgf}
+    \caption{Диаграммы условных напряжений для исследованных образцов}
+    \label{fig:stress_strain}
+\end{figure}
+
+\section*{ \boxed{\text{ Задание 6. }} }
+\begin{quote}
+    \textit{Формулировка вывода о типе разрушения (вязкое/хрупкое) и соответствии материала классу сталей.}
+\end{quote}
+
+На основе анализа диаграмм растяжения и расчетных характеристик пластичности ($\delta$ и $\psi$) можно сделать следующие выводы о поведении материалов при одноосном растяжении.
+
+\begin{itemize}
+    \item \textit{Кожа.} Образец демонстрирует значительное относительное удлинение ($\delta \approx \luaexec{format_float(results.leather.delta)}\%$) и сужение ($\psi \approx \luaexec{format_float(results.leather.psi)}\%$). Разрушение происходит после существенной пластической деформации. Такое поведение характеризуется как вязкое (пластичное).
+    
+    \item \textit{Веревка.} Материал показывает значительное относительное удлинение ($\delta \approx \luaexec{format_float(results.rope.delta)}\%$). После достижения максимальной нагрузки происходит падение несущей способности, но образец продолжает деформироваться до разрыва. Относительное сужение составляет $100\%$, что указывает на то, что материал в месте разрыва распался на волокна. Тип разрушения --- вязкий.
+    
+    \item \textit{Проволока.} Образец имеет относительное удлинение в ($\delta \approx \luaexec{format_float(results.wire.delta)}\%$). Значительное относительное сужение ($\psi \approx \luaexec{format_float(results.wire.psi)}\%$), указывают на наличие развитой пластической деформации перед разрушением. Это характерно для пластичных металлов, таких как сталь. Разрушение является вязким, с образованием <<шейки>>.
+\end{itemize}
+
+\section*{Общий вывод}
+Все три исследованных материала продемонстрировали пластичный (вязкий) характер разрушения, который сопровождался значительными остаточными деформациями.

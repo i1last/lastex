@@ -1,0 +1,60 @@
+\directlua{dofile('protocol.lua')}
+\newcommand{\getData}[3]{\directlua{print_sci(protocol.#1.#2.#3)}}
+
+\begin{table}[H]
+    \centering
+    \caption{Геометрические параметры образца (Кожа)}
+    \label{tab:leather}
+    \begin{tblr}[expand=\directlua]{
+        colspec = {X[c,m] X[c,m] X[c,m]},
+        hlines, vlines,
+        row{1,3} = {font=\bfseries},
+    }
+        \SetCell[c=3]{c} Описание & & \\
+        \SetCell[c=3]{c} Кусок кожи черного цвета. Возможно натуральная корова. & & \\
+        \hline
+        \SetCell[c=3]{c} Параметры образца & & \\
+        Величины & До эксперимента & После эксперимента \\
+        $w$, м & \getData{leather}{before}{w} & \getData{leather}{after}{w} \\
+        $h$, м & \getData{leather}{before}{h} & \getData{leather}{after}{h} \\
+        $l$, м & \getData{leather}{before}{l} & \getData{leather}{after}{l} \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Геометрические параметры образца (Веревка)}
+    \label{tab:rope}
+    \begin{tblr}[expand=\directlua]{
+        colspec = {X[c,m] X[c,m] X[c,m]},
+        hlines, vlines,
+        row{1,3} = {font=\bfseries},
+    }
+        \SetCell[c=3]{c} Описание & & \\
+        \SetCell[c=3]{c} Зеленая пластиковая веревка. Самое то для помидоров! & & \\
+        \hline
+        \SetCell[c=3]{c} Параметры образца & & \\
+        Величины & До эксперимента & После эксперимента \\
+        $d$, м & \getData{rope}{before}{d} & \getData{rope}{after}{d} \\
+        $l$, м & \getData{rope}{before}{l} & \getData{rope}{after}{l} \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Геометрические параметры образца (Проволока)}
+    \label{tab:wire}
+    \begin{tblr}[expand=\directlua]{
+        colspec = {X[c,m] X[c,m] X[c,m]},
+        hlines, vlines,
+        row{1,3} = {font=\bfseries},
+    }
+        \SetCell[c=3]{c} Описание & & \\
+        \SetCell[c=3]{c} Проволока. Предположительно сталь. & & \\
+        \hline
+        \SetCell[c=3]{c} Параметры образца & & \\
+        Величины & До эксперимента & После эксперимента \\
+        $d$, м & \getData{wire}{before}{d} & \getData{wire}{after}{d} \\
+        $l$, м & \getData{wire}{before}{l} & \getData{wire}{after}{l} \\
+    \end{tblr}
+\end{table}
