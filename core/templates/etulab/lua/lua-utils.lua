@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 LasTeX = LasTeX or {}
 
 -- Вспомогательная функция для удаления лишних пробелов по краям строки
