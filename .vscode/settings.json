@@ -15,4 +15,8 @@
     "latex-workshop.latex.outDir": "./out",
     "python-envs.defaultEnvManager": "ms-python.python:system",
     "python-envs.pythonProjects": [],
+    "Lua.diagnostics.disable": [
+        "undefined-global",
+        "lowercase-global"
+    ],
 }
