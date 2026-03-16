@@ -1,0 +1,34 @@
+\ProvidesPackage{letistyle/lua/lua.sty}
+
+% kpse.find_file гарантирует, что LuaTeX найдет файл в системных путях ядра, 
+% где бы ни находился компилируемый отчет.
+\directlua{dofile(kpse.find_file("lua-utils.lua"))}
+
+% --- Глобальные макросы
+% - Одиночное значение
+% Синтаксис: \val[формат]{путь};
+% Форматы: 'exp' - экспоненциальная форма; <число> === %.<число>f
+\NewExpandableDocumentCommand{\val}{O{}m}{%
+    \directlua{LasTeX.print_val('#2', '#1')}%
+}
+
+
+% - Развертывание в строку (через &)
+% Синтаксис: \luarow[формат]{путь}[старт][конец]
+\NewExpandableDocumentCommand{\luarow}{O{}O{1}O{-1}m}{%
+    \directlua{LasTeX.print_row('#4', '#1', #2, #3)}%
+}
+
+% - Развертывание в столбец (через \\)
+% Синтаксис: \luacol[формат]{путь}[старт][конец]
+\NewExpandableDocumentCommand{\luacol}{O{}O{1}O{-1}m}{%
+    \directlua{LasTeX.print_col('#4', '#1', #2, #3)}%
+}
+
+% - Развертывание блока (матрицы)
+% Синтаксис: \luablock[формат1, формат2, ...]{путь1, путь2, ...}[старт][конец]
+\NewExpandableDocumentCommand{\luablock}{O{}O{1}O{-1}m}{%
+    \directlua{LasTeX.print_block('#4', '#1', #2, #3)}%
+}
+
+\endinput

@@ -53,6 +53,8 @@
 % Определение пользовательских команд
 \RequirePackage{etulab/commands}
 
+% Lua
+\RequirePackage{etulab/lua/lua} 
 
 % --- Интерфейс данных
 \newcommand{\Department}[1]{\def\@Department{#1}}
