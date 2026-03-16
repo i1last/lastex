@@ -203,7 +203,7 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
     duration = time.time() - start_time
     
     if target != "clean":
-        print(f"\n✅ Успешно! Время: {duration:.2f} сек. Код ошибки: {result.returncode}")
+        print(f"\n✅ Компиляция завершена. Время: {duration:.2f} сек. См. результаты выше. Код ошибки: {result.returncode}")
     else:
         print(f"\n✅ Очистка завершена.")
 
