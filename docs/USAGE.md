@@ -53,8 +53,8 @@
 
 Для автоматизации расчетов и заполнения таблиц используется интеграция с LuaTeX. 
 Рекомендуемый процесс работы:
-1.  **`protocol.lua`**: инициализация массивов с сырыми данными измерений.
-2.  **`processing.lua`**: математическая обработка массивов.
+1.  **`code/protocol.lua`**: инициализация массивов с сырыми данными измерений.
+2.  **`code/processing.lua`**: математическая обработка массивов.
 3.  **`protocol.tex` / `main.tex`**: вывод данных через макросы `\val`, `\luarow`, `\luacol`, `\luablock`.
 
 ### Пример использования `\luablock` в таблице
@@ -106,6 +106,32 @@
 ```
 
 См. пример использования в [`reports/sem_4/em/lab-No2__3/code/`](../reports/sem_4/em/lab-No2__3/code/)
+
+## 7. Структура отчета
+Промпт для ИИ ([`api_respose.md`](./AI/api_response.md)) оптимизирован для следующей структуры:
+```
+some-lab/
+├── code/
+│   ├── plot1.py
+│   ├── plot2.py
+│   ├── ...
+│   ├── plotn.py
+│   ├── processing.lua
+│   └── protocol.lua
+├── figs/
+│   ├── plot1.pgf
+│   ├── plot2.pgf
+│   ├── ...
+│   ├── plotn.pgf
+│   ├── some.png
+│   └── some.pdf
+├── _report.tex
+├── main.tex
+├── processing.tex
+└── protocol.tex
+```
+
+При этом все импорты указываются относительно директории `some-lab/` (см. [`api_respose.md`](./AI/api_response.md) п.4, п.5).
 
 ---
 
