@@ -2,31 +2,48 @@ from lupa import LuaRuntime
 import matplotlib.pyplot as plt
 import numpy as np
 
+# Инициализация Lua и загрузка данных
 lua = LuaRuntime(unpack_returned_tuples=True)
 lua.execute("dofile('code/processing.lua')")
 r = lua.globals().r
 
+# Построение графика
 fig, ax = plt.subplots()
 
-# Для примера строим только "Без коррекции" для ясности среза
-f = np.array(list(r.afc.woc.f.values()))
-k = np.array(list(r.afc.woc.K.values()))
-k_max = r.afc.woc.K_max
-k_gr = r.afc.woc.K_cutoff
+# Список режимов для итерации
+modes = [
+    ('woc', 'Без коррекции'),
+    ('R3', 'С $R_3$'),
+    ('evck', 'ЭВЧК'),
+    ('ivck', 'ИВЧК'),
+    ('nck', 'НЧК')
+]
 
-ax.semilogx(f, k, 'k-', label='Без коррекции')
-ax.axhline(y=k_max, color='r', linestyle='--', alpha=0.5, label='$K_{max}$')
-ax.axhline(y=k_gr, color='b', linestyle='--', alpha=0.5, label='$K_{гр} = 0.707 K_{max}$')
+for key, label in modes:
+    mode_data = r.afc[key]
+    if mode_data is None:
+        continue
+        
+    # Преобразование Lua-таблиц в numpy массивы
+    f = np.array(list(mode_data.f.values()))
+    k = np.array(list(mode_data.K.values()))
+    
+    # Построение основного графика
+    line, = ax.semilogx(f, k, marker='', label=label)
+    
+    # Добавление линии уровня среза K_гр
+    if mode_data.K_cutoff:
+        ax.axhline(y=mode_data.K_cutoff, 
+                   linestyle='-', 
+                   color=line.get_color(), 
+                   alpha=0.5, 
+                   linewidth=1)
 
-# Отметки частот
-if r.afc.woc.f_low:
-    ax.axvline(x=r.afc.woc.f_low,)
-if r.afc.woc.f_high:
-    ax.axvline(x=r.afc.woc.f_high,)
-
+# Настройка осей и легенды
 ax.set_xlabel('Частота $f$, Гц')
-ax.set_ylabel('Усиление $K$')
-ax.legend()
+ax.set_ylabel('Коэффициент усиления $K$')
 ax.grid()
+ax.legend(ncol=3)
 
+# Сохранение в файл
 plt.savefig('afc_cutoff.pgf')

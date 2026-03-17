@@ -56,7 +56,7 @@
 
 На \cref{fig:afc_plots} представлены графики зависимостей коэффициента усиления от частоты для всех пяти конфигураций усилителя. Ось частот имеет логарифмический масштаб для наглядного представления широкого диапазона измерений.
 
-\begin{figure}[hbt]
+\begin{figure}[H]
     \centering
     \input{figs/afc.pgf}
     \caption{Амплитудно-частотные характеристики усилителя при различных видах коррекции}
@@ -79,9 +79,16 @@
     K_\text{гр} = \frac{\val[2]{r.afc.woc.K_max}}{\sqrt{2}} = \val[2]{r.afc.woc.K_cutoff}
 \end{equation}
 
-Граничные частоты определяются на уровне $K_\text{гр} = K_\text{max} / \sqrt{2}$. Для их нахождения используется метод логарифмической интерполяции между двумя ближайшими экспериментальными точками $(f_1, K_1)$ и $(f_2, K_2)$, которые <<окружают>> искомый уровень $K_\text{гр}$. Итоговые значения сведены в \cref{tab:cutoff_freqs}.
+Итоговые значения сведены в \cref{tab:cutoff_freqs}. См. график на \cref{fig:gr}
 
-\begin{table}[hbt]
+\begin{figure}[H]
+    \centering
+    \input{figs/afc_cutoff.pgf}
+    \caption{АЧХ усилителя при различных видах коррекции с $K_\text{гр}$}
+    \label{fig:gr}
+\end{figure}
+
+\begin{table}[hb]
     \centering
     \caption{Сводные результаты по граничным частотам}
     \label{tab:cutoff_freqs}
@@ -90,7 +97,7 @@
         colspec = {X[l,m] *{4}{X[c,m]}},
         hlines, vlines,
     }
-        Режим коррекции & $K_\text{max}$ & $K_\text{max}$ & $f_\text{н.гр}$, Гц & $f_\text{в.гр}$, кГц \\
+        Режим коррекции & $K_\text{max}$ & $K_\text{гр}$ & $f_\text{н.гр}$, Гц & $f_\text{в.гр}$, кГц \\
         \midrule
         Без коррекции & \val[2]{r.afc.woc.K_max} & \val[2]{r.afc.woc.K_cutoff} & \val[1]{r.afc.woc.f_low} & \val[1]{r.afc.woc.f_high / 1000} \\
         С $R_3$ & \val[2]{r.afc.R3.K_max} & \val[2]{r.afc.R3.K_cutoff} & --- & \val[1]{r.afc.R3.f_high / 1000} \\
@@ -118,7 +125,7 @@
 \end{equation}
 Для схемы без коррекции:
 \begin{equation}
-    \tau_\text{ф} = \frac{0.35}{\val[0]{r.afc.woc.f_high}} = \val[2]{r.pulse.woc_tau_f * 1e6} \text{ мкс}
+    \tau_\text{ф} = \frac{0.35}{\val[0]{r.afc.woc.f_high}} = \val[2]{r.pulse.woc.tau * 1e6} \text{ мкс}
 \end{equation}
 
 \subsection*{Спад вершины}
@@ -128,12 +135,12 @@
 \end{equation}
 Для схемы без коррекции при $t_\text{и} = T/2 = \val[1]{p.pulse.nf / 2 * 1000}$ мс и $f_\text{н.гр} = \val[1]{r.afc.woc.f_low}$ Гц:
 \begin{equation}
-    \delta = \left(1 - \exp\left(-\frac{\val[3]{p.pulse.nf / 2}}{1 / (2\pi \cdot \val[1]{r.afc.woc.f_low})}\right)\right) \cdot 100\% = \val[2]{r.pulse.woc_delta} \%
+    \delta = \left(1 - \exp\left(-\frac{\val[4]{p.pulse.nf / 2}}{1 / (2\pi \cdot \val[1]{r.afc.woc.f_low})}\right)\right) \cdot 100\% = \val[2]{r.pulse.woc.delta} \%
 \end{equation}
 
 Результаты расчетов для всех применимых режимов приведены в \cref{tab:pulse_params}.
 
-\begin{table}[hbt]
+\begin{table}[h]
     \centering
     \caption{Расчетные параметры искажений импульсов}
     \label{tab:pulse_params}
@@ -146,15 +153,78 @@
         \midrule
         Без коррекции & \val[2]{r.pulse.woc.tau*1e6} & \val[2]{r.pulse.woc.delta} \\
         $C R_3$ & \val[2]{r.pulse.R3.tau*1e6} & --- \\
-        ЭВЧК & \val[2]{r.pulse.evck.tau*1e6} & --- \\
+        ЭВЧК & \val[2]{r.pulse.evck.tau*1e6} & \val[5]{r.pulse.evck.delta} \\
         ИВЧК & \val[2]{r.pulse.ivck.tau*1e6} & --- \\
         НЧК & --- & \val[2]{r.pulse.nck.delta} \\
     \end{tblr}
 \end{table}
 
-\textit{Анализ:} 
-1. Высокое расчетное значение $\delta = \val[1]{r.pulse.woc.delta}\%$ для режима без коррекции обусловлено высокой частотой среза $f_{\text{н.гр}} \approx 84\text{ Гц}$ в протоколе. На осциллограмме спад значителен (около $1/3$ амплитуды), что подтверждает порядок величины.
-2. В режиме НЧК наблюдается компенсация спада ($\delta = \val[1]{r.pulse.nck.delta}\%$), что соответствует плоской вершине на осциллограмме.
-3. ИВЧК дает минимальный $\tau_{\phi}$, но сопровождается значительным выбросом (overshoot), видимым на фото.
+Для визуального подтверждения расчетных данных были сняты осциллограммы выходного сигнала в различных режимах работы усилителя (\cref{fig:scopes_low,fig:scopes_high_1,fig:scopes_high_2}).
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/scope_woc_low.jpg}
+        \caption{\textit{0.5 мс/дел, 50 мВ/дел, Без коррекции}}
+        \label{fig:scope_woc_low}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/scope_nck_low.jpg}
+        \caption{\textit{0.5 мс/дел, 50 мВ/дел, НЧК}}
+        \label{fig:scope_nck_low}
+    \end{subfigure}
+    \caption{Осциллограммы в области низких частот (анализ спада вершины)}
+    \label{fig:scopes_low}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/scope_woc_high.jpg}
+        \caption{\textit{1 мкс/дел, 0.1 В/дел, Без коррекции}}
+        \label{fig:scope_woc_high}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/scope_ivck_high.jpg}
+        \caption{\textit{1 мкс/дел, 10 мВ/дел, ИВЧК}}
+        \label{fig:scope_ivck_high}
+    \end{subfigure}
+    \caption{Осциллограммы в области высоких частот (анализ фронта)}
+    \label{fig:scopes_high_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/scope_evck_high.jpg}
+        \caption{\textit{1 мкс/дел, 50 мВ/дел, ЭВЧК}}
+        \label{fig:scope_evck_high}
+    \end{subfigure}
+    \caption{Осциллограмма режима эмиттерной высокочастотной коррекции}
+    \label{fig:scopes_high_2}
+\end{figure}
 
 \section*{Выводы}
+
+В ходе выполнения лабораторной работы исследовано влияние корректирующих цепей на амплитудно-частотную характеристику (АЧХ) и параметры переходного процесса широкополосного усилителя.
+
+\begin{enumerate}
+    \item \textit{Базовый режим (без коррекции):} Усилитель обладает коэффициентом усиления $K_{\max} = 44.47$. Ограниченная полоса пропускания ($f_{\text{н.гр}} = 84.3$ Гц, $f_{\text{в.гр}} = 612.1$ кГц) приводит к существенным искажениям прямоугольного импульса: расчетный спад вершины составляет $\delta = 73.38\%$, а длительность фронта $\tau_{\phi} = 0.57$ мкс.
+
+    \item \textit{Ошибка эксперимента:} Анализ АЧХ для схем ИВЧК и НЧК показывает резкое падение максимального коэффициента усиления ($K_{\max} = 4.75$ и $K_{\max} = 5.91$ соответственно). Эти значения сопоставимы с режимом $R_3$ ($K_{\max} = 3.97$). Это свидетельствует о том, что при коммутации макета резистор $R_3$ не был отключен. Следовательно, характеристики ИВЧК и НЧК сняты на фоне действующей $R_3$, что искажает оценку данных методов коррекции.
+
+    \item \textit{Низкочастотная коррекция (НЧК):} Несмотря на влияние паразитной $R_3$, введение НЧ-коррекции снизило нижнюю граничную частоту до $f_{\text{н.гр}} = 48.1$ Гц. Это привело к уменьшению расчетного спада вершины импульса до $\delta = 53.00\%$. Визуальное отсутствие спада на осциллограмме (\cref{fig:scope_nck_low}) объясняется общим масштабным снижением коэффициента усиления каскада из-за неотключенного эмиттерного резистора.
+
+    \item \textit{Эмиттерная высокочастотная коррекция (ЭВЧК):} Шунтирование эмиттерного резистора конденсатором позволило расширить полосу пропускания в области высоких частот до $f_{\text{в.гр}} = 757.6$ кГц, что уменьшило длительность фронта до $\tau_{\phi} = 0.46$ мкс. Однако данный метод резко ухудшает передачу низких частот ($f_{\text{н.гр}}$ возросла до $934.7$ Гц), что приводит к полному искажению плоской вершины импульса (расчетный спад $\delta \approx 100\%$).
+
+    \item \textit{Индуктивная высокочастотная коррекция (ИВЧК):} Совместное действие индуктивности в коллекторной цепи и ошибочно оставленной $R_3$ расширило верхнюю границу полосы пропускания до максимального значения $f_{\text{в.гр}} = 1081.9$ кГц. Это обеспечило самый короткий фронт импульса ($\tau_{\phi} = 0.32$ мкс). Платой за высокую скорость нарастания является появление колебательного процесса (выброса) на вершине импульса, обусловленного резонансными свойствами $LC$-контура (\cref{fig:scope_ivck_high}).
+\end{enumerate}
+
+\textbf{Итог.} Идеальная передача прямоугольного видеоимпульса требует компромисса. Для минимизации длительности фронта необходимо расширение полосы в область ВЧ (индуктивная коррекция), а для сохранения плоской вершины — расширение в область НЧ. Применение $R_3$ стабилизирует каскад и расширяет полосу, но требует запаса по коэффициенту усиления.

@@ -6,6 +6,7 @@
 --]]
 
 -- Импорт исходных данных
+-- dofile("protocol.lua")
 dofile("code/protocol.lua")
 
 r = { afc = {}, pulse = {} }
@@ -23,7 +24,7 @@ local function log_interpolate(x1, y1, x2, y2, y_target)
     return math.exp(log_x_result)
 end
 
-local function process_afc(data)
+local function process_afc(data, isnck)
     local res = { f = data.f, K = {}, K_max = 0, K_max_idx = 1 }
     for i = 1, #data.f do
         res.K[i] = data.outp[i] / data.inp[i]
@@ -34,29 +35,42 @@ local function process_afc(data)
     end
     res.K_cutoff = res.K_max / math.sqrt(2)
 
-    -- Поиск f_low
-    for i = 2, res.K_max_idx do
-        if res.K[i-1] <= res.K_cutoff and res.K[i] >= res.K_cutoff then
-            res.f_low = log_interpolate(data.f[i-1], res.K[i-1], data.f[i], res.K[i], res.K_cutoff)
-            break
+    -- 2. Поиск f_low
+    if isnck then
+        -- В НЧК максимум обычно в первой точке (i=1).
+        -- Ищем частоту, на которой усиление падает НИЖЕ уровня отсечки.
+        for i = 1, #data.f - 1 do
+            if res.K[i] >= res.K_cutoff and res.K[i+1] <= res.K_cutoff then
+                res.f_low = log_interpolate(data.f[i], res.K[i], data.f[i+1], res.K[i+1], res.K_cutoff)
+                break
+            end
+        end
+    else
+        -- Стандартный режим: ищем частоту, на которой усиление поднимается ВЫШЕ уровня отсечки.
+        for i = 1, res.K_max_idx - 1 do
+            if res.K[i] <= res.K_cutoff and res.K[i+1] >= res.K_cutoff then
+                res.f_low = log_interpolate(data.f[i], res.K[i], data.f[i+1], res.K[i+1], res.K_cutoff)
+                break
+            end
         end
     end
 
-    -- Поиск f_high
-    for i = res.K_max_idx + 1, #data.f do
-        if res.K[i-1] >= res.K_cutoff and res.K[i] <= res.K_cutoff then
-            res.f_high = log_interpolate(data.f[i-1], res.K[i-1], data.f[i], res.K[i], res.K_cutoff)
+    -- 3. Поиск f_high (логика общая для всех режимов)
+    for i = res.K_max_idx, #data.f - 1 do
+        if res.K[i] >= res.K_cutoff and res.K[i+1] <= res.K_cutoff then
+            res.f_high = log_interpolate(data.f[i], res.K[i], data.f[i+1], res.K[i+1], res.K_cutoff)
             break
         end
     end
     return res
 end
 
-r.afc.woc  = process_afc(p.afc.woc)
-r.afc.R3   = process_afc(p.afc.R3)
-r.afc.evck = process_afc(p.afc.evck)
-r.afc.ivck = process_afc(p.afc.ivck)
-r.afc.nck  = process_afc(p.afc.nck)
+-- Вызов функции с корректными флагами
+r.afc.woc  = process_afc(p.afc.woc, false)
+r.afc.R3   = process_afc(p.afc.R3, false)
+r.afc.evck = process_afc(p.afc.evck, false)
+r.afc.ivck = process_afc(p.afc.ivck, false)
+r.afc.nck  = process_afc(p.afc.nck, true)
 
 -- Импульсные характеристики
 local t_i = p.pulse.nf / 2 -- 2.5 ms
