@@ -26,7 +26,7 @@
     "Exercise": {
         "prefix": "ex",
         "body": [
-            "\\subsection*{ \\boxed{\\text{ Задание ${1:1}. }} }",
+            "\\subsection*{ \\fbox{ Задание ${1:1}. } }",
             "$0"
         ],
         "description": "Create a new subsubsection"
@@ -251,7 +251,7 @@
     "InlineDirectLua": {
         "prefix": "dl",
         "body": [
-            "\\directlua{${0:tex.print()}"
+            "\\directlua{${0:tex.print()}}"
         ],
         "description": ""
     },
