@@ -27,19 +27,19 @@ def run_single_python(script_path):
 
     print(f"🐍 Запуск: {rel_script_from_project} (Корень: {docker_project_path})")
     
-    # Команда обновлена:
-    # 1. Переходим в папку скрипта.
-    # 2. Запускаем скрипт.
-    # 3. Проверяем наличие *.pgf.
-    # 4. Если есть -> mkdir pgfs -> mv *.pgf
+    # 1. Переход в корень проекта.
+    # 2. Запуск скрипта.
+    # 3. Создание целевой директории figs.
+    # 4. Поиск всех .pdf и .pgf файлов, исключая директории out и figs.
+    # 5. Перемещение найденных объектов в figs.
     cmd = (
-        f"cd /workdir/{docker_project_path}/{script_dir_rel} && "
-        f"python3 {os.path.basename(script_abs)} && "
-        f"count=`ls *.pgf 2>/dev/null | wc -l`; "
-        f"if [ $count -gt 0 ]; then "
-        f"    mkdir -p {abs_figs_path}; "
-        f"    mv *.pgf {abs_figs_path}/; "
-        f"fi"
+        f"cd /workdir/{docker_project_path} && "
+        f"python3 {rel_script_from_project} && "
+        f"mkdir -p {abs_figs_path} && "
+        f"find . -maxdepth 3 "
+        f"\\( -path './out' -o -path './figs' \\) -prune "
+        f"-o \\( -name '*.pdf' -o -name '*.pgf' \\) -type f "
+        f"-exec mv -v {{}} {abs_figs_path}/ \\;"
     )
     
     result = subprocess.run(["docker", "exec", CONTAINER_NAME, "bash", "-c", cmd], capture_output=True, text=True)

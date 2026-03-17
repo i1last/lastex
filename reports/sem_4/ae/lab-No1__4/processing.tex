@@ -1,0 +1,160 @@
+\directlua{dofile("code/processing.lua")}
+
+\section*{ \fbox{Задание 1.} Расчет коэффициента усиления}
+\begin{quote}
+    \textit{Для каждого режима коррекции и для каждой частоты из протокола измерений (\cref{tab:afc_data}) рассчитать коэффициент усиления $K$ по напряжению.}
+\end{quote}
+
+Коэффициент усиления $K$ определяется как отношение выходного напряжения $U_\text{вых}$ к входному $U_\text{вх}$.
+\begin{equation}
+    K = \frac{U_\text{вых}}{U_\text{вх}}
+    \label{eq:gain}
+\end{equation}
+
+В качестве примера приведем расчет для схемы без коррекции на частоте $f = 10$ кГц (данные из \cref{tab:afc_data}):
+\begin{equation}
+    K = \frac{\val[4]{p.afc.woc.outp[9]}}{\val[4]{p.afc.woc.inp[9]}} = \val[2]{r.afc.woc.K[9]}
+\end{equation}
+
+Аналогичные вычисления проводятся для всех остальных измерений. Сводные результаты расчетов представлены в \cref{tab:gain_results}.
+
+\begin{longtblr}[
+    caption = {Рассчитанные значения коэффициента усиления $K$},
+    label = {tab:gain_results},
+]{
+    width = \linewidth,
+    colspec = {Q[c,m] *{5}{X[c,m]}},
+    hlines, vlines,
+    rows = {m, font=\small},
+    rowhead = 1,
+}
+    Частота $f$ & Без коррекции & С $R_3$ & ЭВЧК & ИВЧК & НЧК \\
+\midrule
+    20 Гц   & \val[2]{r.afc.woc.K[1]}  & \val[2]{r.afc.R3.K[1]}   & \val[2]{r.afc.evck.K[1]} & ---   & \val[2]{r.afc.nck.K[1]}  \\
+    50 Гц   & \val[2]{r.afc.woc.K[2]}  & \val[2]{r.afc.R3.K[2]}   & \val[2]{r.afc.evck.K[2]} & ---   & \val[2]{r.afc.nck.K[2]}  \\
+    100 Гц  & \val[2]{r.afc.woc.K[3]}  & \val[2]{r.afc.R3.K[3]}   & \val[2]{r.afc.evck.K[3]} & ---   & \val[2]{r.afc.nck.K[3]}  \\
+    200 Гц  & \val[2]{r.afc.woc.K[4]}  & \val[2]{r.afc.R3.K[4]}   & \val[2]{r.afc.evck.K[4]} & ---   & \val[2]{r.afc.nck.K[4]}  \\
+    500 Гц  & \val[2]{r.afc.woc.K[5]}  & \val[2]{r.afc.R3.K[5]}   & \val[2]{r.afc.evck.K[5]} & ---   & \val[2]{r.afc.nck.K[5]}  \\
+    1 кГц   & \val[2]{r.afc.woc.K[6]}  & \val[2]{r.afc.R3.K[6]}   & \val[2]{r.afc.evck.K[6]} & ---   & \val[2]{r.afc.nck.K[6]}  \\
+    2 кГц   & \val[2]{r.afc.woc.K[7]}  & \val[2]{r.afc.R3.K[7]}   & \val[2]{r.afc.evck.K[7]} & ---   & \val[2]{r.afc.nck.K[7]}  \\
+    5 кГц   & \val[2]{r.afc.woc.K[8]}  & \val[2]{r.afc.R3.K[8]}   & \val[2]{r.afc.evck.K[8]} & ---   & \val[2]{r.afc.nck.K[8]}  \\
+    10 кГц  & \val[2]{r.afc.woc.K[9]}  & \val[2]{r.afc.R3.K[9]}   & \val[2]{r.afc.evck.K[9]} & ---   & \val[2]{r.afc.nck.K[9]}  \\
+    20 кГц  & \val[2]{r.afc.woc.K[10]} & \val[2]{r.afc.R3.K[10]}  & \val[2]{r.afc.evck.K[10]} & \val[2]{r.afc.ivck.K[1]} & ---   \\
+    50 кГц  & \val[2]{r.afc.woc.K[11]} & \val[2]{r.afc.R3.K[11]}  & \val[2]{r.afc.evck.K[11]} & \val[2]{r.afc.ivck.K[2]} & ---   \\
+    100 кГц & \val[2]{r.afc.woc.K[12]} & \val[2]{r.afc.R3.K[12]}  & \val[2]{r.afc.evck.K[12]} & \val[2]{r.afc.ivck.K[3]} & ---   \\
+    200 кГц & \val[2]{r.afc.woc.K[13]} & \val[2]{r.afc.R3.K[13]}  & \val[2]{r.afc.evck.K[13]} & \val[2]{r.afc.ivck.K[4]} & ---   \\
+    500 кГц & \val[2]{r.afc.woc.K[14]} & \val[2]{r.afc.R3.K[14]}  & \val[2]{r.afc.evck.K[14]} & \val[2]{r.afc.ivck.K[5]} & ---   \\
+    1 МГц   & \val[2]{r.afc.woc.K[15]} & \val[2]{r.afc.R3.K[15]}  & \val[2]{r.afc.evck.K[15]} & \val[2]{r.afc.ivck.K[6]} & ---   \\
+    1.5 МГц & \val[2]{r.afc.woc.K[16]} & \val[2]{r.afc.R3.K[16]}  & \val[2]{r.afc.evck.K[16]} & \val[2]{r.afc.ivck.K[7]} & ---   \\
+    2 МГц   & \val[2]{r.afc.woc.K[17]} & \val[2]{r.afc.R3.K[17]}  & \val[2]{r.afc.evck.K[17]} & \val[2]{r.afc.ivck.K[8]} & ---   \\
+\end{longtblr}
+
+\section*{ \fbox{Задание 2.} Построение амплитудно-частотных характеристик}
+\begin{quote}
+    \textit{По данным расчетов построить графики амплитудно-частотных характеристик (АЧХ) $K(f)$ для всех исследованных схем коррекции.}
+\end{quote}
+
+На \cref{fig:afc_plots} представлены графики зависимостей коэффициента усиления от частоты для всех пяти конфигураций усилителя. Ось частот имеет логарифмический масштаб для наглядного представления широкого диапазона измерений.
+
+\begin{figure}[hbt]
+    \centering
+    \input{figs/afc.pgf}
+    \caption{Амплитудно-частотные характеристики усилителя при различных видах коррекции}
+    \label{fig:afc_plots}
+\end{figure}
+
+\section*{ \fbox{Задание 3.} Определение граничных частот}
+\begin{quote}
+    \textit{Определить нижнюю и верхнюю граничные частоты ($f_\text{н.гр}$ и $f_\text{в.гр}$) для каждой схемы, исходя из условия $K(f_\text{гр}) \approx 0.707 \cdot K_\text{max}$.}
+\end{quote}
+
+Граничные частоты определяются на уровне, где коэффициент усиления снижается до $1/\sqrt{2} \approx 0.707$ от своего максимального значения в полосе пропускания.
+\begin{equation}
+    K_\text{гр} = \frac{K_\text{max}}{\sqrt{2}}
+    \label{eq:cutoff_level}
+\end{equation}
+
+Для схемы без коррекции максимальный коэффициент усиления $K_\text{max} = \val[2]{r.afc.woc.K_max}$. Тогда уровень среза составляет:
+\begin{equation}
+    K_\text{гр} = \frac{\val[2]{r.afc.woc.K_max}}{\sqrt{2}} = \val[2]{r.afc.woc.K_cutoff}
+\end{equation}
+
+Граничные частоты определяются на уровне $K_\text{гр} = K_\text{max} / \sqrt{2}$. Для их нахождения используется метод логарифмической интерполяции между двумя ближайшими экспериментальными точками $(f_1, K_1)$ и $(f_2, K_2)$, которые <<окружают>> искомый уровень $K_\text{гр}$. Итоговые значения сведены в \cref{tab:cutoff_freqs}.
+
+\begin{table}[hbt]
+    \centering
+    \caption{Сводные результаты по граничным частотам}
+    \label{tab:cutoff_freqs}
+    \begin{tblr}{
+        width = \linewidth,
+        colspec = {X[l,m] *{4}{X[c,m]}},
+        hlines, vlines,
+    }
+        Режим коррекции & $K_\text{max}$ & $K_\text{max}$ & $f_\text{н.гр}$, Гц & $f_\text{в.гр}$, кГц \\
+        \midrule
+        Без коррекции & \val[2]{r.afc.woc.K_max} & \val[2]{r.afc.woc.K_cutoff} & \val[1]{r.afc.woc.f_low} & \val[1]{r.afc.woc.f_high / 1000} \\
+        С $R_3$ & \val[2]{r.afc.R3.K_max} & \val[2]{r.afc.R3.K_cutoff} & --- & \val[1]{r.afc.R3.f_high / 1000} \\
+        ЭВЧК & \val[2]{r.afc.evck.K_max} & \val[2]{r.afc.evck.K_cutoff} & \val[1]{r.afc.evck.f_low} & \val[1]{r.afc.evck.f_high / 1000} \\
+        ИВЧК & \val[2]{r.afc.ivck.K_max} & \val[2]{r.afc.ivck.K_cutoff} & --- & \val[1]{r.afc.ivck.f_high / 1000} \\
+        НЧК & \val[2]{r.afc.nck.K_max} & \val[2]{r.afc.nck.K_cutoff} & \val[1]{r.afc.nck.f_low} & --- \\
+    \end{tblr}
+    \begin{quote}
+        \textit{Примечание: Прочерки в таблице означают, что соответствующая граничная частота лежит за пределами диапазона измерений (например, $f_\text{н.гр} < 20$ Гц или $f_\text{в.гр} > 2$ МГц). Следовательно, связанные с этими частотами параметры импульсов также не могут быть рассчитаны.}
+    \end{quote}
+\end{table}
+
+\section*{ \fbox{Задание 4.} Расчет параметров искажений импульсов}
+\begin{quote}
+    \textit{Рассчитать значения длительности фронта $\tau_\text{ф}$ и спада вершины $\delta = \Delta U / U_m$ (\%), исходя из измеренных граничных частот.}
+\end{quote}
+
+Искажения формы прямоугольного импульса напрямую связаны с граничными частотами усилителя.
+
+\subsection*{Длительность фронта}
+Длительность фронта $\tau_\text{ф}$ обратно пропорциональна верхней граничной частоте $f_\text{в.гр}$:
+\begin{equation}
+    \tau_\text{ф} = \frac{0.35}{f_\text{в.гр}}
+    \label{eq:rise_time}
+\end{equation}
+Для схемы без коррекции:
+\begin{equation}
+    \tau_\text{ф} = \frac{0.35}{\val[0]{r.afc.woc.f_high}} = \val[2]{r.pulse.woc_tau_f * 1e6} \text{ мкс}
+\end{equation}
+
+\subsection*{Спад вершины}
+Приближенная формула $\delta = 628 \cdot t_\text{и} \cdot f_\text{н.гр}$ применима только для малых искажений. В общем случае следует использовать точную формулу, описывающую экспоненциальный спад напряжения на выходе RC-фильтра высоких частот:
+\begin{equation}
+    \delta [\%] = \left(1 - e^{-t_\text{и} / \tau_\text{н}}\right) \cdot 100\%, \quad \text{где } \tau_\text{н} = \frac{1}{2\pi f_\text{н.гр}}
+\end{equation}
+Для схемы без коррекции при $t_\text{и} = T/2 = \val[1]{p.pulse.nf / 2 * 1000}$ мс и $f_\text{н.гр} = \val[1]{r.afc.woc.f_low}$ Гц:
+\begin{equation}
+    \delta = \left(1 - \exp\left(-\frac{\val[3]{p.pulse.nf / 2}}{1 / (2\pi \cdot \val[1]{r.afc.woc.f_low})}\right)\right) \cdot 100\% = \val[2]{r.pulse.woc_delta} \%
+\end{equation}
+
+Результаты расчетов для всех применимых режимов приведены в \cref{tab:pulse_params}.
+
+\begin{table}[hbt]
+    \centering
+    \caption{Расчетные параметры искажений импульсов}
+    \label{tab:pulse_params}
+    \begin{tblr}{
+        width = \linewidth,
+        colspec = {X[l,m] X[c,m] X[c,m]},
+        hlines, vlines,
+    }
+        Режим коррекции & Длительность фронта $\tau_\text{ф}$, мкс & Относительный спад вершины $\delta$, \% \\
+        \midrule
+        Без коррекции & \val[2]{r.pulse.woc.tau*1e6} & \val[2]{r.pulse.woc.delta} \\
+        $C R_3$ & \val[2]{r.pulse.R3.tau*1e6} & --- \\
+        ЭВЧК & \val[2]{r.pulse.evck.tau*1e6} & --- \\
+        ИВЧК & \val[2]{r.pulse.ivck.tau*1e6} & --- \\
+        НЧК & --- & \val[2]{r.pulse.nck.delta} \\
+    \end{tblr}
+\end{table}
+
+\textit{Анализ:} 
+1. Высокое расчетное значение $\delta = \val[1]{r.pulse.woc.delta}\%$ для режима без коррекции обусловлено высокой частотой среза $f_{\text{н.гр}} \approx 84\text{ Гц}$ в протоколе. На осциллограмме спад значителен (около $1/3$ амплитуды), что подтверждает порядок величины.
+2. В режиме НЧК наблюдается компенсация спада ($\delta = \val[1]{r.pulse.nck.delta}\%$), что соответствует плоской вершине на осциллограмме.
+3. ИВЧК дает минимальный $\tau_{\phi}$, но сопровождается значительным выбросом (overshoot), видимым на фото.
+
+\section*{Выводы}

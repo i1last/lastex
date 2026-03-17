@@ -45,6 +45,5 @@ def sync_matplotlib_config():
                 input=content.encode('utf-8'),
                 check=True
             )
-            print("=> Обновлен /etc/matplotlibrc в контейнере")
         except subprocess.CalledProcessError:
             print("⚠️ Не удалось обновить /etc/matplotlibrc в контейнере")

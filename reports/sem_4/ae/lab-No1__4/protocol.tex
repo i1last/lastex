@@ -1,59 +1,39 @@
+\directlua{dofile('code/protocol.lua')}
 \section*{1. Исследование амплитудно-частотных характеристик}
 
-Входное напряжение $U_\text{вх} = \text{\_\_\_\_\_\_}$ В (поддерживать постоянным).
-
 \begin{longtblr}[
-    caption = {Результаты измерений выходного напряжения $U_\text{вых}$ (В) в зависимости от частоты},
+    caption = {Результаты измерений входного $U_\text{вх}$ и выходного $U_\text{вых}$ напряжений в зависимости от частоты},
     label = {tab:afc_data},
 ]{
     width = \linewidth,
-    colspec = {Q[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m]},
+    colspec = {Q[c,m] *{5}{X[c,m] X[c,m]}},
     hlines, vlines,
     rows = {m, font=\small},
     rowhead = 2,
 }
-    \SetCell[r=2]{c} Частота $f$ & \SetCell[c=5]{c} Выходное напряжение $U_\text{вых}$, В \\
-    & {Без коррекции} & {С $R_3$} & {ЭВЧК} & {ИВЧК} & {НЧК} \\
-    20 Гц   & & & & --- & \\
-    50 Гц   & & & & --- & \\
-    100 Гц  & & & & --- & \\
-    200 Гц  & & & & --- & \\
-    500 Гц  & & & & --- & \\
-    1 кГц   & & & & --- & \\
-    2 кГц   & & & & --- & \\
-    5 кГц   & & & & --- & \\
-    10 кГц  & & & & --- & \\
-    20 кГц  & & & & & \\
-    50 кГц  & & & & & --- \\
-    100 кГц & & & & & --- \\
-    200 кГц & & & & & --- \\
-    500 кГц & & & & & --- \\
-    1 МГц   & & & & & --- \\
-    1.5 МГц & & & & & --- \\
-    2 МГц   & & & & & --- \\
+    \SetCell[r=2]{c} Частота $f$ & \SetCell[c=2]{c} Без коррекции & & \SetCell[c=2]{c} С $R_3$ & & \SetCell[c=2]{c} ЭВЧК & & \SetCell[c=2]{c} ИВЧК & & \SetCell[c=2]{c} НЧК \\
+    & {$U_\text{вх}$, мВ} & {$U_\text{вых}$, мВ} & {$U_\text{вх}$, мВ} & {$U_\text{вых}$, мВ} & {$U_\text{вх}$, мВ} & {$U_\text{вых}$, мВ} & {$U_\text{вх}$, мВ} & {$U_\text{вых}$, мВ} & {$U_\text{вх}$, мВ} & {$U_\text{вых}$, мВ} \\
+\midrule
+    20 Гц   & \val[2]{p.afc.woc.inp[1]* 1000} & \val[2]{p.afc.woc.outp[1]* 1000} & \val[2]{p.afc.R3.inp[1]* 1000} & \val[2]{p.afc.R3.outp[1]* 1000} & \val[2]{p.afc.evck.inp[1]* 1000} & \val[2]{p.afc.evck.outp[1]* 1000} & ---   & ---   & \val[2]{p.afc.nck.inp[1]*1000} & \val[2]{p.afc.nck.outp[1]*1000} \\
+    50 Гц   & \val[2]{p.afc.woc.inp[2]* 1000} & \val[2]{p.afc.woc.outp[2]* 1000} & \val[2]{p.afc.R3.inp[2]* 1000} & \val[2]{p.afc.R3.outp[2]* 1000} & \val[2]{p.afc.evck.inp[2]* 1000} & \val[2]{p.afc.evck.outp[2]* 1000} & ---   & ---   & \val[2]{p.afc.nck.inp[2]*1000} & \val[2]{p.afc.nck.outp[2]*1000} \\
+    100 Гц  & \val[2]{p.afc.woc.inp[3]* 1000} & \val[2]{p.afc.woc.outp[3]* 1000} & \val[2]{p.afc.R3.inp[3]* 1000} & \val[2]{p.afc.R3.outp[3]* 1000} & \val[2]{p.afc.evck.inp[3]* 1000} & \val[2]{p.afc.evck.outp[3]* 1000} & ---   & ---   & \val[2]{p.afc.nck.inp[3]*1000} & \val[2]{p.afc.nck.outp[3]*1000} \\
+    200 Гц  & \val[2]{p.afc.woc.inp[4]* 1000} & \val[2]{p.afc.woc.outp[4]* 1000} & \val[2]{p.afc.R3.inp[4]* 1000} & \val[2]{p.afc.R3.outp[4]* 1000} & \val[2]{p.afc.evck.inp[4]* 1000} & \val[2]{p.afc.evck.outp[4]* 1000} & ---   & ---   & \val[2]{p.afc.nck.inp[4]*1000} & \val[2]{p.afc.nck.outp[4]*1000} \\
+    500 Гц  & \val[2]{p.afc.woc.inp[5]* 1000} & \val[2]{p.afc.woc.outp[5]* 1000} & \val[2]{p.afc.R3.inp[5]* 1000} & \val[2]{p.afc.R3.outp[5]* 1000} & \val[2]{p.afc.evck.inp[5]* 1000} & \val[2]{p.afc.evck.outp[5]* 1000} & ---   & ---   & \val[2]{p.afc.nck.inp[5]*1000} & \val[2]{p.afc.nck.outp[5]*1000} \\
+    1 кГц   & \val[2]{p.afc.woc.inp[6]* 1000} & \val[2]{p.afc.woc.outp[6]* 1000} & \val[2]{p.afc.R3.inp[6]* 1000} & \val[2]{p.afc.R3.outp[6]* 1000} & \val[2]{p.afc.evck.inp[6]* 1000} & \val[2]{p.afc.evck.outp[6]* 1000} & ---   & ---   & \val[2]{p.afc.nck.inp[6]*1000} & \val[2]{p.afc.nck.outp[6]*1000} \\
+    2 кГц   & \val[2]{p.afc.woc.inp[7]* 1000} & \val[2]{p.afc.woc.outp[7]* 1000} & \val[2]{p.afc.R3.inp[7]* 1000} & \val[2]{p.afc.R3.outp[7]* 1000} & \val[2]{p.afc.evck.inp[7]* 1000} & \val[2]{p.afc.evck.outp[7]* 1000} & ---   & ---   & \val[2]{p.afc.nck.inp[7]*1000} & \val[2]{p.afc.nck.outp[7]*1000} \\
+    5 кГц   & \val[2]{p.afc.woc.inp[8]* 1000} & \val[2]{p.afc.woc.outp[8]* 1000} & \val[2]{p.afc.R3.inp[8]* 1000} & \val[2]{p.afc.R3.outp[8]* 1000} & \val[2]{p.afc.evck.inp[8]* 1000} & \val[2]{p.afc.evck.outp[8]* 1000} & ---   & ---   & \val[2]{p.afc.nck.inp[8]*1000} & \val[2]{p.afc.nck.outp[8]*1000} \\
+    10 кГц  & \val[2]{p.afc.woc.inp[9]* 1000} & \val[2]{p.afc.woc.outp[9]* 1000} & \val[2]{p.afc.R3.inp[9]* 1000} & \val[2]{p.afc.R3.outp[9]* 1000} & \val[2]{p.afc.evck.inp[9]* 1000} & \val[2]{p.afc.evck.outp[9]* 1000} & ---   & ---   & \val[2]{p.afc.nck.inp[9]*1000} & \val[2]{p.afc.nck.outp[9]*1000} \\
+    20 кГц  & \val[2]{p.afc.woc.inp[10]*1000} & \val[2]{p.afc.woc.outp[10]*1000} & \val[2]{p.afc.R3.inp[10]*1000} & \val[2]{p.afc.R3.outp[10]*1000} & \val[2]{p.afc.evck.inp[10]*1000} & \val[2]{p.afc.evck.outp[10]*1000} & \val[2]{p.afc.ivck.inp[1]*1000} & \val[2]{p.afc.ivck.outp[1]*1000} & --- & ---   \\
+    50 кГц  & \val[2]{p.afc.woc.inp[11]*1000} & \val[2]{p.afc.woc.outp[11]*1000} & \val[2]{p.afc.R3.inp[11]*1000} & \val[2]{p.afc.R3.outp[11]*1000} & \val[2]{p.afc.evck.inp[11]*1000} & \val[2]{p.afc.evck.outp[11]*1000} & \val[2]{p.afc.ivck.inp[2]*1000} & \val[2]{p.afc.ivck.outp[2]*1000} & ---   & ---   \\
+    100 кГц & \val[2]{p.afc.woc.inp[12]*1000} & \val[2]{p.afc.woc.outp[12]*1000} & \val[2]{p.afc.R3.inp[12]*1000} & \val[2]{p.afc.R3.outp[12]*1000} & \val[2]{p.afc.evck.inp[12]*1000} & \val[2]{p.afc.evck.outp[12]*1000} & \val[2]{p.afc.ivck.inp[3]*1000} & \val[2]{p.afc.ivck.outp[3]*1000} & ---   & ---   \\
+    200 кГц & \val[2]{p.afc.woc.inp[13]*1000} & \val[2]{p.afc.woc.outp[13]*1000} & \val[2]{p.afc.R3.inp[13]*1000} & \val[2]{p.afc.R3.outp[13]*1000} & \val[2]{p.afc.evck.inp[13]*1000} & \val[2]{p.afc.evck.outp[13]*1000} & \val[2]{p.afc.ivck.inp[4]*1000} & \val[2]{p.afc.ivck.outp[4]*1000} & ---   & ---   \\
+    500 кГц & \val[2]{p.afc.woc.inp[14]*1000} & \val[2]{p.afc.woc.outp[14]*1000} & \val[2]{p.afc.R3.inp[14]*1000} & \val[2]{p.afc.R3.outp[14]*1000} & \val[2]{p.afc.evck.inp[14]*1000} & \val[2]{p.afc.evck.outp[14]*1000} & \val[2]{p.afc.ivck.inp[5]*1000} & \val[2]{p.afc.ivck.outp[5]*1000} & ---   & ---   \\
+    1 МГц   & \val[2]{p.afc.woc.inp[15]*1000} & \val[2]{p.afc.woc.outp[15]*1000} & \val[2]{p.afc.R3.inp[15]*1000} & \val[2]{p.afc.R3.outp[15]*1000} & \val[2]{p.afc.evck.inp[15]*1000} & \val[2]{p.afc.evck.outp[15]*1000} & \val[2]{p.afc.ivck.inp[6]*1000} & \val[2]{p.afc.ivck.outp[6]*1000} & ---   & ---   \\
+    1.5 МГц & \val[2]{p.afc.woc.inp[16]*1000} & \val[2]{p.afc.woc.outp[16]*1000} & \val[2]{p.afc.R3.inp[16]*1000} & \val[2]{p.afc.R3.outp[16]*1000} & \val[2]{p.afc.evck.inp[16]*1000} & \val[2]{p.afc.evck.outp[16]*1000} & \val[2]{p.afc.ivck.inp[7]*1000} & \val[2]{p.afc.ivck.outp[7]*1000} & ---   & ---   \\
+    2 МГц   & \val[2]{p.afc.woc.inp[17]*1000} & \val[2]{p.afc.woc.outp[17]*1000} & \val[2]{p.afc.R3.inp[17]*1000} & \val[2]{p.afc.R3.outp[17]*1000} & \val[2]{p.afc.evck.inp[17]*1000} & \val[2]{p.afc.evck.outp[17]*1000} & \val[2]{p.afc.ivck.inp[8]*1000} & \val[2]{p.afc.ivck.outp[8]*1000} & ---   & ---   \\
 \end{longtblr}
 
-\section*{2. Параметры переходной характеристики}
-
-\begin{table}[H]
-    \centering
-    \caption{Граничные частоты (определяются по графикам АЧХ)}
-    \label{tab:cutoff_freqs}
-    \begin{tblr}{
-        width = \linewidth,
-        colspec = {X[l,m] X[c,m] X[c,m]},
-        hlines, vlines,
-    }
-        Тип схемы & $f_\text{н.гр.}$ (Гц) & $f_\text{в.гр.}$ (Гц) \\
-        Без коррекции & & \\
-        С резистором $R_3$ & & \\
-        ЭВЧК & --- & \\
-        ИВЧК & --- & \\
-        НЧК & & --- \\
-    \end{tblr}
-\end{table}
-
-\section*{3. Исследование формы импульсов}
+\section*{2. Исследование формы импульсов}
 
 \begin{table}[H]
     \centering
@@ -67,11 +47,11 @@
     }
         \SetCell[c=5]{c} \textbf{Низкие частоты (Спад вершины)} \\
         Режим & $T$, мс & $U_m$, В & $\Delta U$, В & $\delta = \frac{\Delta U}{U_m} \cdot 100\%$ \\
-        Без коррекции & & & & \\
-        С НЧ коррекцией & & & & \\
+        Без коррекции & \val[0]{p.pulse.nf * 1000} & & & \\
+        С НЧ коррекцией & \val[0]{p.pulse.nf * 1000} & & & \\
         \SetCell[c=5]{c} \textbf{Высокие частоты (Фронт)} \\
         Режим & $T$, мкс & \SetCell[c=3]{c} Длительность фронта $\tau_\text{ф}$, мкс \\
-        & & \SetCell[c=3]{c} \\
+        & \val[0]{p.pulse.hf * 1000} & \SetCell[c=3]{c} \\
         Без коррекции & & \SetCell[c=3]{c} \\
         С ИВЧК & & \SetCell[c=3]{c} \\
         С ЭВЧК & & \SetCell[c=3]{c} \\

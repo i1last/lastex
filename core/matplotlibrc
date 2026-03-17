@@ -1,49 +1,62 @@
-# Backend: pgf для генерации LaTeX-кода
+# --- Backend: pgf для генерации LaTeX-кода ---
 backend: pgf
 
-# Настройки PGF
+# --- Настройки PGF ---
 pgf.texsystem: lualatex
 pgf.preamble: \usepackage{fontspec}\setmainfont{Times New Roman}\usepackage[english,russian]{babel}\usepackage{amsmath}
-
-# Шрифты
 text.usetex: True
+
+# --- Шрифты ---
 font.family: serif
 font.serif: Times New Roman
+font.size: 12
+mathtext.fontset: cm
 
-# Размер шрифта
-font.size: 14
-axes.labelsize: 14
-legend.fontsize: 12
-xtick.labelsize: 12
-ytick.labelsize: 12 
-
-# Автоматическая подгонка элементов (аналог plt.tight_layout())
-figure.autolayout: True
-
-# Принудительное сохранение только видимой области
-savefig.bbox: tight
-
-# Небольшой отступ от края (в дюймах), чтобы избежать обрезания по краям
-savefig.pad_inches: 0.05
-
-# Размеры фигуры (ширина ~16см для A4)
-figure.figsize: 6.0, 4.0
-
-# -- Толщины --
+# --- Линии и Маркеры ---
 lines.linewidth: 2
-axes.linewidth: 1.0
+lines.markersize: 4
+lines.markerfacecolor: white
+lines.markeredgewidth: 1.5
 
-# --- Сетка ---
+# --- Оси ---
+axes.labelsize: 12
+axes.linewidth: 0.6
 axes.grid: True
-grid.color: gray
-grid.alpha: 0.5
-grid.linestyle: -
-grid.linewidth: 0.5
-
-
-# --- Оси (Spines) ---
-# Скрываем верхнюю и правую границы рамки
 axes.spines.top: False
 axes.spines.right: False
-xtick.direction: out
-ytick.direction: out
+axes.grid.which: both
+
+# --- Засечки ---
+xtick.direction: in
+xtick.minor.visible: True
+xtick.major.size: 3.5
+xtick.labelsize: 12
+ytick.direction: in
+ytick.major.size: 3.5
+ytick.labelsize: 12
+
+# --- Сетка ---
+grid.linestyle: --
+grid.linewidth: 0.5
+grid.alpha: 0.4
+grid.color: gray
+
+# --- Автоматическая смена стилей для Ч/Б ---
+axes.prop_cycle: cycler('color', ['000000', 'E69F00', '56B4E9', '009E73', 'D55E00']) + cycler('linestyle', ['-', '--', ':', '-.', (0, (5, 1))]) + cycler('marker', ['o', 's', '*', 'D', 'P'])
+patch.edgecolor: black
+patch.facecolor: black
+axes.edgecolor: black
+
+# --- Легенда ---
+legend.frameon: False
+legend.fontsize: 12
+legend.numpoints: 2
+legend.handlelength: 3
+legend.loc: upper center
+legend.borderaxespad: -2.5
+
+# --- Фигура и Сохранение ---
+figure.figsize: 6.75, 5.00
+figure.autolayout: True
+savefig.bbox: tight
+savefig.pad_inches: 0.05

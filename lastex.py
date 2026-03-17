@@ -79,20 +79,12 @@ def build_project(project_path, tex_file=DEFAULT_FILENAME, target="all"):
         py_cmd = (
             f"cd /workdir/{clean_project_path} && "
             f"find . -maxdepth 2 -name '*.py' -print0 | "
-            f"xargs -0 -n1 -P$(nproc) -I {{}} bash -c '"
-            f"  script=\"{{}}\"; "
-            f"  dir=$(dirname \"$script\"); "
-            f"  base=$(basename \"$script\" .py); "
-            f"  echo \"   Running $script...\"; "
-            f"  (cd \"$dir\" && python3 \"$base.py\"); "
-            f"  ret=$?; "
-            f"  if [ $ret -ne 0 ]; then echo \"❌ Error in $script\"; exit $ret; fi; "
-            f"  count=`ls \"$dir\"/*.pgf 2>/dev/null | wc -l`; "
-            f"  if [ $count -gt 0 ]; then "
-            f"      mkdir -p \"{abs_figs_path}\"; "
-            f"      mv \"$dir\"/*.pgf \"{abs_figs_path}/\"; "
-            f"  fi"
-            f"'"
+            f"xargs -0 -P$(nproc) -I {{}} python3 \"{{}}\" && "
+            f"mkdir -p {abs_figs_path} && "
+            f"find . -maxdepth 3 "
+            f"\\( -path './out' -o -path './figs' \\) -prune "
+            f"-o \\( -name '*.pdf' -o -name '*.pgf' \\) -type f "
+            f"-exec mv -v {{}} {abs_figs_path}/ \\;"
         )
         
         # capture_output=False, чтобы видеть вывод параллельных процессов в реальном времени (или True, если нужен чистый лог)
