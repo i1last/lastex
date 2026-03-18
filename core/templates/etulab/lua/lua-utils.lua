@@ -25,10 +25,37 @@ end
 -- Форматирование отдельного значения
 function LasTeX.format_value(val, opt, is_math)
     if val == nil then return "---" end
-    
-    local res = ""
+
+    -- Если передано не число, возвращаем как есть (с поддержкой math-режима)
     if type(val) ~= "number" then 
-        res = tostring(val) 
+        local res = tostring(val)
+        return is_math and ("$" .. res .. "$") or res
+    end
+
+    local res = ""
+    opt = tostring(opt)
+
+    -- 1. Формат "nmx" (напр. "2m-3"): делим на 10^x и выводим n знаков
+    -- Пример: 0.0012345 -> "2m-3" -> 0.0012345 / 10^-3 = 1.2345 -> "1.23"
+    local n_m, x_m = opt:match("^(%d+)m([%-]?%d+)$")
+    if n_m and x_m then
+        local target_power = tonumber(x_m)
+        local precision = tonumber(n_m)
+        local shifted_val = val / (10 ^ target_power)
+        res = string.format("%." .. precision .. "f", shifted_val)
+
+    -- 2. Формат "nexp" (напр. "2exp"): экспоненциальная форма с n знаками в мантиссе
+    elseif opt:match("^(%d+)exp$") then
+        local n_prec = opt:match("^(%d+)exp$")
+        if val == 0 then
+            res = string.format("%." .. n_prec .. "f", 0)
+        else
+            local exponent = math.floor(math.log10(math.abs(val)))
+            local mantissa = val / (10 ^ exponent)
+            res = string.format("%." .. n_prec .. "f \\cdot 10^{%d}", mantissa, exponent)
+        end
+
+    -- 3. Стандартный "exp": автоматическая экспонента (%g)
     elseif opt == "exp" then
         if val == 0 then 
             res = "0" 
@@ -37,12 +64,17 @@ function LasTeX.format_value(val, opt, is_math)
             local mantissa, exponent = s:match("^([^e]+)e([+-]?%d+)$")
             res = string.format("%g \\cdot 10^{%d}", tonumber(mantissa), tonumber(exponent))
         end
+
+    -- 4. Обычное числовое округление (напр. "2" знака)
     elseif tonumber(opt) then
         res = string.format("%." .. opt .. "f", val)
+
+    -- 5. По умолчанию (просто число)
     else
         res = string.format("%f", val)
     end
 
+    -- Обертка в $ для LaTeX
     if is_math then
         return "$" .. res .. "$"
     else
