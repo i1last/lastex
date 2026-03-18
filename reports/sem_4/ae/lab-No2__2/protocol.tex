@@ -1,46 +1,32 @@
+\luaexec{dofile('code/protocol.lua')}
+
 \begin{table}[H]
     \centering
-    \caption{Амплитудные характеристики схем (при $f = \text{const}$)}
+    \caption{Амплитудные характеристики схем (при $f = \val[0]{p.ax.f}$) Гц}
     \label{tab:ax_data}
-    \begin{tblr}[expand=\directlua]{
+    \begin{tblr}{
         width = \linewidth,
         colspec = { X[c,m] X[c,m] X[c,m] X[c,m] },
         hlines, vlines,
         row{1} = {font=\itshape}
     }
-        $U_{\text{вх}}$, мВ/В & $U_{\text{вых}}$ (ОЭ), В & $U_{\text{вых}}$ (ОБ), В & $U_{\text{вых}}$ (ОК), В \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
+        $U_{\text{вх}}$, В & $U_{\text{вых}}$ (ОЭ), В & $U_{\text{вых}}$ (ОБ), В & $U_{\text{вых}}$ (ОК), В \\
+        \expanded{\luablock*[3,2,2,4][1][-1]{p.ax.Uin,p.ax.Uoe,p.ax.Uob,p.ax.Uok}} \\
     \end{tblr}
 \end{table}
 
 \begin{table}[H]
     \centering
-    \caption{Амплитудно-частотные характеристики схем (при $U_{\text{вх}} = \text{const}$)}
+    \caption{Амплитудно-частотные характеристики схем (при $U_{\text{вх}} = \val[3]{p.achx.Uin}$ В)}
     \label{tab:achx_data}
-    \begin{tblr}[expand=\directlua]{
+    \begin{tblr}{
         width = \linewidth,
         colspec = { X[c,m] X[c,m] X[c,m] X[c,m] },
         hlines, vlines,
         row{1} = {font=\itshape}
     }
-        $f$, Гц/кГц/МГц & $U_{\text{вых}}$ (ОЭ), В & $U_{\text{вых}}$ (ОБ), В & $U_{\text{вых}}$ (ОК), В \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
-        & & & \\
+        $f$, Гц & $U_{\text{вых}}$ (ОЭ), В & $U_{\text{вых}}$ (ОБ), В & $U_{\text{вых}}$ (ОК), В \\
+        \expanded{\luablock*[0,4,4,4][1][-1]{p.achx.f, p.achx.Uoe, p.achx.Uob, p.achx.Uok}} \\
     \end{tblr}
 \end{table}
 
@@ -48,15 +34,14 @@
     \centering
     \caption{Параметры исследуемых схем включения транзистора}
     \label{tab:params_data}
-    \begin{tblr}[expand=\directlua]{
+    \begin{tblr}{
         width = \linewidth,
         colspec = { X[l,m] X[c,m] X[c,m] X[c,m] },
         hlines, vlines,
         row{1} = {font=\itshape}
     }
         Параметр & Схема ОЭ & Схема ОБ & Схема ОК \\
-        Сдвиг фаз $\Delta\varphi$, град. & & & \\
-        Входное сопротивление $R_{\text{вх}}$, Ом/кОм & & & \\
-        Выходное сопротивление $R_{\text{вых}}$, Ом/кОм & & & \\
+        Входное сопротивление  $R_{\text{вх}}$, Ом   & \val*[0]{p.params.Rin.oe} &  \val*[0]{p.params.Rin.ob} &  \val*[0]{p.params.Rin.ok} \\
+        Выходное сопротивление $R_{\text{вых}}$, Ом & \val*[0]{p.params.Rout.oe} & \val*[0]{p.params.Rout.ob} & \val*[0]{p.params.Rout.ok} \\
     \end{tblr}
 \end{table}
