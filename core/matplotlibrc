@@ -56,7 +56,7 @@ legend.loc: upper center
 legend.borderaxespad: -2.5
 
 # --- Фигура и Сохранение ---
-figure.figsize: 6.75, 5.00
+figure.figsize: 6.75, 4.00
 figure.autolayout: True
 savefig.bbox: tight
 savefig.pad_inches: 0.05
