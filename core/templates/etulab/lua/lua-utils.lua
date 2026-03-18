@@ -50,7 +50,7 @@ function LasTeX.format_value(val, opt, is_math)
         if val == 0 then
             res = string.format("%." .. n_prec .. "f", 0)
         else
-            local exponent = math.floor(math.log10(math.abs(val)))
+            local exponent = math.floor(math.log(math.abs(val), 10))
             local mantissa = val / (10 ^ exponent)
             res = string.format("%." .. n_prec .. "f \\cdot 10^{%d}", mantissa, exponent)
         end
