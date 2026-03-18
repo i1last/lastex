@@ -1,0 +1,64 @@
+\subsection*{1. Исследование амплитудно-частотных характеристик (АЧХ)}
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерения АЧХ цепей при $R = \text{\dots}$, $C = \text{\dots}$}
+    \label{tab:ach_data}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] *{4}{X[c,m]} },
+        hlines, vlines,
+        rows = {m, font=\small},
+        rowhead = 1,
+    }
+        $f$, Гц & $U_{\text{вых. ДЦ}}$, В & $U_{\text{вых. ИЦ}}$, В & $U_{\text{вых. акт. ДЦ}}$, В & $U_{\text{вых. акт. ИЦ}}$, В \\
+        10 Гц   &                         &                         &                              & \\
+        20 Гц   &                         &                         &                              & \\
+        50 Гц   &                         &                         &                              & \\
+        100 Гц  &                         &                         &                              & \\
+        200 Гц  &                         &                         &                              & \\
+        500 Гц  &                         &                         &                              & \\
+        1 кГц   &                         &                         &                              & \\
+        2 кГц   &                         &                         &                              & \\
+        5 кГц   &                         &                         &                              & \\
+        10 кГц  &                         &                         &                              & \\
+        20 кГц  &                         &                         &                              & \\
+        50 кГц  &                         &                         &                              & \\
+        100 кГц &                         &                         &                              & \\
+        200 кГц &                         &                         &                              & \\
+        500 кГц &                         &                         &                              & \\
+        1 МГц   &                         &                         &                              & \\
+    \end{tb lr}
+\end{table}
+
+\subsection*{2. Исследование переходных процессов (импульсный режим)}
+
+\begin{table}[H]
+    \centering
+    \caption{Параметры выходных сигналов при подаче меандра}
+    \label{tab:impulse_data}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] Q[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+        rows = {m, font=\small},
+        rowhead = 1,
+    }
+        Тип цепи & $\tau_\text{и}$, мкс & $U_0$ (вх.), В & $U_{Cm}$ / $U_{вых. max}$, В \\
+        Пассивная ДЦ & & & \\
+        Пассивная ИЦ & & & \\
+        Активная ДЦ  & & & \\
+        Активная ИЦ  & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Граничные частоты цепей}
+    \label{tab:f_gr}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { X[c,m] X[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        Цепь & Пасс. ДЦ & Пасс. ИЦ & Акт. ДЦ & Акт. ИЦ \\
+        $f_{гр}$ (эксп.), Гц & & & & \\
+    \end{tblr}
+\end{table}
