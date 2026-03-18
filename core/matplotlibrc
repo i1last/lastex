@@ -42,7 +42,7 @@ grid.alpha: 0.4
 grid.color: gray
 
 # --- Автоматическая смена стилей для Ч/Б ---
-axes.prop_cycle: cycler('color', ['000000', 'E69F00', '56B4E9', '009E73', 'D55E00']) + cycler('linestyle', ['-', '--', ':', '-.', (0, (5, 1))]) + cycler('marker', ['o', 's', '*', 'D', 'P'])
+axes.prop_cycle: cycler('color', ['000000', 'D55E00', '009E73', '80C9ED', 'FFD580']) + cycler('linestyle', ['-', '--', ':', '-.', (0, (5, 1))]) + cycler('marker', ['o', 's', '*', 'D', 'P'])
 patch.edgecolor: black
 patch.facecolor: black
 axes.edgecolor: black
