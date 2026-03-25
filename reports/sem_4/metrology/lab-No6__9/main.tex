@@ -1,0 +1,121 @@
+\section*{Цель работы}
+Ознакомление с методами и средствами измерения частоты, временных интервалов, фазового сдвига и с методикой оценки погрешностей результатов измерений.
+
+\section*{Задание}
+\begin{enumerate}
+    \item Измерить частоту и период периодического сигнала с помощью универсального частотомера.
+    \item Измерить частоту и период тех же сигналов осциллографом.
+    \item Измерить фазовый сдвиг между напряжениями на входе и выходе устройства двумя способами: методом линейной развертки и с помощью фигур Лиссажу.
+    \item Оценить погрешности всех проведенных измерений.
+\end{enumerate}
+
+\section*{Теоретические сведения}
+
+При использовании цифрового частотомера (ЦЧ) абсолютная погрешность измерения частоты или периода определяется выражением:
+\begin{equation}
+    \Delta = \pm [5 \cdot 10^{-6} \cdot X_{\text{изм}} + k],
+    \label{eq:err_counter}
+\end{equation}
+где $X_{\text{изм}}$ — показания прибора, $k$ — шаг квантования (вес единицы младшего разряда).
+
+При осциллографических измерениях период определяется как:
+\begin{equation}
+    T_x = k_p L_T,
+    \label{eq:osc_period}
+\end{equation}
+где $k_p$ — коэффициент развертки, $L_T$ — размер одного периода в делениях шкалы.
+Относительная погрешность измерения периода $\delta_T$ складывается из погрешности коэффициента развертки $\delta_{k_p}$, нелинейности развертки $\delta_{\text{н.р}}$ и визуальной погрешности $\delta_{\text{в.д}}$.
+
+Фазовый сдвиг $\varphi$ при методе линейной развертки (\cref{fig:linear_phase}):
+\begin{equation}
+    \varphi = 360 \cdot \frac{\tau}{T} = 360 \cdot \frac{k_p L_{\tau}}{k_p L_T} = 360 \cdot \frac{L_{\tau}}{L_T},
+    \label{eq:phase_linear}
+\end{equation}
+где $\tau$ — временное запаздывание между сигналами.
+
+При использовании фигур Лиссажу (\cref{fig:lissajous}):
+\begin{equation}
+    \varphi = \arcsin\left(\frac{B}{A}\right),
+    \label{eq:phase_lissajous}
+\end{equation}
+где $A$ — максимальный размер эллипса по оси ординат, $B$ — расстояние между точками пересечения эллипса с осью ординат.
+
+\section*{Инструкция по выполнению работы}
+
+\subsection*{1. Работа с универсальным частотомером}
+\begin{enumerate}
+    \item Соедините выход генератора сигналов (ГС) со входом частотомера (ЦЧ). Схема приведена на \cref{fig:scheme_counter}.
+    \item Установите на генераторе частоту в диапазоне 1 Гц ... 10 МГц по указанию преподавателя.
+    \item Измерьте частоту $f_x$, а затем период $T_x$, последовательно устанавливая время счета $t_{\text{сч}}$ равным 0.1, 1 и 10 с.
+    \item \textit{Нюанс:} При увеличении времени счета увеличивается количество значащих цифр после запятой, что уменьшает погрешность квантования.
+    \item Занесите данные в \cref{tab:freq_counter_raw}.
+\end{enumerate}
+
+\subsection*{2. Измерение параметров сигнала осциллографом}
+\begin{enumerate}
+    \item Подайте сигнал с генератора на вход \textit{CH1} осциллографа.
+    \item Настройте устойчивое изображение 1–2 периодов сигнала, используя ручки \textit{TIME/DIV} (коэффициент развертки $k_p$) и \textit{LEVEL} (синхронизация).
+    \item \textit{Важно:} Ручка плавной регулировки развертки должна находиться в крайнем правом положении (калиброванное состояние).
+    \item Измерьте расстояние $L_T$ между идентичными точками периода. Данные занесите в \cref{tab:osc_freq_raw}.
+\end{enumerate}
+
+\subsection*{3. Измерение фазового сдвига}
+\begin{enumerate}
+    \item Соберите схему с фазосдвигающим устройством (ФУ) согласно \cref{fig:scheme_phase}.
+    \item \textit{Метод линейной развертки:}
+        \begin{itemize}
+            \item Переведите осциллограф в двухканальный режим.
+            \item Совместите линии развертки обоих каналов по центру экрана (режим \textit{GND}).
+            \item В режиме \textit{AC} измерьте период $L_T$ и временной сдвиг $L_{\tau}$ между соответствующими точками прохождения сигналов через нулевое значение.
+        \end{itemize}
+    \item \textit{Метод фигур Лиссажу:}
+        \begin{itemize}
+            \item Переведите осциллограф в режим \textit{X-Y}.
+            \item Добейтесь центрирования эллипса относительно осей координат.
+            \item Измерьте отрезки $A$ и $B$, как показано на \cref{fig:lissajous}.
+            \item \textit{Нюанс:} Если эллипс наклонен влево, к полученному значению $\varphi$ следует добавить $90^\circ$ (после проверки инверсии канала).
+        \end{itemize}
+    \item Данные занесите в \cref{tab:phase_raw}.
+\end{enumerate}
+
+\section*{Инструкция по обработке результатов}
+\begin{enumerate}
+    \item Для частотомера: Рассчитайте абсолютную $\Delta$ и относительную $\delta$ погрешности по \cref{eq:err_counter}.
+    \item Для осциллографа: Рассчитайте $T_x$ по \cref{eq:osc_period} и $f_x = 1/T_x$. Оцените суммарную погрешность.
+    \item Для фазового сдвига: Рассчитайте $\varphi$ по \cref{eq:phase_linear} и \cref{eq:phase_lissajous}.
+    \item Сравните точность измерения частоты двумя приборами и точность измерения фазы двумя методами.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figs/scheme_counter.pdf}
+    \caption{Схема соединения приборов для измерения частоты}
+    \label{fig:scheme_counter}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{figs/linear_phase.pdf}
+    \caption{Определение временного сдвига при линейной развертке}
+    \label{fig:linear_phase}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figs/lissajous.pdf}
+    \caption{Параметры фигуры Лиссажу для расчета фазы}
+    \label{fig:lissajous}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{figs/scheme_phase.pdf}
+    \caption{Схема измерения фазового сдвига с ФУ}
+    \label{fig:scheme_phase}
+\end{figure}
+
+% Соответствие изображений из методички:
+% Рис. 9.1 -> figs/scheme_counter.pdf (label: fig:scheme_counter)
+% Рис. 9.2 а -> figs/linear_phase.pdf (label: fig:linear_phase)
+% Рис. 9.2 б -> figs/lissajous.pdf (label: fig:lissajous)
+% Рис. 9.3 -> figs/scheme_phase.pdf (label: fig:scheme_phase)

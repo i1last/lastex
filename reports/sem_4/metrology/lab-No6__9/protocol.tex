@@ -1,0 +1,49 @@
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерений частотомером ЦЧ}
+    \label{tab:freq_counter_raw}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] Q[c,m] Q[c,m] Q[c,m] },
+        hlines, vlines,
+    }
+        {№ изм.} & {Время счета $t_{\text{сч}}$, с} & {Показания $f_x$, Гц} & {Показания $T_x$, с} \\
+        1 & 0.1 & & \\
+        2 & 1   & & \\
+        3 & 10  & & \\
+        \midrule
+        4 & 0.1 & & \\
+        5 & 1   & & \\
+        6 & 10  & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерений параметров сигнала осциллографом}
+    \label{tab:osc_freq_raw}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] Q[c,m] Q[c,m] },
+        hlines, vlines,
+    }
+        {№ изм.} & {Коэф. развертки $k_p$, мс/дел} & {Размер изображения $L_T$, дел} \\
+        1 & & \\
+        2 & & \\
+        3 & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерений фазового сдвига двумя методами}
+    \label{tab:phase_raw}
+    \begin{tblr}[expand=\directlua]{
+        colspec = { Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] },
+        hlines, vlines,
+    }
+        {№ изм.} & \SetCell[c=2]{c} {Линейная развертка} & & \SetCell[c=2]{c} {Фигуры Лиссажу} & \\
+        & {$\tau$, дел} & {$L_T$, дел} & {$A$, дел} & {$B$, дел} \\
+        1 & & & & \\
+        2 & & & & \\
+        3 & & & & \\
+    \end{tblr}
+\end{table}
