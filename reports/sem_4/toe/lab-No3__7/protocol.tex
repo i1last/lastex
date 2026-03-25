@@ -1,55 +1,55 @@
+\luaexec{dofile('code/protocol.lua')}
+
 \begin{table}[H]
     \centering
     \caption{Измерения при резонансе (последовательный контур)}
-    \label{tab:series_res}
+    \label{tab:mprc}
     \begin{tblr}[expand=\directlua]{
         colspec = {X[c,m] X[c,m] X[c,m] X[c,m] X[c,m]},
         hlines, vlines,
     }
         Параметры & $U$, В & $I_0$, мА & $f_0$, кГц & $U_{C0}$, В \\
-        Малые потери & & & & \\
-        С резистором $R_1$ & & & & \\
-        С емкостью $3C$ & & & & \\
+        Малые потери       & \val*[0]{p.mp.U} & \val*[2m-3]{p.mp.I_0} & \val*[3m3]{p.mp.f_0} & \val*[2]{p.mp.U_C0} \\
+        С резистором $R_1$ & \val*[0]{p.R1.U} & \val*[2m-3]{p.R1.I_0} & \val*[3m3]{p.R1.f_0} & \val*[2]{p.R1.U_C0} \\
+        С емкостью $3C$    & \val*[0]{p.C3.U} & \val*[2m-3]{p.C3.I_0} & \val*[3m3]{p.C3.f_0} & \val*[2]{p.C3.U_C0} \\
     \end{tblr}
 \end{table}
 
 \begin{table}[H]
     \centering
-    \caption{Данные для построения АЧХ последовательного контура}
-    \label{tab:series_afc}
+    \caption{Данные для построения АЧХ. Малые потери}
+    \label{tab:mp}
     \begin{tblr}[expand=\directlua]{
         colspec = {Q[c,m] *{11}{X[c,m]}},
         hlines, vlines,
     }
-        $f$, кГц & & & & & & $f_0$ & & & & & \\
-        $I$, мА & & & & & & & & & & & \\
+        $f$, кГц &  \val*[2m3]{p.mp.f[1]} &  \val*[2m3]{p.mp.f[2]} &  \val*[2m3]{p.mp.f[3]} &  \val*[2m3]{p.mp.f[4]} &  \val*[2m3]{p.mp.f[5]} & \val*[2m3]{p.mp.f[6]} & \val*[2m3]{p.mp.f[7]} & \val*[2m3]{p.mp.f[8]} & \val*[2m3]{p.mp.f[9]} & \val*[2m3]{p.mp.f[10]} & \val*[2m3]{p.mp.f[11]} \\
+        $I$, мА  & \val*[2m-3]{p.mp.I[1]} & \val*[2m-3]{p.mp.I[2]} & \val*[2m-3]{p.mp.I[3]} & \val*[2m-3]{p.mp.I[4]} & \val*[2m-3]{p.mp.I[5]} &\val*[2m-3]{p.mp.I[6]} &\val*[2m-3]{p.mp.I[7]} &\val*[2m-3]{p.mp.I[8]} &\val*[2m-3]{p.mp.I[9]} &\val*[2m-3]{p.mp.I[10]} &\val*[2m-3]{p.mp.I[11]} \\
     \end{tblr}
 \end{table}
 
 \begin{table}[H]
     \centering
-    \caption{Измерения при резонансе (параллельный контур)}
-    \label{tab:parallel_res}
-    \begin{tblr}[expand=\directlua]{
-        colspec = {X[c,m] X[c,m] X[c,m] X[c,m] X[c,m]},
-        hlines, vlines,
-    }
-        Параметры & $I$, мА & $U_0$, В & $f_0$, кГц & $I_{C0}$, мА \\
-        Малые потери & & & & \\
-        С проводимостью $G_2$ & & & & \\
-        С емкостью $3C$ & & & & \\
-    \end{tblr}
-\end{table}
-
-\begin{table}[H]
-    \centering
-    \caption{Данные для построения АЧХ параллельного контура}
-    \label{tab:parallel_afc}
+    \caption{Данные для построения АЧХ. С $R_3$}
+    \label{tab:r}
     \begin{tblr}[expand=\directlua]{
         colspec = {Q[c,m] *{11}{X[c,m]}},
         hlines, vlines,
     }
-        $f$, кГц & & & & & & $f_0$ & & & & & \\
-        $U$, В & & & & & & & & & & & \\
+        $f$, кГц &  \val*[2m3]{p.R1.f[1]} &  \val*[2m3]{p.R1.f[2]} &  \val*[2m3]{p.R1.f[3]} &  \val*[2m3]{p.R1.f[4]} &  \val*[2m3]{p.R1.f[5]} & \val*[2m3]{p.R1.f[6]} & \val*[2m3]{p.R1.f[7]} & \val*[2m3]{p.R1.f[8]} & \val*[2m3]{p.R1.f[9]} & \val*[2m3]{p.R1.f[10]} & \val*[2m3]{p.R1.f[11]} \\
+        $I$, мА  & \val*[2m-3]{p.R1.I[1]} & \val*[2m-3]{p.R1.I[2]} & \val*[2m-3]{p.R1.I[3]} & \val*[2m-3]{p.R1.I[4]} & \val*[2m-3]{p.R1.I[5]} &\val*[2m-3]{p.R1.I[6]} &\val*[2m-3]{p.R1.I[7]} &\val*[2m-3]{p.R1.I[8]} &\val*[2m-3]{p.R1.I[9]} &\val*[2m-3]{p.R1.I[10]} &\val*[2m-3]{p.R1.I[11]} \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Данные для построения АЧХ. С $3C$}
+    \label{tab:c}
+    \begin{tblr}[expand=\directlua]{
+        colspec = {Q[c,m] *{11}{X[c,m]}},
+        hlines, vlines,
+    }
+        $f$, кГц &  \val*[2m3]{p.C3.f[1]} &  \val*[2m3]{p.C3.f[2]} &  \val*[2m3]{p.C3.f[3]} &  \val*[2m3]{p.C3.f[4]} &  \val*[2m3]{p.C3.f[5]} & \val*[2m3]{p.C3.f[6]} & \val*[2m3]{p.C3.f[7]} & \val*[2m3]{p.C3.f[8]} & \val*[2m3]{p.C3.f[9]} & \val*[2m3]{p.C3.f[10]} & \val*[2m3]{p.C3.f[11]} \\
+        $I$, мА  & \val*[2m-3]{p.C3.I[1]} & \val*[2m-3]{p.C3.I[2]} & \val*[2m-3]{p.C3.I[3]} & \val*[2m-3]{p.C3.I[4]} & \val*[2m-3]{p.C3.I[5]} &\val*[2m-3]{p.C3.I[6]} &\val*[2m-3]{p.C3.I[7]} &\val*[2m-3]{p.C3.I[8]} &\val*[2m-3]{p.C3.I[9]} &\val*[2m-3]{p.C3.I[10]} &\val*[2m-3]{p.C3.I[11]} \\
     \end{tblr}
 \end{table}
