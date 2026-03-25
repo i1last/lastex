@@ -1,0 +1,121 @@
+\section*{Цель}
+Познакомиться с событийной конструкцией \mintinline{text}§always @(...)§ языка Verilog и понятием <<список чувствительности>>. Провести синтез и моделирование работы асинхронных потенциальных R-S-триггера (в текстовом и графическом редакторах, со сравнением результатов) и D-L-триггера (в текстовом редакторе).
+
+\subsection*{ \boxed{\text{ Задание 1 и 1а. }} }
+\begin{quote}
+    \textit{Собрать схему асинхронного RS-триггера в текстовом редакторе. Изучить схему, реализованную в RTL-Viewer. Построить временные диаграммы только с учётом задержки, иллюстрирующие работу устройства. Задать время моделирования (Set End time) 350 нс. }
+
+    \textit{Проделать всё то же самое в графическом редакторе на основе элементов «или-не» с сохранением инверсии входных сигналов. Обозначить входные сигналы как R и S (или not\_R и not\_S, если какой-либо из сигналов задан инверсным). Проанализировать временные диаграммы двух реализаций RS-триггера (в текстовом и графическом редакторах), найти и объяснить различия.}
+\end{quote}
+ 
+Результат работы RTL для схемы представлен на \cref{fig:rs_scheme_rtl}, а для кода Verilog на \cref{fig:rs_Verilog_rtl}. Приведем также их временные диаграммы: \cref{fig:rs_scheme,fig:rs_verilog} --- для схемы и кода соответственно. Продемонстрируем в том числе и код на \cref{lst:rs.v}.
+
+\subsection*{Анализ различий реализаций RS-триггера}
+
+Различия на временных диаграммах обусловлены разным подходом к описанию логики работы в запрещенном состоянии ($not\_set = 0$, $reset = 1$).
+
+В модели Verilog используется конструкция \mintinline{verilog}{if-else}, которая задает строгий аппаратный приоритет. При $reset = 1$ условие выполняется первым, и триггер переходит в состояние $q = 0$, при этом состояние входа $not\_set$ игнорируется. Оператор присваивания \mintinline{verilog}{assign not_q = ~q} жестко фиксирует инверсию, выдавая $not\_q = 1$. Таким образом, текстовая модель маскирует истинное поведение элементов.
+
+В структурной модели (схема на элементах ИЛИ-НЕ) логика описывается системой логических уравнений:
+\begin{align}
+    q &= \overline{reset \lor not\_q} \\
+    not\_q &= \overline{\overline{not\_set} \lor q}
+\end{align}
+ 
+При подаче запрещенной комбинации ($reset = 1$, $\overline{not\_set} = 1$), оба элемента ИЛИ-НЕ независимо формируют на выходе логический ноль. В результате $q = 0$ и $not\_q = 0$. Это физически корректное поведение схемы, которое невозможно смоделировать базовым условным оператором с жестко заданной инверсией выходов.
+
+\begin{listing}[H]
+    \caption{RS Verilog}
+    \label{lst:rs.v}
+    \inputminted[]{verilog}{code/rs.v}
+\end{listing}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/rs_rtl.pdf}
+    \caption{RTL RS Verilog}
+    \label{fig:rs_Verilog_rtl}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/rs_scheme.png}
+        \caption{RS Scheme Time}
+        \label{fig:rs_scheme}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/rs_verilog.png}
+        \caption{RS Verilog Time}
+        \label{fig:rs_verilog}
+    \end{subfigure}
+    \caption{Временные диаграммы}
+    \label{fig:time_diagramm}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/rs_scheme_rtl.pdf}
+    \caption{RTL RS Scheme}
+    \label{fig:rs_scheme_rtl}
+\end{figure}
+
+\subsection*{ \boxed{\text{ Задание 2. }} }
+\begin{quote}
+    \textit{Собрать схему асинхронного DL-триггера в текстовом редакторе. Изучить схему, реализованную в RTL-Viewer. Построить временные диаграммы с учетом задержки, иллюстрирующие работу устройства. Задать время моделирования (Set End time) 400 нс. Проанализировать, что изменится в работе аппаратной реализации триггера, если 7-ю строчку кода заменить на \mintinline{text}§always @(negedge data)§.}
+\end{quote}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figs/dlff_rtl.pdf}
+    \caption{RTL DL Verilog}
+    \label{fig:dl_rtl}
+\end{figure}
+
+\begin{listing}[H]
+    \caption{DL Verilog}
+    \label{lst:dl.v}
+    \inputminted[]{verilog}{code/dl.v}
+\end{listing}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/dlff_wave.png}
+        \caption{DL Original}
+        \label{fig:dl}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/dlff_edited_wave.png}
+        \caption{DL Edited}
+        \label{fig:dl_edited}
+    \end{subfigure}
+    \caption{Временные диаграммы}
+    \label{fig:time_diagramm_DL}
+\end{figure}
+
+
+\subsection*{Анализ модификации списка чувствительности}
+
+В исходном коде \mintinline{verilog}{always @(load or data)} (см. \cref{lst:dl.v,fig:dl_rtl}) триггер работает как потенциальный (срабатывающий по уровню сигнала). Блок инициирует проверку условий при любом изменении сигналов $load$ или $data$ (см. \cref{fig:dl}).
+
+Замена строки на \mintinline{verilog}{always @(negedge data)} (см. \cref{fig:dl_edited}) принципиально меняет тип синтезируемого устройства. Аппаратная реализация претерпит следующие изменения:
+\begin{enumerate}
+    \item Изменение сигнала $load$ больше не будет инициировать срабатывание блока \mintinline{verilog}{always}. Устройство перестанет быть «прозрачным» по уровню $load$.
+    \item Запись состояния в триггер будет происходить исключительно по заднему фронту (спаду) информационного сигнала $data$ (в момент перехода из $1$ в $0$), при условии, что в этот момент $load = 1$.
+    \item Устройство превратится из защелки в аномальный синхронный триггер, где роль тактового сигнала (Clock) ошибочно назначена на информационный вход $data$.
+\end{enumerate}
+
+\section*{Выводы}
+В ходе выполнения лабораторной работы исследованы модели асинхронных RS- и DL-триггеров. Установлено следующее:
+\begin{itemize}
+    \item Описание на языке Verilog с использованием условных операторов (\mintinline{verilog}{if-else}) вводит неявный аппаратный приоритет сигналов. Это приводит к расхождению результатов моделирования со структурной схемой в запрещенных режимах. Для точного моделирования физических процессов на уровне логических вентилей требуется структурное описание.
+    \item В аппаратной реализации RS-триггера на элементах ИЛИ-НЕ подача запрещенной комбинации приводит к установке обоих выходов в состояние логического нуля ($q = 0$, $not\_q = 0$).
+    \item Список чувствительности в событийной конструкции \mintinline{verilog}{always} строго определяет тип синтезируемой памяти. Использование перечисления сигналов (\mintinline{verilog}{always @(a or b)}) формирует потенциальные триггеры, состояние которых зависит от уровня входных сигналов. Использование ключевых слов перепада (\mintinline{verilog}{posedge}, \mintinline{verilog}{negedge}) создает динамические триггеры, срабатывающие исключительно по фронту или спаду сигнала. Некорректное формирование списка чувствительности ведет к искажению аппаратной логики устройства.
+\end{itemize}
