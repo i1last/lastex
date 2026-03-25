@@ -1,0 +1,214 @@
+\directlua{dofile("code/processing.lua")}
+
+\section*{\fbox{Задание 1.} Исследование RC-цепи}
+\begin{quote}
+    \textit{По данным измерений для RC-цепи (\cref{tab:measurements_rc_rl}) вычислить параметры $R$ и $C$, построить векторные диаграммы и сравнить расчетный угол сдвига фаз с измеренным.}
+\end{quote}
+
+Расчет параметров цепи производится на основе закона Ома для каждого элемента. Сопротивление резистора:
+\begin{equation}
+    R = \frac{U_R}{I}
+\end{equation}
+
+Емкость конденсатора определяется через его реактивное сопротивление $X_C = 1/(\omega C)$, где $\omega = 2\pi f$:
+\begin{equation}
+    C = \frac{1}{\omega X_C} = \frac{I}{2\pi f \cdot U_C}.
+\end{equation}
+
+Теоретический угол сдвига фаз (аргумент комплексного сопротивления) вычисляется по данным векторной диаграммы:
+\begin{equation}
+    \varphi_{\text{ВД}} = \operatorname{arctg}\left(\frac{-U_C}{U_R}\right)
+\end{equation}
+
+Пример расчета для $f = \val[2m3]{p.RC.f[1]}$ кГц:
+\begin{align}
+    R &= \frac{U_R}{I} = \frac{\val[2]{p.RC.U_R[1]}}{\val[3m-3]{p.RC.I[1]}} = \val[1]{r.RC.R[1]} \text{ Ом} \\
+    C &= \frac{\val[3m-3]{p.RC.I[1]}}{2\pi \cdot \val[0]{p.RC.f[1]} \cdot \val[2]{p.RC.U_C[1]}} = \val[3e9]{r.RC.C[1]} \text{ нФ} \\
+    \varphi_{\text{ВД}} &= \operatorname{arctg}\left(\frac{-\val[2]{p.RC.U_C[1]}}{\val[2]{p.RC.U_R[1]}}\right) = \val[2]{r.RC.phi_vd[1]}^{\circ}
+\end{align}
+
+Результаты расчетов сведены в таблицу \cref{tab:results_rc}. Векторные диаграммы напряжений для двух частот представлены на \cref{fig:vd_rc_1,fig:vd_rc_2}.
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты обработки для RC-цепи}
+    \label{tab:results_rc}
+    \begin{tblr}{
+        width = \linewidth,
+        colspec = {Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m]},
+        hlines, vlines,
+    }
+        $f$, кГц & $R$, Ом & $C$, нФ & $\varphi_{\text{осц}}$, град & $\varphi_{\text{ВД}}$, град & $\delta$, \% \\
+        \val*[2m3]{p.RC.f[1]} & \val*[1]{r.RC.R[1]} & \val*[3m-9]{r.RC.C[1]} & \val*[2]{p.RC.phi[1]} & \val*[2]{r.RC.phi_vd[1]} & \val*[2]{r.RC.err[1]} \\
+        \val*[2m3]{p.RC.f[2]} & \val*[1]{r.RC.R[2]} & \val*[3m-9]{r.RC.C[2]} & \val*[2]{p.RC.phi[2]} & \val*[2]{r.RC.phi_vd[2]} & \val*[2]{r.RC.err[2]} \\
+    \end{tblr}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/vd_rc_1.pgf}
+    \caption{Векторная диаграмма для $f = \val[2m3]{p.RC.f[1]}$ кГц}
+    \label{fig:vd_rc_1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \input{figs/vd_rc_2.pgf}
+    \caption{Векторная диаграмма для $f = \val[2m3]{p.RC.f[2]}$ кГц}
+    \label{fig:vd_rc_2}
+\end{figure}
+
+\subsection*{Вопрос 1.}
+\begin{quote}
+    \textit{Почему $U_0 \neq U_R + U_C$?}
+\end{quote}
+
+В цепях синусоидального тока напряжения на элементах являются векторными величинами. Согласно второму закону Кирхгофа, вектор напряжения источника равен геометрической сумме векторов напряжений на элементах: $\dot{U}_0 = \dot{U}_R + \dot{U}_C$. Векторы $\dot{U}_R$ и $\dot{U}_C$ ортогональны, поэтому модуль суммарного напряжения находится по теореме Пифагора: 
+\begin{equation}
+    U_0 = \sqrt{U_R^2 + U_C^2}
+\end{equation}
+
+Данная величина не равна арифметической сумме модулей. Например, для $f = \val[2m3]{p.RC.f[1]}$ кГц: $\sqrt{(\val[2]{p.RC.U_R[1]})^2 + (\val[2]{p.RC.U_C[1]})^2} = \val[2]{(p.RC.U_R[1]^2 + p.RC.U_C[1]^2)^0.5} \text{ В} \approx \val[0]{p.RC.U0[1]} \text{ В}$.
+
+\subsection*{Вопрос 2.}
+\begin{quote}
+    \textit{Почему с ростом частоты значения $I$ и $U_R$ увеличились, а $U_C$ и $|\varphi|$ уменьшились? Изменились ли $R$ и $C$?}
+\end{quote}
+
+С ростом частоты $f$ емкостное сопротивление $X_C = 1/(2\pi f C)$ уменьшается. Это приводит к уменьшению полного сопротивления цепи $Z = \sqrt{R^2 + X_C^2}$. Вследствие этого общий ток $I = U_0/Z$ и напряжение на резисторе $U_R = I \cdot R$ возрастают. Угол сдвига фаз по модулю $|\varphi| = \operatorname{arctg}(X_C/R)$ уменьшается из-за снижения реактивной составляющей. Параметры $R$ и $C$ зависят только от физических свойств элементов и остаются неизменными (незначительные отклонения в расчетах вызваны погрешностью измерений).
+
+\section*{ \fbox{Задание 2.} Исследование RL-цепи }
+\begin{quote}
+    \textit{По данным измерений для RL-цепи (\cref{tab:measurements_rc_rl}) вычислить параметры $R$ и $L$, построить векторные диаграммы и сравнить расчетный угол сдвига фаз с измеренным.}
+\end{quote}
+
+Расчет параметров производится аналогично RC-цепи. Индуктивность катушки определяется через ее реактивное сопротивление $X_L = \omega L$:
+\begin{equation}
+    L = \frac{X_L}{\omega} = \frac{U_L}{2\pi f \cdot I}
+\end{equation}
+Теоретический угол сдвига фаз:
+\begin{equation}
+    \varphi_{\text{ВД}} = \operatorname{arctg}\left(\frac{U_L}{U_R}\right)
+\end{equation}
+
+Результаты расчетов сведены в таблицу \cref{tab:results_rl}. Векторные диаграммы представлены на \cref{fig:vd_rl_1,fig:vd_rl_2}.
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты обработки для RL-цепи}
+    \label{tab:results_rl}
+    \begin{tblr}{
+        width = \linewidth,
+        colspec = {Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m]},
+        hlines, vlines,
+    }
+        $f$, кГц & $R$, Ом & $L$, мГн & $\varphi_{\text{осц}}$, град & $\varphi_{\text{ВД}}$, град & $\delta$, \% \\
+        \val*[2m3]{p.RL.f[1]} & \val*[1]{r.RL.R[1]} & \val*[2m-3]{r.RL.L[1]} & \val*[2]{p.RL.phi[1]} & \val*[2]{r.RL.phi_vd[1]} & \val*[2]{r.RL.err[1]} \\
+        \val*[2m3]{p.RL.f[2]} & \val*[1]{r.RL.R[2]} & \val*[2m-3]{r.RL.L[2]} & \val*[2]{p.RL.phi[2]} & \val*[2]{r.RL.phi_vd[2]} & \val*[2]{r.RL.err[2]} \\
+    \end{tblr}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/vd_rl_1.pgf}
+    \caption{Векторная диаграмма для $f = \val[2m3]{p.RL.f[1]}$ кГц}
+    \label{fig:vd_rl_1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \input{figs/vd_rl_2.pgf}
+    \caption{Векторная диаграмма для $f = \val[2m3]{p.RL.f[2]}$ кГц}
+    \label{fig:vd_rl_2}
+\end{figure}
+
+\subsection*{Вопрос 3.}
+\begin{quote}
+    \textit{Проанализировать изменение параметров RL-цепи с изменением частоты.}
+\end{quote}
+
+В RL-цепи индуктивное сопротивление $X_L = 2\pi f L$ прямо пропорционально частоте. При увеличении частоты $X_L$ возрастает, что приводит к увеличению полного сопротивления $Z = \sqrt{R^2 + X_L^2}$. Как следствие, ток в цепи $I = U_0/Z$ и падение напряжения на активном сопротивлении $U_R = I \cdot R$ уменьшаются. Угол сдвига фаз $\varphi = \operatorname{arctg}(X_L/R)$ при этом увеличивается, асимптотически стремясь к $90^{\circ}$.
+
+\section*{\fbox{Задание 3.} Исследование RLC-цепи}
+\begin{quote}
+    \textit{По данным измерений для RLC-цепи (\cref{tab:measurements_rlc}) определить параметры цепи $R, L, C$ и добротность $Q$ из резонансного режима. Сравнить теоретические и экспериментальные значения тока и сдвига фаз для трех частот. Построить АЧХ и векторные диаграммы.}
+\end{quote}
+
+Параметры цепи определяются из данных, полученных при резонансе ($f=f_0$), где $\varphi=0$ и $X_L = X_C$.
+\begin{align}
+    R &= \frac{U_R(f_0)}{I(f_0)} = \frac{\val[2]{p.RLC.U_R[1]}}{\val[3m-3]{p.RLC.I[1]}} = \val[1]{r.RLC.R_res} \text{ Ом} \\
+    L &= \frac{U_L(f_0)}{2\pi f_0 \cdot I(f_0)} = \frac{\val[2]{p.RLC.U_L[1]}}{2\pi \cdot \val[0]{p.RLC.f[1]} \cdot \val[3m-3]{p.RLC.I[1]}} = \val[2e3]{r.RLC.L_res} \text{ мГн} \\
+    C &= \frac{I(f_0)}{2\pi f_0 \cdot U_C(f_0)} = \frac{\val[3m-3]{p.RLC.I[1]}}{2\pi \cdot \val[0]{p.RLC.f[1]} \cdot \val[2]{p.RLC.U_C[1]}} = \val[3e9]{r.RLC.C_res} \text{ нФ}
+\end{align}
+Добротность контура:
+\begin{equation}
+    Q = \frac{\omega_0 L}{R} = \frac{2\pi f_0 L}{R} = \frac{2\pi \cdot \val[0]{p.RLC.f[1]} \cdot \val[5]{r.RLC.L_res}}{\val[1]{r.RLC.R_res}} = \val[2]{r.RLC.Q}
+\end{equation}
+
+На основе найденных параметров $R, L, C$ вычисляются теоретические значения тока и фазы для всех трех частот. Полное сопротивление цепи: $Z = \sqrt{R^2 + (\omega L - 1/\omega C)^2}$. Ток: $I = U_0/Z$. Фаза: $\varphi = \operatorname{arctg}((\omega L - 1/\omega C)/R)$.
+
+\begin{table}[H]
+    \centering
+    \caption{Сравнение экспериментальных и теоретических данных для RLC-цепи}
+    \label{tab:results_rlc}
+    \begin{tblr}{
+        width = \linewidth,
+        colspec = {Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m]},
+        hlines, vlines,
+    }
+        Режим & $I_{\text{эксп}}$, мА & $I_{\text{теор}}$, мА & $\delta_I$, \% & $\varphi_{\text{эксп}}$, град & $\varphi_{\text{теор}}$, град & $\delta_{\varphi}$, \% \\
+        $f=f_0$ & \val*[2m-3]{p.RLC.I[1]} & \val*[2m-3]{r.RLC.calc.I[1]} & \val*[2]{r.RLC.calc.err_I[1]} & \val*[0]{p.RLC.phi[1]} & \val*[2]{r.RLC.calc.phi[1]} & --- \\
+        $f=2f_0$ & \val*[2m-3]{p.RLC.I[2]} & \val*[2m-3]{r.RLC.calc.I[2]} & \val*[2]{r.RLC.calc.err_I[2]} & \val*[0]{p.RLC.phi[2]} & \val*[2]{r.RLC.calc.phi[2]} & \val*[2]{r.RLC.calc.err_phi[2]} \\
+        $f=0.5f_0$ & \val*[2m-3]{p.RLC.I[3]} & \val*[2m-3]{r.RLC.calc.I[3]} & \val*[2]{r.RLC.calc.err_I[3]} & \val*[0]{p.RLC.phi[3]} & \val*[2]{r.RLC.calc.phi[3]} & \val*[2]{r.RLC.calc.err_phi[3]} \\
+    \end{tblr}
+\end{table}
+
+На \cref{fig:afc_rlc} представлена теоретическая АЧХ с нанесенными экспериментальными точками. На \cref{fig:vd_rlc_1,fig:vd_rlc_2,fig:vd_rlc_3} показаны векторные диаграммы для трех исследуемых режимов.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/afc_rlc.pgf}
+    \caption{Амплитудно-частотная характеристика RLC-цепи}
+    \label{fig:afc_rlc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering   
+    \input{figs/vd_rlc_1.pgf}
+    \caption{Векторная диаграмма для RLC-цепи. Режим резонанса ($f=f_0$)}
+    \label{fig:vd_rlc1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \input{figs/vd_rlc_2.pgf}
+    \caption{Векторная диаграмма для RLC-цепи. Индуктивный характер ($f=2f_0$)}
+    \label{fig:vd_rlc2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \input{figs/vd_rlc_3.pgf}
+    \caption{Векторная диаграмма для RLC-цепи. Емкостный характер ($f=0.5f_0$)}
+    \label{fig:vd_rlc3}
+\end{figure}
+
+\subsection*{Вопрос 4.}
+\begin{quote}
+    \textit{Проанализировать поведение RLC-цепи при изменении частоты.}
+\end{quote}
+
+Характер реактивного сопротивления RLC-цепи определяется разностью $X = X_L - X_C = 2\pi f L - 1/(2\pi f C)$.
+\begin{itemize}
+    \item При $f < f_0$ ($f=0.5f_0$), выполняется условие $X_C > X_L$. Реактивное сопротивление отрицательно ($X<0$), цепь носит активно-емкостный характер. Ток опережает напряжение ($\varphi < 0$).
+    \item При $f = f_0$, наступает резонанс напряжений: $X_L = X_C$, $X=0$. Полное сопротивление цепи минимально и равно активному ($Z=R$). Ток достигает максимума и совпадает по фазе с напряжением ($\varphi = 0$).
+    \item При $f > f_0$ ($f=2f_0$), выполняется условие $X_L > X_C$. Реактивное сопротивление положительно ($X>0$), цепь носит активно-индуктивный характер. Ток отстает от напряжения ($\varphi > 0$).
+\end{itemize}
+Теоретический анализ полностью согласуется с полученными векторными диаграммами и графиком АЧХ.
+
+
+\section*{Выводы}
+В ходе выполнения лабораторной работы были экспериментально исследованы установившиеся процессы в последовательных $RC$-, $RL$- и $RLC$-цепях при синусоидальном воздействии. 
+
+\begin{enumerate}
+    \item Для двухполюсников с одним реактивным элементом подтверждены теоретические зависимости: в $RC$-цепи вектор напряжения на емкости $\vec{U}_C$ отстает от вектора тока на $90^{\circ}$, а в $RL$-цепи вектор напряжения на индуктивности $\vec{U}_L$ опережает ток на тот же угол. Установлено, что с ростом частоты полное сопротивление $RC$-цепи уменьшается, а $RL$-цепи — увеличивается, что обусловлено частотными характеристиками реактивных сопротивлений $X_C = 1/(2\pi f C)$ и $X_L = 2\pi f L$.
+    \item На основе анализа векторных диаграмм подтверждено выполнение второго закона Кирхгофа в комплексной форме: вектор напряжения источника $\dot{U}_0$ во всех случаях является геометрической суммой векторов падений напряжений на элементах цепи.
+    \item При исследовании $RLC$-цепи экспериментально зафиксировано явление резонанса напряжений на частоте $f_0 = \val[3m3]{p.RLC.f[1]}$ кГц. В данном режиме реактивное сопротивление контура равно нулю ($X_L = X_C$), ток в цепи достигает максимального значения и совпадает по фазе с напряжением источника ($\varphi \approx 0$). Построенная амплитудно-частотная характеристика $I(f)$ наглядно демонстрирует селективные свойства контура с добротностью $Q = \val[2]{r.RLC.Q}$.
+    \item Сопоставление теоретических расчетов с экспериментальными данными показало их хорошую сходимость. Наблюдаемые погрешности (в среднем до $15\%$) обусловлены инструментальной точностью измерительных приборов и неучтенным активным сопротивлением катушки индуктивности.
+\end{enumerate}

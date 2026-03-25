@@ -1,3 +1,5 @@
+\luaexec{dofile('code/protocol.lua')}
+
 \begin{table}[H]
     \centering
     \caption{Данные измерений для $RC$- и $RL$-цепей. Результаты прямых измерений в двухполюсниках}
@@ -10,10 +12,10 @@
         rowhead = 1
     }
         Тип цепи & $f$, кГц & $U_0$, В & $I$, мА & $U_R$, В & $U_{C/L}$, В & $\varphi_{\text{осц}}$, град \\
-        \SetCell[r=2]{c} $RC$ & 7.5 & & & & & \\
-                              & 15.0 & & & & & \\
-        \SetCell[r=2]{c} $RL$ & 7.5 & & & & & \\
-                              & 15.0 & & & & & \\
+        \SetCell[r=2]{c} $RC$ & \val*[2m3]{p.RC.f[1]} & \val*[0]{p.RC.U0[1]} & \val*[2m-3]{p.RC.I[1]} & \val*[2]{p.RC.U_R[1]} & \val*[2]{p.RC.U_C[1]} & \val*[2]{p.RC.phi[1]} \\
+                              & \val*[2m3]{p.RC.f[2]} & \val*[0]{p.RC.U0[2]} & \val*[2m-3]{p.RC.I[2]} & \val*[2]{p.RC.U_R[2]} & \val*[2]{p.RC.U_C[2]} & \val*[2]{p.RC.phi[2]} \\
+        \SetCell[r=2]{c} $RL$ & \val*[2m3]{p.RL.f[1]} & \val*[0]{p.RL.U0[1]} & \val*[2m-3]{p.RL.I[1]} & \val*[2]{p.RL.U_R[1]} & \val*[2]{p.RL.U_L[1]} & \val*[2]{p.RL.phi[1]} \\
+                              & \val*[2m3]{p.RL.f[2]} & \val*[0]{p.RL.U0[2]} & \val*[2m-3]{p.RL.I[2]} & \val*[2]{p.RL.U_R[2]} & \val*[2]{p.RL.U_L[2]} & \val*[2]{p.RL.phi[2]} \\
     \end{tblr}
 \end{table}
 
@@ -29,8 +31,8 @@
         rowhead = 1
     }
         Режим & $f$, кГц & $U_0$, В & $I$, мА & $U_R$, В & $U_C$, В & $U_L$, В & $\varphi_{\text{осц}}$, град \\
-        $f = f_0$ & & & & & & & \\
-        $f = 2f_0$ & & & & & & & \\
-        $f = 0.5f_0$ & & & & & & & \\
+        $f = f_0$    & \val*[3m3]{p.RLC.f[1]} & \val*[0]{p.RLC.U0[1]} & \val*[2m-3]{p.RLC.I[1]} & \val*[2]{p.RLC.U_R[1]} & \val*[2]{p.RLC.U_C[1]} & \val*[2]{p.RLC.U_L[1]} & \val*[0]{p.RLC.phi[1]} \\
+        $f = 2f_0$   & \val*[3m3]{p.RLC.f[2]} & \val*[0]{p.RLC.U0[2]} & \val*[2m-3]{p.RLC.I[2]} & \val*[2]{p.RLC.U_R[2]} & \val*[2]{p.RLC.U_C[2]} & \val*[2]{p.RLC.U_L[2]} & \val*[0]{p.RLC.phi[2]} \\
+        $f = 0.5f_0$ & \val*[3m3]{p.RLC.f[3]} & \val*[0]{p.RLC.U0[3]} & \val*[2m-3]{p.RLC.I[3]} & \val*[2]{p.RLC.U_R[3]} & \val*[2]{p.RLC.U_C[3]} & \val*[2]{p.RLC.U_L[3]} & \val*[0]{p.RLC.phi[3]} \\
     \end{tblr}
 \end{table}
