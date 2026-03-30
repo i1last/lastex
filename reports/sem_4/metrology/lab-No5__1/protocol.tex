@@ -1,6 +1,9 @@
+\luaexec{dofile('code/protocol.lua')}
+
 \begin{longtblr}[
     caption = {Результаты поверки вольтметра постоянного тока, В},
     label = {tbl:protocol_vdc},
+    expand = \expanded,
 ]{
     colspec = {X[c, m] X[c, m] X[c, m]},
     hlines, vlines,
@@ -8,21 +11,13 @@
 }
     \SetCell[r=2]{c} Показания поверяемого прибора, $x$ & \SetCell[c=2]{c} Показания образцового прибора, $x_\text{о}$ & \\
     & {при увеличении, \\ $x_\text{о.ув}$} & {при уменьшении, \\ $x_\text{о.ум}$} \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
+    \expanded{\luablock*[0,2,2][1][-1]{p.vdc.x,p.vdc.x_up,p.vdc.x_down}} \\
 \end{longtblr}
 
 \begin{longtblr}[
     caption = {Результаты поверки вольтметра переменного тока, В},
     label = {tbl:protocol_vac},
+    expand = \expanded,
 ]{
     colspec = {X[c,m] X[c,m] X[c,m]},
     hlines, vlines,
@@ -30,21 +25,13 @@
 }
     \SetCell[r=2]{c} Показания поверяемого прибора, $x$ & \SetCell[c=2]{c} Показания образцового прибора, $x_\text{о}$ & \\
     & {при увеличении, \\ $x_\text{о.ув}$} & {при уменьшении, \\ $x_\text{о.ум}$} \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
+    \expanded{\luablock*[1,2,2][1][-1]{p.vac.x,p.vac.x_up,p.vac.x_down}} \\
 \end{longtblr}
 
 \begin{longtblr}[
     caption = {Результаты поверки миллиамперметра постоянного тока, мА},
     label = {tbl:protocol_idc},
+    expand = \expanded,
 ]{
     colspec = {X[c,m] X[c,m] X[c,m]},
     hlines, vlines,
@@ -52,35 +39,18 @@
 }
     \SetCell[r=2]{c} Показания поверяемого прибора, $x$ & \SetCell[c=2]{c} Показания образцового прибора, $x_\text{о}$ & \\
     & {при увеличении, \\ $x_\text{о.ув}$} & {при уменьшении, \\ $x_\text{о.ум}$} \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
-    & & \\
+    \expanded{\luablock*[0m-3,2m-3,1m-3][1][-1]{p.idc.x,p.idc.x_up,p.idc.x_down}} \\
 \end{longtblr}
 
 \begin{longtblr}[
-    caption = {Результаты измерений для построения АЧХ},
+    caption = {Результаты измерений для построения АЧХ ($U_\text{50 Гц} = \val[1]{p.afc.U_50Hz}$ В, $f_1 = \val[0]{p.afc.f_1}$ Гц)},
     label = {tbl:protocol_afc},
+    expand = \expanded,
 ]{
     colspec = {X[c,m] X[c,m]},
     hlines, vlines,
     rowhead = 1,
 }
     Частота, $f$, Гц & Показания вольтметра, $U(f)$, В \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
+    \expanded{\luablock*[0,1][1][-1]{p.afc.f,p.afc.U}} \\
 \end{longtblr}

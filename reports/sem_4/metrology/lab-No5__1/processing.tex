@@ -1,0 +1,174 @@
+\directlua{dofile("code/processing.lua")}
+
+\subsection*{ Задание 1. }
+\begin{quote}
+    \textit{Определить основную погрешность комбинированного измерительного прибора (тестера) в следующих режимах работы: вольтметра постоянного тока, вольтметра переменного тока, миллиамперметра постоянного тока.}
+\end{quote}
+
+Для каждой проверяемой отметки шкалы $x$ вычисляются абсолютные погрешности при плавном увеличении ($x_{\text{о.ув}}$) и уменьшении ($x_{\text{о.ум}}$) измеряемой величины. За расчетную абсолютную погрешность $\Delta x$ принимается наибольшая по модулю величина с сохранением знака.
+
+Пример расчета для первой точки вольтметра постоянного тока ($x = \val[0]{p.vdc.x[1]}$ В):
+\begin{align}
+    \Delta x_{\text{ув}} &= x - x_{\text{о.ув}} = \val[0]{p.vdc.x[1]} - \val[2]{p.vdc.x_up[1]} = \val[2]{r.vdc.dx_up[1]} \text{ В} \\
+    \Delta x_{\text{ум}} &= x - x_{\text{о.ум}} = \val[0]{p.vdc.x[1]} - \val[2]{p.vdc.x_down[1]} = \val[2]{r.vdc.dx_down[1]} \text{ В}
+\end{align}
+
+Максимальная по модулю абсолютная погрешность:
+\begin{equation}
+    \Delta x = \val[2]{r.vdc.dx_max[1]} \text{ В}
+\end{equation}
+
+Относительная погрешность $\delta$:
+\begin{equation}
+    \delta = \frac{\Delta x}{x} \cdot 100\% = \frac{\val[2]{r.vdc.dx_max[1]}}{\val[0]{p.vdc.x[1]}} \cdot 100\% = \val[2]{r.vdc.delta[1]} \%
+\end{equation}
+
+Приведенная погрешность $\gamma$, где нормирующее значение $x_N = \val[0]{p.vdc.x[10]}$ В:
+\begin{equation}
+    \gamma = \frac{\Delta x}{x_N} \cdot 100\% = \frac{\val[2]{r.vdc.dx_max[1]}}{\val[0]{p.vdc.x[10]}} \cdot 100\% = \val[2]{r.vdc.gamma[1]} \%
+\end{equation}
+
+Вариация показаний $H$:
+\begin{equation}
+    H = \frac{|x_{\text{о.ув}} - x_{\text{о.ум}}|}{x_N} \cdot 100\% = \frac{|\val[2]{p.vdc.x_up[1]} - \val[2]{p.vdc.x_down[1]}|}{\val[0]{p.vdc.x[10]}} \cdot 100\% = \val[2]{r.vdc.H[1]} \%
+\end{equation}
+
+Результаты аналогичных вычислений для всех режимов сведены в \cref{tbl:res_vdc,tbl:res_vac,tbl:res_idc}.
+
+\begin{longtblr}[
+    caption = {Результаты расчетов для вольтметра постоянного тока},
+    label = {tbl:res_vdc},
+    expand = \expanded,
+]{
+    colspec = {X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m]},
+    hlines, vlines,
+    rowhead = 2,
+}
+    \SetCell[r=2]{c} $x$, В & \SetCell[c=2]{c} $x_{\text{о}}$, В & & \SetCell[c=2]{c} $\Delta x$, В & & \SetCell[r=2]{c} $\delta$, \% & \SetCell[r=2]{c} $\gamma$, \% & \SetCell[r=2]{c} $H$, \% \\
+    & $x_{\text{о.ув}}$ & $x_{\text{о.ум}}$ & $\Delta x_{\text{ув}}$ & $\Delta x_{\text{ум}}$ & & & \\
+    \expanded{\luablock*[0,2,2,2,2,2,2,2][1][-1]{p.vdc.x, p.vdc.x_up, p.vdc.x_down, r.vdc.dx_up, r.vdc.dx_down, r.vdc.delta, r.vdc.gamma, r.vdc.H}} \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Результаты расчетов для вольтметра переменного тока},
+    label = {tbl:res_vac},
+    expand = \expanded,
+]{
+    colspec = {X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m]},
+    hlines, vlines,
+    rowhead = 2,
+}
+    \SetCell[r=2]{c} $x$, В & \SetCell[c=2]{c} $x_{\text{о}}$, В & & \SetCell[c=2]{c} $\Delta x$, В & & \SetCell[r=2]{c} $\delta$, \% & \SetCell[r=2]{c} $\gamma$, \% & \SetCell[r=2]{c} $H$, \% \\
+    & $x_{\text{о.ув}}$ & $x_{\text{о.ум}}$ & $\Delta x_{\text{ув}}$ & $\Delta x_{\text{ум}}$ & & & \\
+    \expanded{\luablock*[1,2,2,2,2,2,2,2][1][-1]{p.vac.x, p.vac.x_up, p.vac.x_down, r.vac.dx_up, r.vac.dx_down, r.vac.delta, r.vac.gamma, r.vac.H}} \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Результаты расчетов для миллиамперметра постоянного тока},
+    label = {tbl:res_idc},
+    expand = \expanded,
+]{
+    colspec = {X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m]},
+    hlines, vlines,
+    rowhead = 2,
+}
+    \SetCell[r=2]{c} $x$, мА & \SetCell[c=2]{c} $x_{\text{о}}$, мА & & \SetCell[c=2]{c} $\Delta x$, мА & & \SetCell[r=2]{c} $\delta$, \% & \SetCell[r=2]{c} $\gamma$, \% & \SetCell[r=2]{c} $H$, \% \\
+    & $x_{\text{о.ув}}$ & $x_{\text{о.ум}}$ & $\Delta x_{\text{ув}}$ & $\Delta x_{\text{ум}}$ & & & \\
+    \expanded{\luablock*[0m-3,2m-3,2m-3,2m-3,2m-3,2,2,2][1][-1]{p.idc.x, p.idc.x_up, p.idc.x_down, r.idc.dx_up, r.idc.dx_down, r.idc.delta, r.idc.gamma, r.idc.H}} \\
+\end{longtblr}
+
+
+\subsection*{ Задание 2. }
+\begin{quote}
+    \textit{Для каждого из поверяемых режимов построить на одном графике зависимости относительной и приведенной погрешностей прибора от показаний поверяемого прибора.}
+\end{quote}
+
+Графики зависимостей $\delta(x)$ и $\gamma(x)$ представлены на \cref{fig:vdc_errors,fig:vac_errors,fig:idc_errors}.
+
+\begin{figure}[htpb]
+    \centering
+    \input{figs/vdc_errors.pgf}
+    \caption{Зависимость погрешностей от показаний вольтметра постоянного тока}
+    \label{fig:vdc_errors}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \input{figs/vac_errors.pgf}
+    \caption{Зависимость погрешностей от показаний вольтметра переменного тока}
+    \label{fig:vac_errors}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \input{figs/idc_errors.pgf}
+    \caption{Зависимость погрешностей от показаний миллиамперметра постоянного тока}
+    \label{fig:idc_errors}
+\end{figure}
+
+
+\subsection*{ Задание 3. }
+\begin{quote}
+    \textit{Определить амплитудно-частотную характеристику (АЧХ) вольтметра переменного тока. Построить график АЧХ, определить рабочую полосу частот вольтметра.}
+\end{quote}
+
+Коэффициент передачи вычисляется по формуле:
+\begin{equation}
+    K(f) = \frac{U(f)}{U(50 \text{ Гц})}
+\end{equation}
+
+Пример расчета для $f = \val[0]{p.afc.f[1]}$ Гц:
+\begin{equation}
+    K(\val[0]{p.afc.f[1]}) = \frac{\val[1]{p.afc.U[1]}}{\val[1]{p.afc.U_50Hz}} = \val[2]{r.afc.K[1]}
+\end{equation}
+
+\begin{longtblr}[
+    caption = {Амплитудно-частотная характеристика вольтметра},
+    label = {tbl:res_afc},
+    expand = \expanded,
+]{
+    colspec = {X[c,m] X[c,m] X[c,m]},
+    hlines, vlines,
+    rowhead = 1,
+}
+    Частота $f$, Гц & Напряжение $U(f)$, В & Коэффициент передачи $K(f)$ \\
+    \expanded{\luablock*[0,1,2][1][-1]{p.afc.f, p.afc.U, r.afc.K}} \\
+\end{longtblr}
+
+\begin{figure}[htpb]
+    \centering
+    \input{figs/afc.pgf}
+    \caption{Амплитудно-частотная характеристика вольтметра переменного тока}
+    \label{fig:afc}
+\end{figure}
+
+Рабочая полоса частот определяется по допустимому спаду АЧХ на $10\%$ ($K \ge 0.9$). Нижняя граница частотного диапазона составляет $f_{\text{н}} = \val[0]{p.afc.f_1}$ Гц. Верхняя граница $f_{\text{в}}$ определяется с помощью линейной интерполяции между точками $f_7 = \val[0]{p.afc.f[7]}$ Гц и $f_8 = \val[0]{p.afc.f[8]}$ Гц:
+\begin{equation}
+    f_{\text{в}} = f_7 + \frac{0.9 - K_7}{K_8 - K_7} (f_8 - f_7) = \val[0]{p.afc.f[7]} + \frac{0.9 - \val[4]{r.afc.K[7]}}{\val[4]{r.afc.K[8]} - \val[4]{r.afc.K[7]}} (\val[0]{p.afc.f[8]} - \val[0]{p.afc.f[7]}) = \val[0]{r.afc.f_high} \text{ Гц}
+\end{equation}
+Рабочая полоса частот: от $\val[0]{p.afc.f_1}$ до $\val[0]{r.afc.f_high}$ Гц.
+
+
+\subsection*{ Задание 4. }
+\begin{quote}
+    \textit{На основе анализа полученных данных сделать вывод о соответствии поверяемого прибора его классу точности.}
+\end{quote}
+
+% МЫ ЗАБЫЛИ СФОТКАТЬ ПАСПОРТА ПРИБОРОВ (ЧТОБЫ УЗНАТЬ КЛАСС ТОЧНОСТИ ПРИБОРОВ),
+% ПОЭТОМУ ПРИХОДИТСЯ ВЫКРУЧИВАТЬСЯ КАК МОЖЕМ. ПОПРОБУЕМ В ФОРМАТЕ "ОБВЕСТИ В
+% КРУЖОК - ВЫЧЕРКНУТЬ"
+
+Анализ рассчитанных значений приведенной погрешности $\gamma$ по всем исследованным режимам показывает, что максимальное по модулю значение составляет $|\gamma|_{\max} = \val[2]{r.global_max_gamma} \%$.
+
+Заявленный класс точности поверяемого прибора (согласно маркировке на шкале): \underline{\hspace{3cm}}.
+
+Сравнивая полученное максимальное значение приведенной погрешности с заявленным классом точности, можно сделать вывод, что поверяемый прибор \textit{соответствует / не соответствует} своему классу точности, поскольку расчетная погрешность \textit{не превышает / превышает} предел допускаемой погрешности.
+
+ 
+\section*{Выводы} 
+
+В результате выполнения лабораторной работы проведена поверка электромеханического измерительного прибора методом сличения с образцовым средством измерений.
+
+Вычисленная максимальная приведенная погрешность среди всех режимов составила $\val[2]{r.global_max_gamma} \%$. На основании сопоставления этого значения с номинальным классом точности (\underline{\hspace{2cm}}) установлено, что прибор \textit{пригоден / не пригоден} к дальнейшей эксплуатации в пределах заявленных метрологических характеристик.
+
+Анализ амплитудно-частотной характеристики вольтметра переменного тока показал, что рабочая полоса частот (по критерию допустимого спада коэффициента передачи на $10\%$) ограничена диапазоном от $\val[0]{p.afc.f_1}$ Гц до $\val[0]{r.afc.f_high}$ Гц. За пределами верхней границы частотного диапазона наблюдается \textit{уменьшение / увеличение} чувствительности прибора, что делает измерения на этих частотах \textit{достоверными / недостоверными}.
