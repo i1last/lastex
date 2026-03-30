@@ -1,0 +1,185 @@
+\directlua{dofile("code/processing.lua")}
+
+\section{ Измерение частоты и периода универсальным частотомером}
+\begin{quote}
+    \textit{Измерить частоту и период периодического сигнала по заданию преподавателя с помощью универсального частотомера и оценить погрешность измерения.}
+\end{quote}
+
+Абсолютная погрешность измерения частоты $\Delta f$ цифровым частотомером определяется по формуле
+\begin{equation}
+    \Delta f = \pm \left( 5 \cdot 10^{-6} \cdot f_x + k \right),
+    \label{eq:freq_counter_error}
+\end{equation}
+где $f_x$ — показание частотомера, $k$ — шаг квантования, который зависит от времени счета (количества знаков после запятой).
+
+Проведем расчет для первого измерения (вариант 1, время счета $t_{\text{сч}} = \val[1]{p.fc.o1.t[1]}$~с):
+\begin{itemize}
+    \item Показание прибора: $f_x = \val[3]{p.fc.o1.f_x[1]}$~Гц.
+    \item Шаг квантования (вес последней значащей цифры): $k = \val[1]{r.fc.o1.k[1]}$~Гц.
+    \item Абсолютная погрешность:
+        \begin{equation*}
+            \Delta f = 5 \cdot 10^{-6} \cdot \val[3]{p.fc.o1.f_x[1]} + \val[1]{r.fc.o1.k[1]} = \val[3]{r.fc.o1.dF[1]} \text{ Гц}.
+        \end{equation*}
+    \item Относительная погрешность $\delta_f$:
+        \begin{equation*}
+            \delta_f = \frac{\Delta f}{f_x} \cdot 100\% = \frac{\val[3]{r.fc.o1.dF[1]}}{\val[3]{p.fc.o1.f_x[1]}} \cdot 100\% = \val[4]{r.fc.o1.relF[1]} \%.
+        \end{equation*}
+\end{itemize}
+Результаты расчетов для первого варианта сведены в \cref{tab:freq_counter_results}.
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерений и расчет погрешностей (частотомер, вариант 1)}
+    \label{tab:freq_counter_results}
+    \begin{tblr}{
+        colspec = { X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        {Время счета \\ $t_{\text{сч}}$, с} & {Показания \\ $f_x$, Гц} & {Шаг квантования \\ $k$, Гц} & {Абсолютная \\ погрешность \\ $\Delta f$, Гц} & {Относительная \\ погрешность \\ $\delta_f$, \%} \\
+        \expanded{\luablock[1,3,3,3,4][1][-1]{p.fc.o1.t, p.fc.o1.f_x, r.fc.o1.k, r.fc.o1.dF, r.fc.o1.relF}}
+    \end{tblr}
+\end{table}
+
+На \cref{fig:error_vs_time} показана зависимость относительной погрешности измерения от времени счета. Увеличение времени счета приводит к уменьшению шага квантования $k$, что снижает общую погрешность.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/error_vs_time.pgf}
+    \caption{Зависимость относительной погрешности измерения частоты от времени счета}
+    \label{fig:error_vs_time}
+\end{figure}
+
+\section{ Измерение частоты и периода осциллографом}
+\begin{quote}
+    \textit{Измерить частоту и период тех же сигналов осциллографом. Оценить погрешности результатов измерения.}
+\end{quote}
+
+Период сигнала $T_x$ определяется по осциллограмме как:
+\begin{equation}
+    T_x = k_p \cdot L_T,
+    \label{eq:osc_period}
+\end{equation}
+где $k_p$ — коэффициент развертки (с/дел), $L_T$ — длина одного периода на экране (дел).
+
+Относительная погрешность измерения периода $\delta_T$ складывается из погрешности установки коэффициента развертки $\delta_{k_p} = \val[1]{r.const.d_kp}\%$, погрешности нелинейности развертки $\delta_{\text{н.р}} = \val[1]{r.const.d_nr}\%$ и визуальной погрешности считывания $\delta_{\text{в.д}}$:
+\begin{equation}
+    \delta_T = \delta_{k_p} + \delta_{\text{н.р}} + \delta_{\text{в.д}},
+    \label{eq:osc_period_error}
+\end{equation}
+где визуальная погрешность определяется как $\delta_{\text{в.д}} = \frac{b}{L_T} \cdot 100\%$, а $b = \val[3]{r.const.b}$~дел — толщина луча.
+
+Пример расчета для первого измерения осциллографом:
+\begin{itemize}
+    \item Период: $T_x = \val[1exp]{p.of.td[1]} \cdot \val[1]{p.of.L_T[1]} = \val[2exp]{r.of[1].Tx}$~с.
+    \item Частота: $f_x = \frac{1}{T_x} = \frac{1}{\val[2exp]{r.of[1].Tx}} = \val[1]{r.of[1].fx}$~Гц.
+    \item Визуальная погрешность: $\delta_{\text{в.д}} = \frac{\val[3]{r.const.b}}{\val[1]{p.of.L_T[1]}} \cdot 100\% = \val[2]{r.of[1].d_vis}\%$.
+    \item Суммарная относительная погрешность: $\delta_T = \val[1]{r.const.d_kp}\% + \val[1]{r.const.d_nr}\% + \val[2]{r.of[1].d_vis}\% = \val[2]{r.of[1].dT}\%$.
+    \item Погрешность измерения частоты $\delta_f = \delta_T$.
+\end{itemize}
+Результаты расчетов сведены в \cref{tab:osc_results}.
+
+\begin{luacode*}
+    t82_counter = {1,2,3,4}
+\end{luacode*}
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерений и расчет погрешностей (осциллограф)}
+    \label{tab:osc_results}
+    \begin{tblr}{
+        colspec = { Q[c,m] *{6}{X[c,m]} },
+        hlines, vlines, 
+    } 
+        {№} & {$k_p$, мс/дел} & {$L_T$, дел} & {$T_x$, мкс} & {$f_x$, Гц} & {$\delta_f$, \%} & {$\Delta f$, Гц} \\
+        $1$ & \val*[1m-3]{p.of.td[1]} & \val*[1]{p.of.L_T[1]} & \val*[0m-6]{r.of[1].Tx} & \val*[0]{r.of[1].fx} & \val*[2]{r.of[1].dT} & \val*[0]{r.of[1].abs_df} \\
+        $2$ & \val*[1m-3]{p.of.td[2]} & \val*[1]{p.of.L_T[2]} & \val*[0m-6]{r.of[2].Tx} & \val*[0]{r.of[2].fx} & \val*[2]{r.of[2].dT} & \val*[0]{r.of[2].abs_df} \\
+        $3$ & \val*[1m-3]{p.of.td[3]} & \val*[1]{p.of.L_T[3]} & \val*[0m-6]{r.of[3].Tx} & \val*[0]{r.of[3].fx} & \val*[2]{r.of[3].dT} & \val*[0]{r.of[3].abs_df} \\
+        $4$ & \val*[1m-3]{p.of.td[4]} & \val*[1]{p.of.L_T[4]} & \val*[0m-6]{r.of[4].Tx} & \val*[0]{r.of[4].fx} & \val*[2]{r.of[4].dT} & \val*[0]{r.of[4].abs_df} \\
+    \end{tblr}
+\end{table}
+
+\section{ Сравнение результатов измерений}
+\begin{quote}
+    \textit{Сравнить результаты измерений предыдущих пунктов.}
+\end{quote}
+
+Сравним точность двух методов. Минимальная относительная погрешность, достигнутая при измерении частотомером (при $t_{\text{сч}} = 10$~с), составляет $\delta_{f, \text{ЦЧ}} = \val[4]{r.fc.o1.relF[3]}\%$.
+Наилучшая точность, полученная с помощью осциллографа, соответствует максимальной длине периода на экране ($L_T = \val[1]{p.of.L_T[1]}$~дел) и составляет $\delta_{f, \text{ЭЛО}} = \val[2]{r.of[1].dT}\%$.
+Очевидно, что $\delta_{f, \text{ЦЧ}} \ll \delta_{f, \text{ЭЛО}}$, что подтверждает значительно более высокую точность цифрового частотомера.
+
+\section{ Измерение фазового сдвига}
+\begin{quote}
+    \textit{Измерить фазовый сдвиг между напряжениями на входе и выходе устройства двумя способами с помощью электронно-лучевого осциллографа. Оценить погрешности результатов измерения. Сравнить точность измерений этими способами.}
+\end{quote}
+
+\subsection*{Метод линейной развертки}
+Фазовый сдвиг $\varphi$ определяется как:
+\begin{equation}
+    \varphi = 360^\circ \cdot \frac{\tau}{L_T},
+    \label{eq:phase_lin}
+\end{equation}
+где $\tau$ — временной сдвиг между сигналами (дел), $L_T$ — период (дел).
+Абсолютная погрешность $\Delta \varphi$ вычисляется через относительную $\delta_\varphi = \delta_\tau + \delta_{L_T}$, где каждая компонента — визуальная погрешность считывания.
+
+Пример расчета для первого измерения:
+\begin{itemize}
+    \item Фазовый сдвиг: $\varphi = 360^\circ \cdot \frac{\val[1]{p.ph.tau[1]}}{\val[1]{p.ph.L_T[1]}} = \val[1]{r.ph[1].phi_lin}^\circ$.
+    \item Абсолютная погрешность: $\Delta \varphi = \frac{\varphi \cdot \delta_\varphi}{100} = \varphi \cdot (\frac{b}{\tau} + \frac{b}{L_T}) = \val[1]{r.ph[1].phi_lin}^\circ \cdot (\frac{\val[3]{r.const.b}}{\val[1]{p.ph.tau[1]}} + \frac{\val[3]{r.const.b}}{\val[1]{p.ph.L_T[1]}}) = \val[2]{r.ph[1].abs_d_phi_lin}^\circ$.
+\end{itemize}
+
+Все расчеты сведены в \cref{tab:phase_results}.
+
+\subsection*{Метод фигур Лиссажу}
+Фазовый сдвиг определяется по параметрам эллипса:
+\begin{equation}
+    \varphi = \arcsin \left( \frac{B}{A} \right),
+    \label{eq:phase_lis}
+\end{equation}
+где $A$ и $B$ — размеры, указанные в методическом пособии. Погрешность определяется по границам диапазона:
+\begin{align}
+    \varphi_H = \arcsin\left(\frac{B-b}{A+b}\right), \quad \varphi_B = \arcsin\left(\frac{B+b}{A-b}\right) \\
+    \Delta\varphi = \max(|\varphi - \varphi_H|, |\varphi_B - \varphi|).
+\end{align}
+Пример расчета для первого измерения: 
+\begin{itemize}
+    \item Фазовый сдвиг: $\varphi = \arcsin \left( \frac{\val[1]{p.ph.B[1]}}{\val[1]{p.ph.A[1]}} \right) = \val[1]{r.ph[1].phi_lis}^\circ$.
+    \item Абсолютная погрешность: $\Delta\varphi = \val[2]{r.ph[1].abs_d_phi_lis}^\circ$.
+\end{itemize}
+
+Сводные результаты по обоим методам представлены в \cref{tab:phase_results}.
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты измерений фазового сдвига}
+    \label{tab:phase_results}
+    \begin{tblr}{
+        colspec = { Q[c,m] X[l,m] Q[c,m] Q[c,m] },
+        hlines, vlines,
+    }
+        {№} & {Метод} & {Фазовый сдвиг $\varphi$, $^\circ$} & {Абс. погрешность $\Delta\varphi$, $^\circ$} \\
+        \SetCell[r=2]{m} 1 & Линейная развертка & \val[1]{r.ph[1].phi_lin} & \val[2]{r.ph[1].abs_d_phi_lin} \\
+                           & Фигуры Лиссажу    & \val[1]{r.ph[1].phi_lis} & \val[2]{r.ph[1].abs_d_phi_lis} \\
+        \midrule
+        \SetCell[r=2]{m} 2 & Линейная развертка & \val[1]{r.ph[2].phi_lin} & \val[2]{r.ph[2].abs_d_phi_lin} \\
+                           & Фигуры Лиссажу    & \val[1]{r.ph[2].phi_lis} & \val[2]{r.ph[2].abs_d_phi_lis} \\
+        \midrule
+        \SetCell[r=2]{m} 3 & Линейная развертка & \val[1]{r.ph[3].phi_lin} & \val[2]{r.ph[3].abs_d_phi_lin} \\
+                           & Фигуры Лиссажу    & \val[1]{r.ph[3].phi_lis} & \val[2]{r.ph[3].abs_d_phi_lis} \\
+        \midrule
+        \SetCell[r=2]{m} 4 & Линейная развертка & \val[1]{r.ph[4].phi_lin} & \val[2]{r.ph[4].abs_d_phi_lin} \\
+                           & Фигуры Лиссажу    & \val[1]{r.ph[4].phi_lis} & \val[2]{r.ph[4].abs_d_phi_lis} \\
+    \end{tblr}
+\end{table}
+
+Сравнение погрешностей показывает, что метод фигур Лиссажу обеспечивает более высокую точность. Например, для первого измерения $\Delta\varphi_{\text{лин}} = \val[2]{r.ph[1].abs_d_phi_lin}^\circ$ против $\Delta\varphi_{\text{лис}} = \val[2]{r.ph[1].abs_d_phi_lis}^\circ$.
+
+\section*{Выводы}
+Освоены методики измерения частоты и фазового сдвига с использованием цифрового частотомера и электронно-лучевого осциллографа. Проведена оценка погрешностей для каждого из методов.
+
+\begin{enumerate}
+    \item Установлено, что точность измерения частоты цифровым частотомером напрямую зависит от времени счета $t_{\text{сч}}$. Увеличение времени счета приводит к уменьшению шага квантования $k$ и, как следствие, к снижению суммарной погрешности. В рамках эксперимента, при увеличении $t_{\text{сч}}$ с $\val[1]{p.fc.o1.t[1]}$~с до $\val[0]{p.fc.o1.t[3]}$~с относительная погрешность $\delta_f$ снизилась с $\val[4]{r.fc.o1.relF[1]}\%$ до $\val[4]{r.fc.o1.relF[3]}\%$.
+
+    \item Сравнение точности измерения частоты показало, что цифровой частотомер является значительно более точным средством измерения по сравнению с осциллографом. Минимальная относительная погрешность, достигнутая с помощью частотомера, составила $\val[4]{r.fc.o1.relF[3]}\%$, в то время как наилучший результат для осциллографа — $\val[2]{r.of[1].dT}\%$.
+
+    \item Исследованы два метода измерения фазового сдвига. Установлено, что метод фигур Лиссажу обеспечивает более высокую точность по сравнению с методом линейной развертки. Например, для первого измерения абсолютная погрешность составила $\val[2]{r.ph[1].abs_d_phi_lis}^\circ$ для метода Лиссажу против $\val[2]{r.ph[1].abs_d_phi_lin}^\circ$ для метода линейной развертки.
+\end{enumerate}
