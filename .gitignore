@@ -17,6 +17,7 @@
 *.run.xml
 *.minted
 _minted/
+fmt_builder.tex
 # *.pdf
 
 # Системные файлы
