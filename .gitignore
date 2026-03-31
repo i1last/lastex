@@ -16,6 +16,7 @@
 *.bcf
 *.run.xml
 *.minted
+*.bcf-SAVE-ERROR
 _minted/
 fmt_builder.tex
 # *.pdf
