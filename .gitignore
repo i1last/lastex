@@ -19,6 +19,7 @@
 *.bcf-SAVE-ERROR
 _minted/
 fmt_builder.tex
+etulab_fmt.pdf
 # *.pdf
 
 # Системные файлы
