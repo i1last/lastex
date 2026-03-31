@@ -1,0 +1,97 @@
+\directlua{dofile("code/3.lua")}
+
+\section{Расчет частотных характеристик цепи}
+
+Амплитудно-фазовая характеристика (АФХ) цепи получается путем замены оператора $s$ на $j\omega$ в выражении передаточной функции $H(s)$ (см. \cref{form:hs}). Однако прежде, зная нули и полюсы (см. \cref{form:zeros,form:poles}), разложим ее на множители:
+\begin{equation}
+    H(s) = \frac{(s - j\val[2]{tf.z1_im})(s + j\val[2]{tf.z1_im})}{(s + \val[2]{fact.alpha1})(s + \val[2]{fact.alpha2} - j\val[2]{fact.beta2})(s + \val[2]{fact.alpha2} + j\val[2]{fact.beta2})}
+    \label{form:hs_simply}
+\end{equation}
+
+Подставим $s = j\omega$:
+\begin{equation}
+    H(j\omega) = \frac{
+        (j\omega - j\val[2]{tf.z1_im})
+        (j\omega + j\val[2]{tf.z1_im})
+    }{
+        (j\omega + \val[2]{fact.alpha1})
+        (j\omega + \val[2]{fact.alpha2} - j\val[2]{fact.beta2})
+        (j\omega + \val[2]{fact.alpha2} + j\val[2]{fact.beta2})
+    }
+\end{equation}
+
+\begin{figure}[h]
+    \centering
+    \input{figs/plot_afh.pgf}
+    \caption{Амплитудно-фазовая характеристика}
+    \label{fig:afh}
+\end{figure}
+
+\subsection{Амплитудно- и фазо-частотная характеристики}
+
+Амплитудно-частотная характеристика (АЧХ) определяется как модуль АФХ:
+\begin{equation}
+    A(\omega) = |H(j\omega)| = 
+    \frac{
+        \omega^2 + \val[2]{tf.z1_im}^2
+    }{
+        \sqrt{\omega^2 + \val[2]{fact.alpha1}^2}
+        \sqrt{(\omega - \val[2]{fact.beta2})^2 + \val[2]{fact.alpha2}^2}
+        \sqrt{(\omega + \val[2]{fact.beta2})^2 + \val[2]{fact.alpha2}^2}
+        }
+\end{equation}
+
+Фазо-частотная характеристика (ФЧХ) определяется как аргумент АФХ:
+\begin{equation}
+    \begin{multlined}
+        \Phi(\omega) = \arg\left[H(j\omega)\right] =
+          \arctan{( \omega - \val[2]{tf.z1_im} )}
+        + \arctan{( \omega + \val[2]{tf.z1_im} )} - \\
+        - \arctan{ \frac{ \omega }{ \val[2]{fact.alpha1} } }
+        - \arctan{ \frac{ \omega + \val[2]{fact.beta2} }{ \val[2]{fact.alpha2} } }
+        - \arctan{ \frac{ \omega - \val[2]{fact.beta2} }{ \val[2]{fact.alpha2} } }
+    \end{multlined}
+    % \arg\{\val[3]{tf.N0} - \val[3]{tf.N2}\omega^2\} - \operatorname{arctg}\left(\frac{\val[3]{tf.D1}\omega - \val[3]{tf.D3}\omega^3}{\val[3]{tf.D0} - \val[3]{tf.D2}\omega^2}\right)
+\end{equation}
+
+\begin{figure}[h]
+    \centering
+    \input{figs/plot_afc.pgf}
+    \caption{Амплитудно-частотная характеристика цепи}
+    \label{fig:afc}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \input{figs/plot_pfc.pgf}
+    \caption{Фазо-частотная характеристика цепи}
+    \label{fig:pfc}
+\end{figure}
+
+\subsection{Анализ характеристик в контрольных точках}
+
+Проверка значений АФХ на граничных частотах (по \cref{form:hs}):
+\begin{itemize}
+    \item При $\omega = 0 ~ (s \to 0)$: $H(s=0) = \frac{\val[3]{tf.N0}}{\val[3]{tf.D0}} = \val[2]{freq.A0}$.
+    \item При $\omega \to \infty ~ (s\to\infty)$: $H(s\to\infty) \sim {s^2}/{s^3} \to 0$.
+    \item На частоте нуля $\omega_0 = \val[2]{tf.z1_im} ~ (s = j\val[2]{tf.z1_im})$: $H(s = j\val[2]{tf.z1_im}) = 0$.
+\end{itemize}
+
+\begin{table}[h]
+    \caption{Значения частотных характеристик в контрольных промежутках}
+    \centering
+    \begin{tblr}{
+        colspec = {Q[c,m] Q[c,m] Q[c,m] Q[c,m] Q[c,m] X[l,m]},
+        hlines, vlines,
+    }
+        $\omega$ & $H(s)$ & $H(j\omega)$ & $A(\omega)$ & $\Phi(\omega)$ & Примечание \\
+        $\val[1]{freq.w1} \le \omega \le \val[1]{freq.w2}$ & 0.5             & 0.5                   & 0.5                  & $0^\circ$   & Неискажения \\
+        $\val[1]{freq.w2} \le \omega$                      & ${1.1}/{s}$ & ${1.1}/{(j\omega)}$ & ${1.1}/{\omega}$ & $-90^\circ$ & Интегрирования \\
+    \end{tblr}
+\end{table}
+
+\subsection{Полоса пропускания и время запаздывания}
+
+Полоса пропускания определяется по уровню $0.707 \cdot A(0) = \val[3]{freq.level}$. Исходя из графиков АЧХ (\cref{fig:afc}), полоса пропускания составляет $\Delta\omega \in [0; \val[2]{freq.w_c}]$. 
+ 
+Время запаздывания сигнала при прохождении через цепь в области низких частот определяется как $t_{\text{з}} = \frac{|d\Phi|}{d\omega} = \frac{\operatorname{rad}(|-25^\circ|)}{0.5} \approx \val[2]{freq.td} \text{ с}$. % WIP: спросить, верно ли тут все?

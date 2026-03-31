@@ -1,0 +1,107 @@
+\directlua{dofile("code/4.lua")}
+
+\section{Составление уравнений состояния цепи}
+
+Для составления уравнений состояния выполним замену индуктивности источниками тока $i_{L1}$ и $i_{L2}$, а емкости --- источником напряжения $u_{C1}$.
+
+\begin{figure}[h] 
+    \centering
+    \begin{tikzpicture}[transform shape]
+        % Paths, nodes and wires:
+        \draw (1, 1) to[american current source, l={$i_1$}] (1, 4);
+        \draw (3, 4) to[european resistor, l_={$R_1$}] (3, 1);
+        \draw (8, 4) to[european resistor, l={$R_2$}] (8, 1);
+        \draw (1, 1) -- (3, 1) -- (5, 1) -- (8, 1);
+        \draw (1, 4) -- (3, 4) -- (5, 4);
+        \node[inputarrow, rotate=-90] at (3, 3.25){};
+        \node[inputarrow, rotate=-90] at (8, 3.25){};
+        \draw (5, 4) to[american current source, l={$i_{L2}$}] (8, 4);
+        \draw (5, 4) to[american current source, l={$i_{L1}$}] (5, 2.5);
+        \draw (5, 2.5) to[american voltage source, l={$u_{C1}$}] (5, 1);
+        \node[shape=rectangle, minimum width=0.59cm, minimum height=0.465cm](N1) at (3.5, 3){} node[anchor=center] at (N1.text){$+$} node[anchor=north west, align=left, text width=0.202cm, inner sep=6pt] at (3.188, 3.25){};
+        \node[shape=rectangle, minimum width=0.59cm, minimum height=0.465cm](N2) at (3.5, 2){} node[anchor=center] at (N2.text){$-$} node[anchor=north west, align=left, text width=0.202cm, inner sep=6pt] at (3.188, 2.25){};
+        \node[shape=rectangle, minimum width=0.59cm, minimum height=0.465cm](N3) at (7.5, 3){} node[anchor=center] at (N3.text){$+$} node[anchor=north west, align=left, text width=0.202cm, inner sep=6pt] at (7.188, 3.25){};
+        \node[shape=rectangle, minimum width=0.59cm, minimum height=0.465cm](N4) at (7.5, 2){} node[anchor=center] at (N4.text){$-$} node[anchor=north west, align=left, text width=0.202cm, inner sep=6pt] at (7.188, 2.25){};
+    \end{tikzpicture}
+    \caption{Схема замещения для составления уравнений состояния}
+    \label{fig:scheme_state}
+\end{figure}
+
+На основе законов Кирхгофа для полученной резистивной схемы записываются соотношения, связывающие токи емкостей и напряжения на индуктивностях с переменными состояния и входным воздействием:
+\begin{equation}
+    \begin{cases}
+        u_{C1}' = \frac{1}{C_1} i_{C1} \\
+        i_{L1}' = \frac{1}{L_1} u_{L1} \\
+        i_{L2}' = \frac{1}{L_2} u_{L2} \\
+    \end{cases}
+    \label{form:уравнение_состояния}
+\end{equation}
+
+Ток через конденсатор:
+\begin{equation}
+    i_{C1} = i_{L1}
+    \label{form:ic1}
+\end{equation}
+
+Напряжение на первой индуктивности определяется через контур, включающий $R_1$ и $C_1$:
+\begin{equation}
+    u_{L1} = u_{R1} - u_{C1}
+\end{equation}
+
+Напряжение на резисторе $R_1$ зависит от узловых токов:
+\begin{equation}
+    u_{R1} = (i_1 - i_{L1} - i_{L2})R_1
+\end{equation}
+
+Следовательно:
+\begin{equation}
+    u_{L1} = (i_1 - i_{L1} - i_{L2})R_1 - u_{C1}
+    \label{form:ul1}
+\end{equation}
+
+Напряжение на второй индуктивности:
+\begin{equation}
+    u_{L2} = u_{R1} - u_{R2} = (i_1 - i_{L1} - i_{L2})R_1 - i_{L2}R_2
+    \label{form:ul2}
+\end{equation}
+
+Зная \cref{form:ic1,form:ul1,form:ul2} сформируем уравнения состояния по образцу \cref{form:уравнение_состояния}:
+\begin{equation}
+    \begin{cases}
+        u_{C1}' = \frac{1}{C_1} i_{L1} \\
+        i_{L1}' = -\frac{1}{L_1} u_{C1} - \frac{R_1}{L_1} i_{L1} - \frac{R_1}{L_1} i_{L2} + \frac{R_1}{L_1} i_1 \\
+        i_{L2}' = -\frac{R_1}{L_2} i_{L1} - \frac{R_1 + R_2}{L_2} i_{L2} + \frac{R_1}{L_2} i_1
+    \end{cases}
+    \label{form:uravn_sost}
+\end{equation}
+
+Подставляя нормированные значения параметров, система уравнений состояния записывается в матричной форме:
+
+\begin{equation}
+    \begin{bmatrix}
+        u_{C1}' \\
+        i_{L1}' \\
+        i_{L2}'
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        \val[2]{mat.A11} & \val[2]{mat.A12} & \val[2]{mat.A13} \\
+        \val[2]{mat.A21} & \val[2]{mat.A22} & \val[2]{mat.A23} \\
+        \val[2]{mat.A31} & \val[2]{mat.A32} & \val[2]{mat.A33}
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+        u_{C1} \\
+        i_{L1} \\
+        i_{L2}
+    \end{bmatrix}
+    +
+    \begin{bmatrix}
+        \val[2]{mat.B11} \\
+        \val[2]{mat.B21} \\
+        \val[2]{mat.B31}
+    \end{bmatrix}
+    \cdot
+    i_1
+    \label{form:uravn_sost_matrix}
+\end{equation}

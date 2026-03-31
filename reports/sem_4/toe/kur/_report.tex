@@ -1,5 +1,9 @@
-% === ПОДКЛЮЧЕНИЕ СТИЛЯ ===
-\documentclass{etulab}
+%&etulab_fmt
+\ifdefined\Department
+\else
+    \documentclass{etulab}
+\fi
+% <- ПОДКЛЮЧЕНИЕ СТИЛЯ
 
 % === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
 \Department{ТОЭ}
@@ -15,7 +19,12 @@
 % Включение библиографии
 % bibtex автоматически будет включен в процесс сборки документа
 % при обнаружении файла references.bib в директории с основным _report.tex файлом
-% \addbibresource{references.bib}  % Имя файла references.bib не следует менять! Используется оптимизация скрипта сборки документа
+
+% === КОНФИГУРАЦИЯ ДОКУМЕНТА
+% --- Если нужна нумерация формул НЕ по разделам.
+% --- Было: 0.1, 0.2, ..., 1.1, 1.2, ...
+% --- Будет: 1, 2, 3, ...
+% \renewcommand{\theequation}{\arabic{equation}}
 
 % === СБОРКА ДОКУМЕНТА ===
 \begin{document}
@@ -24,7 +33,6 @@
 
 % --- ТИТУЛЬНЫЙ ЛИСТ ---
 \maketitle
-\newpage
 
 
 % --- ТЕХНИЧЕСКОЕ ЗАДАНИЕ
@@ -50,25 +58,56 @@
 
 % --- ПРОТОКОЛ ---
 % \newpage
-% % \thispagestyle{empty}
 % \centeredsection{ПРОТОКОЛ НАБЛЮДЕНИЙ}
+
 % \input{protocol.tex}
-% \newpage 
+
+% \vfill
+% \noindent
+% \makeatletter
+%     \@StudentName, гр. \@Group ~~\hrulefill~~ «\rule{1cm}{0.4pt}» \rule{3cm}{0.4pt} 20\rule{0.75cm}{0.4pt} г.
+% \makeatother
+% \newpage
 % --- ПРОТОКОЛ ---
 
 
 
 % --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
-\input{main.tex}
+\newpage
+\input{main/1.tex} % +
+\newpage
+\input{main/2.tex} % +
+\newpage
+\input{main/3.tex} % + (Вопрос)
+\newpage
+\input{main/4.tex} % +
+\newpage
+\input{main/5.tex}
+\newpage
+\input{main/6.tex}
+\newpage
+\input{main/7.tex}
+\newpage
+\input{main/8.tex}
+\newpage
+\input{main/9.tex}
+\newpage
+\input{main/10.tex}
+\newpage
+\input{main/11.tex}
+\newpage
+\input{main/12.tex}
+\newpage
 % --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
 
 
 
-% --- ОБРАБОТКА РЕЗУЛЬТАТОВ
-% \clearpage
-% \centeredsection{\MakeUppercase{Обработка результатов измерений}}
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ ---
+% \newpage
+% \centeredsection{ОБРАБОТКА РЕЗУЛЬТАТОВ}
 % \input{processing.tex}
-% --- ОБРАБОТКА РЕЗУЛЬТАТОВ
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ ---
+
 
 
 % --- ЗАКЛЮЧЕНИЕ ---
