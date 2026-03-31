@@ -1,5 +1,14 @@
-dofile('code/4.lua')
 dofile('code/2.lua')
+dofile('code/3.lua')
+dofile('code/4.lua')
+local complex = require "code/complex"
+
+
+-- С ДАННЫМ ПУНКТОМ ПРОБЕЛМЫ В РАССЧЕТАХ
+-- ИЗ-ЗА КОТОРЫХ БЫЛО РЕШЕНО УЙТИ ОТ
+-- LUA В ПОЛЬЗУ PYTHON. ЕГО СЛЕДУЕТ
+-- ПЕРЕДЕЛАТЬ ПОЛНОСТЬЮ
+
 
 res = {}
 
@@ -26,14 +35,32 @@ local dp_coeffs = {tf.D1, 2*tf.D2, 3*tf.D3}
 
 -- Вычеты для импульсной характеристики h(t)
 -- Полюс 1 (вещественный)
-local n1_r, n1_i = poly_eval(n_coeffs, tf.p1_re, 0)
-local dp1_r, dp1_i = poly_eval(dp_coeffs, tf.p1_re, 0)
-res.A1_r, _ = c_div(n1_r, n1_i, dp1_r, dp1_i)
+local n1r, n1i = c_mul(tf.p1_re, -tf.z1_im, tf.p1_re, tf.z1_im)
+local d1r, d1i = c_mul(tf.p1_re - tf.p2_re, -tf.p2_im, tf.p1_re - tf.p2_re, tf.p2_im)
+res.A1_r, _ = c_div(n1r, n1i, d1r, d1i)
 
 -- Полюс 2 (комплексный)
-local n2_r, n2_i = poly_eval(n_coeffs, tf.p2_re, tf.p2_im)
-local dp2_r, dp2_i = poly_eval(dp_coeffs, tf.p2_re, tf.p2_im)
-local A2_r, A2_i = c_div(n2_r, n2_i, dp2_r, dp2_i)
+local calc_A2 = function(s)
+    return (s + complex.new(0,tf.z1_im)) *
+    (s + complex.new(0,tf.z2_im)) /
+    (s + complex.new(0,tf.p1_re)) / 
+    (s + complex.new(tf.p2_re, tf.p2_im))
+end
+res.A2_r, res.A2_i = complex.get(calc_A2(complex.new(-tf.p2_re, -tf.p2_im)))
+print(res.A1_r)
+
+-- -- local s2 = tf.p2_im + tf.p2_re
+-- -- print(tf.p2_re, -tf.z1_im, tf.p1_re, tf.z1_im)
+-- z = complex.new(5, 3)
+-- zs = tostring( z )
+-- sss = 'hello'
+-- print(tostring( z ))
+-- -- (s)
+-- local n2r, n2i = c_mul(tf.p2_re, -tf.z1_im, tf.p1_re, tf.z1_im)
+-- -- local n2_r, n2_i = poly_eval(n_coeffs, tf.p2_re, tf.p2_im)
+-- -- local dp2_r, dp2_i = poly_eval(dp_coeffs, tf.p2_re, tf.p2_im)
+-- -- local A2_r, A2_i = c_div(n2_r, n2_i, dp2_r, dp2_i)
+-- local A2_r, A2_i = 0,0
 
 res.A2_r = A2_r
 res.A2_i = A2_i

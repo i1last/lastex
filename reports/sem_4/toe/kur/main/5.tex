@@ -17,7 +17,7 @@
 \end{equation}
 
 Упростим дробь:
-\begin{equation} % WIP Проверить корректность вычислений.
+\begin{equation}
     \frac{A_1}{s + \val[2]{fact.alpha1}} +
     \frac{A_2}{s + \val[2]{fact.alpha2} + j\val[2]{fact.beta2}} +
     \frac{A_3}{s + \val[2]{fact.alpha2} - j\val[2]{fact.beta2}} +
@@ -25,7 +25,7 @@
 \end{equation}
 
 Найдём $A_k$:
-\begin{align}
+\begin{align} % WIP Проверить корректность вычислений.
     A_0 &= \lim_{s\to\infty} H(s) = 0 \\
     A_1 &= \val[3]{res.A1_r} \\
     A_2 &= \val[3]{res.A2_r} + \val[3]{math.abs(res.A2_i)}j = \val[3]{res.A2_mag_half} e^{-j\val[1]{math.abs(res.A2_arg)}^\circ} \\
