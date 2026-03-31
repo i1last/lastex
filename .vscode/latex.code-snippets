@@ -84,15 +84,6 @@
         ],
         "description": ""
     },
-    "LuaCode": {
-        "prefix": "lc",
-        "body": [
-            "\\begin{luacode${1:*}}",
-            "    $0",
-            "\\end{luacode${1:*}}"
-        ],
-        "description": ""
-    },
     "Equation": {
         "prefix": "eq",
         "body": [
@@ -122,6 +113,18 @@
             "\\end{figure}"
         ],
         "description": "Insert a figure environment"
+    },
+    "PGF": {
+        "prefix": "pgf",
+        "body": [
+            "\\begin{figure}[${1:H}]",
+            "    \\centering",
+            "    \\input{figs/${4:image}}",
+            "    \\caption{${2:caption}}",
+            "    \\label{fig:${4:label}}",
+            "\\end{figure}"
+        ],
+        "description": "Insert a pgf"
     },
     "SubFigures": {
         "prefix": "subfig",
@@ -248,20 +251,6 @@
         ],
         "description": ""
     },
-    "InlineDirectLua": {
-        "prefix": "dl",
-        "body": [
-            "\\directlua{${0:tex.print()}}"
-        ],
-        "description": ""
-    },
-    "InlineLuaExec": {
-        "prefix": "le",
-        "body": [
-            "\\luaexec{${0:dofile('code/protocol.lua')}}"
-        ],
-        "description": ""
-    },
     "Text": {
         "prefix": "txt",
         "body": [
@@ -354,6 +343,36 @@
         "prefix": "lbl",
         "body": [
             "\\label{${1:label}}"
+        ],
+        "description": ""
+    },
+    "PythonEnviroment": {
+        "prefix": "pe",
+        "body": [
+            "\\begin{python}",
+            "    $0",
+            "\\end{python}"
+        ],
+        "description": ""
+    },
+    "PythonInline": {
+        "prefix": "py",
+        "body": [
+            "\\py{$0}"
+        ],
+        "description": ""
+    },
+    "PythonValue": {
+        "prefix": "pv",
+        "body": [
+            "\\pv${1:*}[${2:.}]{$0}"
+        ],
+        "description": ""
+    },
+    "PythonTable": {
+        "prefix": "pt",
+        "body": [
+            "\\expanded{\\pt*[${2:.}]{$0}}"
         ],
         "description": ""
     },

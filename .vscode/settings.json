@@ -17,6 +17,7 @@
     "python-envs.pythonProjects": [],
     "Lua.diagnostics.disable": [
         "undefined-global",
-        "lowercase-global"
+        "lowercase-global",
+        "deprecated"
     ],
 }

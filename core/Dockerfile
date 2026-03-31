@@ -43,7 +43,8 @@ RUN tlmgr update --self && tlmgr install \
     pgf \
     pgfplots \
     wrapfig \
-    luacode
+    luacode \
+    pyluatex
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-numpy \

@@ -96,3 +96,6 @@
 \RequirePackage{pgfplots}
 \RequirePackage{wrapfig}        % Окружение аналогичное figure, но текст умеет его обтекать
 \RequirePackage{luacode}        % Модифицированные окружения для исполнения lua кода
+\RequirePackage[%
+    executable=python3          % Указываем интерпретатор
+]{pyluatex}                     % Запускает фоновый процесс Python, который работает синхронно с компиляцией LuaLaTeX.

@@ -56,6 +56,9 @@
 % Lua
 \RequirePackage{etulab/lua/lua} 
 
+% Python
+\RequirePackage{etulab/python/python} 
+
 % --- Интерфейс данных
 \newcommand{\Department}[1]{\def\@Department{#1}}
 \newcommand{\WorkType}[1]{\def\@WorkType{#1}}
