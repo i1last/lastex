@@ -1,16 +1,12 @@
 import numpy as np
-from lupa import LuaRuntime
 import matplotlib.pyplot as plt
-
-lua = LuaRuntime(unpack_returned_tuples=True)
-lua.execute("dofile('code/3.lua')")
-tf = lua.globals().tf
+from scripts.calc_2 import tf
 
 w = np.logspace(-2, 1, 500)
 
 def get_response(w_arr):
-    n_val = tf.N0 - tf.N2 * w_arr**2
-    d_val = (tf.D0 - tf.D2 * w_arr**2) + 1j * (tf.D1 * w_arr - tf.D3 * w_arr**3)
+    n_val = tf['N0'] - tf['N2'] * w_arr**2
+    d_val = (tf['D0'] - tf['D2'] * w_arr**2) + 1j * (tf['D1'] * w_arr - tf['D3'] * w_arr**3)
     h = n_val / d_val
     return np.abs(h), np.angle(h)
 

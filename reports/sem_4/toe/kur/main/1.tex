@@ -1,8 +1,10 @@
-\luaexec{dofile("code/1.lua")}
+\begin{python}
+from scripts.calc_1 import *
+\end{python}
 
 \section{Нормирование параметров и переменных цепи}
 
-В соответствии с рекомендациями, для упрощения дальнейших расчетов производится нормирование параметров элементов цепи. В качестве базисной частоты принимается значение $\omega_{\text{б}} = \val[0exp]{rec.omega_base} \text{ с}^{-1}$, в качестве базисного сопротивления --- сопротивление резистора $R_1$, то есть $R_{\text{б}} = \val[0]{rec.R_base} \text{ Ом}$.
+В соответствии с рекомендациями, для упрощения дальнейших расчетов производится нормирование параметров элементов цепи. В качестве базисной частоты принимается значение $\omega_{\text{б}} = \pv[.0e]{rec['omega_base']} \text{ с}^{-1}$, в качестве базисного сопротивления --- сопротивление резистора $R_1$, то есть $R_{\text{б}} = \pv[.0]{rec['R_base']} \text{ Ом}$.
  
 \begin{figure}[H]
     \centering
@@ -43,33 +45,33 @@
 Формулы перехода к нормированным значениям и результаты вычислений:
 
 \begin{equation}
-    R_{1*} = \frac{R_1}{R_{\text{б}}} = \frac{\val[0]{s.R1}}{\val[0]{rec.R_base}} = \val[4]{n.R1}
+    R_{1*} = \frac{R_1}{R_{\text{б}}} = \frac{\pv[.0]{s['R1']}}{\pv[.0]{rec['R_base']}} = \pv[.4]{n['R1']}
 \end{equation}
 
 \begin{equation}
-    R_{2*} = \frac{R_2}{R_{\text{б}}} = \frac{\val[0]{s.R2}}{\val[0]{rec.R_base}} = \val[4]{n.R2}
+    R_{2*} = \frac{R_2}{R_{\text{б}}} = \frac{\pv[.0]{s['R2']}}{\pv[.0]{rec['R_base']}} = \pv[.4]{n['R2']}
 \end{equation}
 
 \begin{equation}
-    L_{1*} = \frac{L_1 \omega_{\text{б}}}{R_{\text{б}}} = \frac{\val[4]{s.L1} \cdot \val[0]{rec.omega_base}}{\val[0]{rec.R_base}} = \val[4]{n.L1}
+    L_{1*} = \frac{L_1 \omega_{\text{б}}}{R_{\text{б}}} = \frac{\pv[.4]{s['L1']} \cdot \pv[.0]{rec['omega_base']}}{\pv[.0]{rec['R_base']}} = \pv[.4]{n['L1']}
 \end{equation}
 
 \begin{equation}
-    L_{2*} = \frac{L_2 \omega_{\text{б}}}{R_{\text{б}}} = \frac{\val[3]{s.L2} \cdot \val[0]{rec.omega_base}}{\val[0]{rec.R_base}} \approx \val[4]{n.L2}
+    L_{2*} = \frac{L_2 \omega_{\text{б}}}{R_{\text{б}}} = \frac{\pv[.3]{s['L2']} \cdot \pv[.0]{rec['omega_base']}}{\pv[.0]{rec['R_base']}} \approx \pv[.4]{n['L2']}
 \end{equation}
 
 \begin{equation}
-    C_{1*} = C_1 \cdot R_{\text{б}} \cdot \omega_{\text{б}} = \val[0exp]{s.C1} \cdot \val[0]{rec.R_base} \cdot \val[0exp]{rec.omega_base} \approx \val[4]{n.C1}
+    C_{1*} = C_1 \cdot R_{\text{б}} \cdot \omega_{\text{б}} = \pv[.0e]{s['C1']} \cdot \pv[.0]{rec['R_base']} \cdot \pv[.0e]{rec['omega_base']} \approx \pv[.4]{n['C1']}
 \end{equation}
 
 Нормирование временных параметров импульсного воздействия:
 
 \begin{equation}
-    t_{\text{и}1*} = t_{\text{и}1} \omega_{\text{б}} = \val[2exp]{s.ti1} \cdot \val[0exp]{rec.omega_base} = \val[1]{n.ti1}
+    t_{\text{и}1*} = t_{\text{и}1} \omega_{\text{б}} = \pv[.2e]{s['ti1']} \cdot \pv[.0e]{rec['omega_base']} = \pv[.1]{n['ti1']}
 \end{equation}
 
 \begin{equation}
-    t_{\text{и}2*} = t_{\text{и}2} \omega_{\text{б}} = \val[2exp]{s.ti2} \cdot \val[0exp]{rec.omega_base} = \val[2]{n.ti2}
+    t_{\text{и}2*} = t_{\text{и}2} \omega_{\text{б}} = \pv[.2e]{s['ti2']} \cdot \pv[.0e]{rec['omega_base']} = \pv[.2]{n['ti2']}
 \end{equation}
 
 Далее индексы нормирования «$*$» опускаются для упрощения записи. Все последующие расчеты ведутся в нормированных величинах.

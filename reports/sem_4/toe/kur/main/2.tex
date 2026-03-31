@@ -1,4 +1,6 @@
-\directlua{dofile("code/2.lua")}
+\begin{python}
+from scripts.calc_2 import *
+\end{python}
 
 \section{Определение передаточной функции цепи}
 
@@ -83,22 +85,22 @@
 
 Подставляя нормированные значения параметров цепи, получается выражение для передаточной функции:
 \begin{equation}
-    H(s) = \frac{\val[3]{tf.N2}s^2 + \val[3]{tf.N0}}{\val[3]{tf.D3}s^3 + \val[3]{tf.D2}s^2 + \val[3]{tf.D1}s + \val[3]{tf.D0}}
+    H(s) = \frac{\pv[.3]{tf['N2']}s^2 + \pv[.3]{tf['N0']}}{\pv[.3]{tf['D3']}s^3 + \pv[.3]{tf['D2']}s^2 + \pv[.3]{tf['D1']}s + \pv[.3]{tf['D0']}}
     \label{form:hs}
 \end{equation}
 
 \subsection{Нули и полюсы передаточной функции}
 
-Нули функции $H(s)$ определяются из уравнения $\val[3]{tf.N2}s^2 + \val[3]{tf.N0} = 0$:
+Нули функции $H(s)$ определяются из уравнения $\pv[.3]{tf['N2']}s^2 + \pv[.3]{tf['N0']} = 0$:
 \begin{equation}
-    s_{01,02} = \pm j \val[2]{tf.z1_im}
+    s_{01,02} = \pm j \pv[.2]{tf['z1_im']}
     \label{form:zeros}
 \end{equation}
 
 Полюсы функции $H(s)$ находятся как корни характеристического полинома знаменателя:
 \begin{align}
-    s_1 &= \val[2]{tf.p1_re} \\
-    s_{2,3} &= \val[2]{tf.p2_re} \pm j \val[2]{tf.p2_im}
+    s_1 &= \pv[.2]{tf['p1_re']} \\
+    s_{2,3} &= \pv[.2]{tf['p2_re']} \pm j \pv[.2]{tf['p2_im']}
     \label{form:poles}
 \end{align}
 
@@ -115,5 +117,5 @@
 
 Оценка практической длительности переходных процессов в цепи $t_{\text{пп}}$ осуществляется по вещественной части корня, наиболее близкого к мнимой оси комплексной плоскости:
 \begin{equation}
-    t_{\text{пп}} \approx \frac{3}{\min_k |\text{Re}\{s_k\}|} = \frac{3}{|\val[2]{tf.p2_re}|} \approx \val[2]{tf.t_pp} \text{ с}
+    t_{\text{пп}} \approx \frac{3}{\min_k |\text{Re}\{s_k\}|} = \frac{3}{|\pv[.2]{tf['p2_re']}|} \approx \pv[.2]{tf['t_pp']} \text{ с}
 \end{equation}

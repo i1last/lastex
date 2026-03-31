@@ -1,4 +1,6 @@
-\directlua{dofile("code/4.lua")}
+\begin{python}
+from scripts.calc_4 import *
+\end{python}
 
 \section{Составление уравнений состояния цепи}
 
@@ -85,9 +87,9 @@
     \end{bmatrix}
     =
     \begin{bmatrix}
-        \val[2]{mat.A11} & \val[2]{mat.A12} & \val[2]{mat.A13} \\
-        \val[2]{mat.A21} & \val[2]{mat.A22} & \val[2]{mat.A23} \\
-        \val[2]{mat.A31} & \val[2]{mat.A32} & \val[2]{mat.A33}
+        \pv[.2]{mat['A11']} & \pv[.2]{mat['A12']} & \pv[.2]{mat['A13']} \\
+        \pv[.2]{mat['A21']} & \pv[.2]{mat['A22']} & \pv[.2]{mat['A23']} \\
+        \pv[.2]{mat['A31']} & \pv[.2]{mat['A32']} & \pv[.2]{mat['A33']}
     \end{bmatrix}
     \cdot
     \begin{bmatrix}
@@ -97,9 +99,9 @@
     \end{bmatrix}
     +
     \begin{bmatrix}
-        \val[2]{mat.B11} \\
-        \val[2]{mat.B21} \\
-        \val[2]{mat.B31}
+        \pv[.2]{mat['B11']} \\
+        \pv[.2]{mat['B21']} \\
+        \pv[.2]{mat['B31']}
     \end{bmatrix}
     \cdot
     i_1
