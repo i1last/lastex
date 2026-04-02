@@ -40,22 +40,24 @@ _check_and_import_safe()
 
 def _format_val(val, fmt: str = "", is_math: bool = False) -> str:
     r"""
-    Форматирование числового значения на основе синтаксиса [a].[b][c].
+    Форматирование числового значения на основе синтаксиса [a].[b][c][+]
     
-    Синтаксис формата: [a].[b][c]
+    Синтаксис формата: [a].[b][c][+]
         [a] (опционально): Целое число. Принудительно делит значение на 10^a.
         [b] (опционально, после точки): Целое число. Точность округления.
             Если b >= 0: количество знаков после запятой.
             Если b < 0: округление до десятков, сотен и т.д.
-        [c] (опционально): Модификатор отображения ('e' или '').
-            'e': Выводит степень \cdot 10^{exp}.
-            '' (пусто): Подавляет вывод степени (остается только мантисса).
-            
-    Примеры для val = 5465:
-        '3.2'   -> a=3, b=2, c=''.  Результат: 5.47
-        '3.2e'  -> a=3, b=2, c='e'. Результат: 5.47 \cdot 10^{3}
-        '.2e'   -> a=None, b=2, c='e'. Результат: 5.47 \cdot 10^{3} (авто-экспонента)
-        '-3.0'  (для val=0.005465) -> a=-3, b=0, c=''. Результат: 5
+        [c] (опционально): 'e' — вывод в виде \cdot 10^{exp}
+        [+] (опционально): Всегда показывать знак (+ для ≥0, - для <0)
+    
+    Примеры:
+        val = 5465
+        '+3.2'     -> +5.47
+        '3.2+'     -> +5.47
+        '+.2e'     -> +5.47 \cdot 10^{3}
+        '-3.0+'    -> +5     (для val=0.005465)
+        val = -2.34
+        '+'        -> -2.34
     """
     if val is None:
         return "---"
@@ -65,15 +67,23 @@ def _format_val(val, fmt: str = "", is_math: bool = False) -> str:
         res = str(val)
         return f"${res}$" if is_math else res
 
+    # Поддержка модификатора '+' в конце
+    show_sign = False
+    clean_fmt = fmt.strip()
+    
+    if clean_fmt.startswith('+'):
+        show_sign = True
+        clean_fmt = clean_fmt[1:].strip()
+
     a, b, c = None, None, ''
     
     # Парсинг строки модификаторов с помощью регулярного выражения
-    if fmt:
+    if clean_fmt:
         # Паттерн: 
         # 1. ([-+]?\d+)?      - Опциональное целое число [a]
         # 2. (?:\.([-+]?\d*))? - Опциональная точка и целое число [b]
         # 3. ([e])?          - Опциональный символ 'e' или '' [c]
-        match = re.match(r'^([-+]?\d+)?(?:\.([-+]?\d*))?([e])?$', fmt.strip())
+        match = re.match(r'^([-+]?\d+)?(?:\.([-+]?\d*))?([e])?$', clean_fmt)
         if match:
             a_str, b_str, c_str = match.groups()
             if a_str is not None: 
@@ -117,21 +127,39 @@ def _format_val(val, fmt: str = "", is_math: bool = False) -> str:
                 base, p_exp = m_str.split('e')
                 return f"{base} \\cdot 10^{{{int(p_exp)}}}"
 
-        # 3. Формирование итоговой строки (параметр c)
-        if c == 'e':
-            return f"{m_str} \\cdot 10^{{{exp}}}"
+        # 3. Добавление знака, если требуется модификатор '+'
+        if show_sign:
+            if mantissa >= 0:   # важно: проверяем mantissa, а не исходное v
+                sign = '+'
+            else:
+                sign = '-'
+                mantissa = abs(mantissa)  # убираем минус из строки
+                # переформатируем строку без знака
+                if b is not None and b > 0:
+                    m_str = f"{mantissa:.{b}f}"
+                elif b is not None and b <= 0:
+                    m_str = str(int(mantissa))
+                else:
+                    m_str = str(mantissa)
+            final_str = f"{sign}{m_str}"
         else:
-            return m_str
+            final_str = m_str
+
+        # 4. Формирование степени (если 'e')
+        if c == 'e':
+            return f"{final_str} \\cdot 10^{{{exp}}}"
+        else:
+            return final_str
 
     # Обработка комплексных чисел
     if isinstance(val, complex):
-        re_part = _fmt_single(val.real)
+        re_part = _fmt_single(val.real, forced_sign)   # знак нужен только для реальной части
         im_part = _fmt_single(val.imag)
         sign = "+" if val.imag >= 0 else "-"
         im_part = im_part.replace("-", "")
         res = f"{re_part} {sign} j{im_part}"
     else:
-        res = _fmt_single(val)
+        res = _fmt_single(val, forced_sign)        
         
     return f"${res}$" if is_math else res
 
@@ -143,6 +171,7 @@ def _pv(expr: str, fmt: str, is_math: bool) -> str:
         val = eval(expr)
         return _format_val(val, fmt, is_math)
     except Exception as e:
+        print(f'! {e}')
         return f"???"
 
 def _pt(exprs_str: str, fmts_str: str, start_idx: int, end_idx: int, is_math: bool) -> str:
