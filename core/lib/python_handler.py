@@ -21,6 +21,8 @@ def run_single_python(script_path):
     docker_project_path = normalize_docker_path(project_dir)
     rel_script_from_project = os.path.relpath(script_abs, project_dir).replace('\\', '/')
     script_dir_rel = os.path.dirname(rel_script_from_project)
+    rel_script_from_project_as_module = rel_script_from_project.replace('/', '.').replace('.py', '')
+
     
     # Абсолютный путь к папке pgfs внутри контейнера
     abs_figs_path = f"/workdir/{docker_project_path}/figs"
@@ -34,7 +36,7 @@ def run_single_python(script_path):
     # 5. Перемещение найденных объектов в figs.
     cmd = (
         f"cd /workdir/{docker_project_path} && "
-        f"python3 {rel_script_from_project} && "
+        f"python3 -m {rel_script_from_project_as_module} && "
         f"mkdir -p {abs_figs_path} && "
         f"find . -maxdepth 3 "
         f"\\( -path './out' -o -path './figs' \\) -prune "
