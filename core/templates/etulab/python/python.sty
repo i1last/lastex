@@ -153,14 +153,14 @@ def _format_val(val, fmt: str = "", is_math: bool = False) -> str:
 
     # Обработка комплексных чисел
     if isinstance(val, complex):
-        re_part = _fmt_single(val.real, forced_sign)   # знак нужен только для реальной части
+        re_part = _fmt_single(val.real)
         im_part = _fmt_single(val.imag)
         sign = "+" if val.imag >= 0 else "-"
         im_part = im_part.replace("-", "")
         res = f"{re_part} {sign} j{im_part}"
     else:
-        res = _fmt_single(val, forced_sign)        
-        
+        res = _fmt_single(val)
+
     return f"${res}$" if is_math else res
 
 def _pv(expr: str, fmt: str, is_math: bool) -> str:
