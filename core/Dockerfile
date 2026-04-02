@@ -52,7 +52,10 @@ RUN apt-get update && apt-get install -y \
     python3-scipy \
     python3-lupa \
     && rm -rf /var/lib/apt/lists/*
-    
+RUN tlmgr update --self && tlmgr install \
+    xfrac \
+    cancel
+
 RUN mktexlsr && tlmgr path add && fmtutil-sys --all
 
 # --- УСТАНОВКА ЛОКАЛЬНЫХ ШРИФТОВ ---
