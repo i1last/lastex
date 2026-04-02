@@ -209,6 +209,7 @@
             "\\begin{longtblr}[",
             "    caption = {${1:caption}},",
             "    label = {table:${2:label}},",
+            "    expand = \\expanded,",
             "]{",
             "    colspec = { | X[j,m] | X[j,m] | X[j,m] | X[j,h] | },",
             "    hlines,",
