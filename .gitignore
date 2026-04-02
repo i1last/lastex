@@ -11,12 +11,11 @@
 *.synctex(busy)
 *.auxlock
 *.fmt
-*.bbl
+*.bbl*
 *.blg
-*.bcf
+*.bcf*
 *.run.xml
 *.minted
-*.bcf-SAVE-ERROR
 _minted/
 fmt_builder.tex
 etulab_fmt.pdf
