@@ -93,6 +93,10 @@ from scripts.calc_3 import *
 
 \subsection{Полоса пропускания и время запаздывания}
 
-Полоса пропускания определяется по уровню $0.707 \cdot A(0) = \pv[.3]{freq['level']}$. Исходя из графиков АЧХ (\cref{fig:afc}), полоса пропускания составляет $\Delta\omega \in [0; \pv[.2]{freq['w_c']}]$. 
+Полоса пропускания определяется по уровню $0.707 \cdot A(0) = \pv[.3]{freq['level']}$. Исходя из графиков АЧХ (\cref{fig:afc}), полоса пропускания составляет 
+\begin{equation}
+    \Delta\omega \in [0; \pv[.2]{freq['w_c']}].
+    \label{form:omega_propuskaniya}
+\end{equation}
  
 Время запаздывания сигнала при прохождении через цепь в области низких частот определяется как $t_{\text{з}} = \frac{|d\Phi|}{d\omega} = \frac{\operatorname{rad}(|-25^\circ|)}{0.5} \approx \pv[.2]{freq['td']} \text{ с}$.

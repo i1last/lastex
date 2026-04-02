@@ -1,16 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scripts.calc_2 import tf
-
-w = np.logspace(-2, 1, 500)
-
-def get_response(w_arr):
-    n_val = tf['N0'] - tf['N2'] * w_arr**2
-    d_val = (tf['D0'] - tf['D2'] * w_arr**2) + 1j * (tf['D1'] * w_arr - tf['D3'] * w_arr**3)
-    h = n_val / d_val
-    return np.abs(h), np.angle(h)
-
-a_w, phi_w = get_response(w)
+from scripts.calc_3 import w, a_w, phi_w
 
 # График АЧХ
 plt.figure()

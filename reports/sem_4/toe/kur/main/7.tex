@@ -1,1 +1,76 @@
-\section{7}
+\begin{python}
+from scripts.calc_7 import *
+\end{python}
+
+\section{Определение спектральных характеристик одиночного импульса воздействия}
+
+С учетом полученного ранее изображения по Лапласу, комплексный спектр импульсного воздействия определяется подстановкой $s = j\omega$:
+\begin{equation}
+    \begin{aligned}
+        I_1(j\omega) &= I_1(s) \Big|_{s=j\omega} =
+        \frac{I_m}{j\omega} \left(1 - e^{-j\omega t_{\text{и}}}\right) = \\
+        &= \frac{I_m}{j\omega} e^{-\frac12j{\omega t_{\text{и}}}} \left( e^{\frac12j{\omega t_{\text{и}}}} - e^{-\frac{1}{2}j{\omega t_{\text{и}}}} \right) = 
+        \frac{2I_m}{\omega} \sin\left(\frac{\omega t_{\text{и}}}{2}\right) e^{-\frac12j{\omega t_{\text{и}}}} = \\
+        &= A_1(\omega)\cdot e^{j\Phi_1(\omega)}
+    \end{aligned}
+\end{equation}
+
+Амплитудный спектр входного сигнала:
+\begin{equation}
+    A_1(\omega) = \left| \frac{2I_m}{\omega} \sin\left(\frac{\omega t_{\text{и}}}{2}\right) \right|
+\end{equation}
+ 
+Фазовый спектр входного сигнала:
+\begin{equation}
+    \Phi_1(\omega) = -\frac12\omega t_\text{и}
+\end{equation}
+
+Для построения графика амплитудного спектра определяются его нули, то есть значения частот $\omega_\text{yзл}^k$, при которых спектр равен нулю:
+\begin{equation}
+    A_1(\omega) =
+    0 \text{ при } \sin\left(\frac{\omega t_{\text{и}}}{2}\right) = 0
+    \iff
+    \frac{\omega t_{\text{и}}}{2} =
+    \pi k
+    \implies
+    \omega_\text{yзл}^k = 2\pi k / t_\text{и}
+\end{equation}
+Первый ноль находится на частоте $\omega_{y}^1 \approx \pv[.3]{ex7['w_y1']}$.
+
+При вычислении значения амплитудного спектра на нулевой частоте возникает неопределенность вида $\left[ \frac{0}{0} \right]$. Применим первый замечательный предел:
+\begin{equation}
+    \begin{multlined}
+        A_1(0) = \lim_{\omega \to 0} \frac{2I_m}{\omega} \sin\left(\frac{\omega t_{\text{и}}}{2}\right) = \\
+        = 2I_m \lim_{\omega \to 0} \frac{
+                \sin\left(\frac{\omega t_{\text{и}}}{2}\right)
+            }{
+                \omega
+            } = \lim_{\omega \to 0} \bcancel{2}I_m \frac{
+                \cancel{\omega} t_\text{и}
+            }{
+                \bcancel{2} \cancel{\omega}
+            } = I_m \cdot t_{\text{и}}
+    \end{multlined}
+\end{equation}
+
+Контроль: значение амплитудного спектра на нулевой частоте $A_1(0) = \pv[.2]{ex6['Im']} \cdot \pv[.2]{ex6['tu']} = \pv[.3]{ex7['A1_0']}$ равно площади входного импульса тока.
+
+Графики амплитудного и фазового спектров одиночного импульса воздействия показаны на \cref{fig:plot_spec_A,fig:plot_spec_Phi}.
+ 
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_spec_A.pgf}
+    \caption{Амплитудный спектр одиночного импульса воздействия}
+    \label{fig:plot_spec_A}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_spec_Phi.pgf}
+    \caption{Фазовый спектр одиночного импульса воздействия}
+    \label{fig:plot_spec_Phi}
+\end{figure}
+
+Ширина спектра импульсного входного сигнала, определенная по 10\%-му амплитудному критерию, составляет $\Delta\omega_{\text{сп}} \in [0; \pv[.2]{ex7['w_sp']}]$. 
+
+Сравнение ширины спектра воздействия $\Delta\omega_{\text{сп}} \approx \pv[.2]{ex7['w_sp']}$ и полосы пропускания цепи $\omega_{\text{с}} \approx \pv[.2]{ex7['w_c']}$ (см. \cref{form:omega_propuskaniya}) показывает, что $\Delta\omega_{\text{сп}} < \omega_{\text{с}}$. WIP

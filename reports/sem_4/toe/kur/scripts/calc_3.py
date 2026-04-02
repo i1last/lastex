@@ -25,6 +25,16 @@ freq['A1'], freq['Phi1'] = get_h_factored(freq['w1'])
 freq['w2'] = tf['z1_im']
 freq['A2'], freq['Phi2'] = get_h_factored(freq['w2'])
 
+
+def get_response(w_arr):
+    n_val = tf['N0'] - tf['N2'] * w_arr**2
+    d_val = (tf['D0'] - tf['D2'] * w_arr**2) + 1j * (tf['D1'] * w_arr - tf['D3'] * w_arr**3)
+    h = n_val / d_val
+    return np.abs(h), np.angle(h)
+
+w = np.logspace(-2, 1, 500)
+a_w, phi_w = get_response(w)
+
 freq['level'] = 0.707 * freq['A0']
-freq['w_c'] = 0.45 
+freq['w_c'] = np.interp(freq['level'], a_w[::-1], w[::-1])
 freq['td'] = np.radians(25) / 0.5
