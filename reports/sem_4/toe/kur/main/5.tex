@@ -21,95 +21,114 @@ from scripts.calc_5 import *
 Упростим дробь:
 \begin{equation}
     \frac{A_1}{s + \pv[.2]{fact['alpha1']}} +
-    \frac{A_2}{s + \pv[.2]{fact['alpha2']} + j\pv[.2]{fact['beta2']}} +
-    \frac{A_3}{s + \pv[.2]{fact['alpha2']} - j\pv[.2]{fact['beta2']}} +
+    \frac{A_2}{s + \pv[.2]{fact['alpha2']} - j\pv[.2]{fact['beta2']}} +
+    \frac{A_3}{s + \pv[.2]{fact['alpha2']} + j\pv[.2]{fact['beta2']}} +
     A_0
 \end{equation}
 
 Найдём $A_k$:
 \begin{align}
     A_0 &= \lim_{s\to\infty} H(s) = 0 \\
-    A_1 &= \pv[.3]{res['A1_r']} \\
-    A_2 &= \pv[.3]{res['A2_r']} + \pv[.3]{abs(res['A2_i'])}j = \pv[.3]{res['A2_mag_half']} e^{-j\pv[.1]{abs(res['A2_arg'])}^\circ} \\
-    A_3 &= \overline{A}_2 = \pv[.3]{res['A2_mag_half']} e^{j\pv[.1]{abs(res['A2_arg'])}^\circ}
+    A_1 &= \pv[.3]{ex5['A1']} \\
+    A_2 &= \pv[.3]{ex5['A2']['c']} = \pv[.3]{ex5['A2']['r']} e^{\pv[.1]{(ex5['A2']['phi'])}^\circ j} \\
+    A_3 &= \overline{A}_2 = \pv[.3]{ex5['A3']['c']} = \pv[.3]{ex5['A3']['r']} e^{\pv[.1]{(ex5['A3']['phi'])}^\circ j}
 \end{align}
 
 Запишем оригинал $h(t)$ для изображения $H(s)$:
 \begin{equation}
-    h(t) = \pv[.3]{res['A1_r']} e^{\pv[.2]{tf['p1_re']} t} + \pv[.3]{res['A2_mag']} e^{\pv[.2]{tf['p2_re']} t} \cos(\pv[.2]{tf['p2_im']} t + \pv[.1]{abs(res['A2_arg'])}^\circ)
+    h(t) =
+    \pv[.3]{h_t['a']} e^{\pv[.2]{h_t['b']} t} +
+    \pv[.3]{h_t['c']} e^{\pv[.2]{h_t['d']} t}
+    \cos(\pv[.2]{h_t['e']} t + \pv[.1]{h_t['f']}^\circ)
 \end{equation}
 
 Переходная характеристика $h_1(t)$ определяется как реакция цепи на $\delta_1(t)$, что соответствует изображению $H_1(s) = \frac{H(s)}{s}$. Добавляется полюс $p_0 = 0$.
+\begin{equation}
+    \frac{B_1}{s} +
+    \frac{B_2}{s + \pv[.2]{fact['alpha1']}} +
+    \frac{B_3}{s + \pv[.2]{fact['alpha2']} + j\pv[.2]{fact['beta2']}} +
+    \frac{B_4}{s + \pv[.2]{fact['alpha2']} - j\pv[.2]{fact['beta2']}} +
+    B_0
+\end{equation}
 
 Вычеты для $H_1(s)$:
 \begin{align}
-    A_0 &= \lim_{s\to\infty} H_1(s) = 0 \\
-    A_1 &= H(0) = \pv[.3]{res['B0']} \\
-    A_2 &= \frac{A_1}{p_1} = \pv[.3]{res['B1_r']} \\
-    A_3 &= \frac{A_2}{p_2} = \pv[.3]{res['B2_r']} + j\pv[.3]{res['B2_i']} = \pv[.3]{res['B2_mag_half']} e^{j\pv[.1]{res['B2_arg']}^\circ} \\
-    A_4 &= \overline{A}_3 = \pv[.3]{res['B2_mag_half']} e^{-j\pv[.1]{res['B2_arg']}^\circ}
+    B_0 &= \lim_{s\to\infty} H_1(s) = 0 \\
+    B_1 &= H(0) = \pv[.3]{ex5['B1']} \\
+    B_2 &= \frac{A_1}{p_1} = \pv[.3]{ex5['B2']} \\
+    B_3 &= \frac{A_2}{p_2} = \pv[.3]{ex5['B3']['c']} = \pv[.3]{ex5['B3']['r']} e^{\pv[.1]{(ex5['B3']['phi'])}^\circ j} \\
+    B_4 &= \overline{B}_3 = \pv[.3]{ex5['B4']['c']} = \pv[.3]{ex5['B4']['r']} e^{\pv[.1]{(ex5['B4']['phi'])}^\circ j}
 \end{align}
 
 Аналитическое выражение для переходной характеристики:
 \begin{equation}
-    h_1(t) = \pv[.3]{res['B0']} + \pv[.3]{res['B1_r']} e^{\pv[.2]{tf['p1_re']} t} + \pv[.3]{res['B2_mag']} e^{\pv[.2]{tf['p2_re']} t} \cos(\pv[.2]{tf['p2_im']} t + \pv[.1]{res['B2_arg']}^\circ)
+    h_1(t) = \pv[.3]{h1_t['a']} - \pv[.3]{abs(h1_t['b'])} e^{\pv[.2]{h1_t['c']} t} + \pv[.3]{h1_t['d']} e^{\pv[.2]{h1_t['e']} t} \cos(\pv[.2]{h1_t['f']} t + \pv[.1]{h1_t['g']}^\circ)
 \end{equation}
 
 \subsection{Численный расчет методом Эйлера}
 
 Для проверки аналитического решения выполняется численный расчёт методом Эйлера с помощью уравнений состояний (см. \cref{form:uravn_sost_matrix}). Расчетная формула:
 \begin{equation}
-    \mathbf{X}_{n} = \mathbf{X}_{n-1} + \Delta t \cdot (\mathbf{A}\mathbf{X}_{n-1} + \mathbf{B} F_{n-1})
+    \left[f_{\text{пс, }n}\right] = \left[f_{\text{пс, }n-1}\right] + \Delta t \left(
+        \left[A\right]\cdot\left[f_{\text{пс, }n-1}\right] +
+        \left[B\right]\cdot\left[f_{1\text{, }n-1}\right]
+    \right)
 \end{equation}
 
 Шаг интегрирования $\Delta t$ выбирается из условия обеспечения устойчивости и точности:
 \begin{equation}
     \Delta t \le \frac{1}{5} \min\left(\tau_1, \tau_2, \frac{T_2}{4}\right),
 \end{equation}
-где постоянные времени $\tau_1 = \frac{1}{|p_1|} = \pv[.3]{res['tau1']} \text{ с}$, $\tau_2 = \frac{1}{|\operatorname{Re}(p_2)|} = \pv[.3]{res['tau2']} \text{ с}$; период свободных колебаний $T_2 = \frac{2\pi}{|\operatorname{Im}(p_2)|} = \pv[.3]{res['T2']} \text{ с}$. Выбранный шаг: $\Delta t = \pv[.3]{res['dt']} \text{ с}$.
+где постоянные времени $\tau_1 = \frac{1}{|p_1|} = \pv[.3]{ex5['tau1']} \text{ с}$, $\tau_2 = \frac{1}{|\operatorname{Re}(p_2)|} = \pv[.3]{ex5['tau2']} \text{ с}$; период свободных колебаний $T_2 = \frac{2\pi}{|\operatorname{Im}(p_2)|} = \pv[.3]{ex5['T2']} \text{ с}$. Выбранный шаг: $\Delta t = \pv[.3]{ex5['dt']} \text{ с}$.
 
-Начальные условия: $\mathbf{X}_0 = [0, 0, 0]^T$, входное воздействие $F = 1$.
+Начальные условия: $f_{\text{пс, }n-1} = [0, 0, 0]^T$, входное воздействие $f_{1\text{, }n-1} = 1$.
 
-Итерация 1 ($n=1$, $t = \pv[.3]{res['dt']} \text{ с}$):
+Итерация 1 ($n=1$, $t = \pv[.3]{ex5['dt']} \text{ с}$):
 \begin{align}
-    u_{C1}^{(1)} &= 0 + \pv[.3]{res['dt']} \cdot (\pv[.2]{mat['A11']} \cdot 0 + \pv[.2]{mat['A12']} \cdot 0 + \pv[.2]{mat['A13']} \cdot 0 + \pv[.2]{mat['B11']} \cdot 1) = \pv[.4]{res['x1_1']} \\
-    i_{L1}^{(1)} &= 0 + \pv[.3]{res['dt']} \cdot (\pv[.2]{mat['A21']} \cdot 0 + \pv[.2]{mat['A22']} \cdot 0 + \pv[.2]{mat['A23']} \cdot 0 + \pv[.2]{mat['B21']} \cdot 1) = \pv[.4]{res['x2_1']} \\
-    i_{L2}^{(1)} &= 0 + \pv[.3]{res['dt']} \cdot (\pv[.2]{mat['A31']} \cdot 0 + \pv[.2]{mat['A32']} \cdot 0 + \pv[.2]{mat['A33']} \cdot 0 + \pv[.2]{mat['B31']} \cdot 1) = \pv[.4]{res['x3_1']}
+    u_{C1}^{(1)} &= 0 \pv[+.3]{ex5['dt']} \cdot (\pv[.2]{mat['A11']} \cdot 0   \pv[+.2]{mat['A12']} \cdot 0   \pv[+.2]{mat['A13']} \cdot 0   \pv[+.2]{mat['B11']} \cdot 1) = \pv[.4]{ex5['x1_1']} \\
+    i_{L1}^{(1)} &= 0 \pv[+.3]{ex5['dt']} \cdot (\pv[.2]{mat['A21']} \cdot 0   \pv[+.2]{mat['A22']} \cdot 0   \pv[+.2]{mat['A23']} \cdot 0   \pv[+.2]{mat['B21']} \cdot 1) = \pv[.4]{ex5['x2_1']} \\
+    i_{L2}^{(1)} &= 0 \pv[+.3]{ex5['dt']} \cdot (\pv[.2]{mat['A31']} \cdot 0   \pv[+.2]{mat['A32']} \cdot 0   \pv[+.2]{mat['A33']} \cdot 0   \pv[+.2]{mat['B31']} \cdot 1) = \pv[.4]{ex5['x3_1']}
 \end{align}
 
-Итерация 2 ($n=2$, $t = \pv[.3]{res['dt'] \cdot 2} \text{ с}$):
+Теперь ${f}_\text{пс} = [\pv[.4]{ex5['x1_1']}, \pv[.4]{ex5['x2_1']}, \pv[.4]{ex5['x3_1']}]^T$.
+Итерация 2 ($n=2$, $t = \pv[.3]{ex5['dt'] * 2} \text{ с}$):
 \begin{align}
-    u_{C1}^{(2)} &= \pv[.4]{res['x1_1']} + \pv[.3]{res['dt']} \cdot (\dots) = \pv[.4]{res['x1_2']} \\
-    i_{L1}^{(2)} &= \pv[.4]{res['x2_1']} + \pv[.3]{res['dt']} \cdot (\dots) = \pv[.4]{res['x2_2']} \\
-    i_{L2}^{(2)} &= \pv[.4]{res['x3_1']} + \pv[.3]{res['dt']} \cdot (\dots) = \pv[.4]{res['x3_2']}
-\end{align}
+    u_{C1}^{(2)} &= \pv[.1]{ex5['x1_1']} \pv[+.3]{ex5['dt']} \cdot (\pv[.1]{mat['A11']} \cdot \pv[.1]{ex5['x1_1']} \pv[+.1]{mat['A12']} \cdot \pv[.1]{ex5['x2_1']} \pv[+.1]{mat['A13']} \cdot \pv[.1]{ex5['x3_1']} \pv[+.1]{mat['B11']} \cdot 1) = \pv[.1]{ex5['x1_2']} \\
+    i_{L1}^{(2)} &= \pv[.1]{ex5['x2_1']} \pv[+.3]{ex5['dt']} \cdot (\pv[.1]{mat['A21']} \cdot \pv[.1]{ex5['x1_1']} \pv[+.1]{mat['A22']} \cdot \pv[.1]{ex5['x2_1']} \pv[+.1]{mat['A23']} \cdot \pv[.1]{ex5['x3_1']} \pv[+.1]{mat['B21']} \cdot 1) = \pv[.1]{ex5['x2_2']} \\
+    i_{L2}^{(2)} &= \pv[.1]{ex5['x3_1']} \pv[+.3]{ex5['dt']} \cdot (\pv[.1]{mat['A31']} \cdot \pv[.1]{ex5['x1_1']} \pv[+.1]{mat['A32']} \cdot \pv[.1]{ex5['x2_1']} \pv[+.1]{mat['A33']} \cdot \pv[.1]{ex5['x3_1']} \pv[+.1]{mat['B31']} \cdot 1) = \pv[.1]{ex5['x3_2']}
+\end{align} 
 
-Выходной величиной цепи является ток $i_2 = i_{L2}$. Сравнение численного и аналитического расчетов приведено в \cref{tab:euler_results}.
+% Выходной величиной цепи является ток $i_{R2} = i_{L2}$. Сравнение численного и аналитического расчетов приведено в \cref{tab:euler_ex5ults}.
+Поскольку выходной величиной исследуемой цепи является ток резистора $R_2$, а элементы $L_2$ и $R_2$ соединены последовательно, следовательно:
+\begin{equation}
+    h_1(t) = i_{R2}(t) = i_{L2}(t).
+\end{equation}
 
-\begin{table}[h]
-    \caption{Сравнение численного и аналитического расчета $h_1(t)$}
-    \label{tab:euler_results}
-    \centering
-    \begin{longtblr}{
-        colspec = {X[c] X[c] X[c] X[c] X[c]},
-        hlines, vlines,
-        row{1} = {font=\textit}
-    }
-        $t$, с & $u_{C1}$, В & $i_{L1}$, А & $i_{L2}$ (числ.), А & $h_1(t)$ (анал.), А \\
-        \expanded{\pt*[.3, .4, .4, .4, .4]{res['euler_t'], res['euler_x1'], res['euler_x2'], res['euler_x3'], res['euler_an']}}
-    \end{longtblr}
-\end{table}
+Сравнение результатов вычисления переходной характеристики $h_1(t)$ аналитическим методом и численным методом Эйлера приведено в \cref{tab:euler_ex5ults,fig:plot_h1}.
 
-\begin{figure}[h]
+\begin{longtblr}[
+    caption = {Сравнение численного и аналитического расчета $h_1(t)$},
+    label = {tab:euler_ex5ults},
+    expand = \expanded,
+]{
+    colspec = { X[c] X[c] X[c] X[c] X[c] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $t$, с & $u_{C1}$, В & $i_{L1}$, А & $i_{L2}$ (числ.), А & $h_1(t)$ (анал.), А \\
+        \expanded{\pt*[.1, .4, .4, .4, .4]{ex5['euler_t'], ex5['euler_x1'], ex5['euler_x2'], ex5['euler_x3'], ex5['euler_an']}} \\
+\end{longtblr}
+
+\begin{figure}[H]
     \centering
     \input{figs/plot_h.pgf}
     \caption{График импульсной характеристики $h(t)$}
     \label{fig:plot_h}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \input{figs/plot_h1.pgf}
-    \caption{Графики переходной характеристики $h_1(t)$ (сравнение методов)}
+    \caption{Графики переходной характеристики $h_1(t)$}
     \label{fig:plot_h1}
 \end{figure}

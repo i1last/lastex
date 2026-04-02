@@ -1,107 +1,135 @@
-# scripts/calc_5.py
 import numpy as np
 import cmath
+import math
+from scipy import signal
+# Предполагаем, что эти данные импортируются корректно
 from scripts.calc_2 import tf
 from scripts.calc_4 import mat
 
-res = {}
+# Вспомогательные данные для формул (alpha, beta)
+# Обычно они берутся из вещественных и мнимых частей полюсов
+fact = {
+    'alpha1': abs(tf['p1_re']),
+    'alpha2': abs(tf['p2_re']),
+    'beta2':  abs(tf['p2_im'])
+}
 
+ex5 = {}
+h_t = {}
+h1_t = {}
+
+# 1. Формируем полюса и нули
+z1 = complex(0, tf['z1_im'])
+z2 = complex(0, -tf['z1_im'])
 p1 = tf['p1_re']
 p2 = complex(tf['p2_re'], tf['p2_im'])
+p3 = complex(tf['p2_re'], -tf['p2_im']) # сопряженный
 
-# Функция вычисления производной знаменателя D'(s) для нахождения вычетов
-def D_prime(s):
-    return 3 * tf['D3'] * s**2 + 2 * tf['D2'] * s + tf['D1']
+# --- Расчет H(s) ---
+num_h = np.poly([z1, z2])
+den_h = np.poly([p1, p2, p3])
+res_h, poles_h, _ = signal.residue(num_h, den_h)
 
-# Вычеты для импульсной характеристики h(t)
-# Формула: Res(p_k) = N(p_k) / D'(p_k)
-A1 = (tf['N2'] * p1**2 + tf['N0']) / D_prime(p1)
-A2 = (tf['N2'] * p2**2 + tf['N0']) / D_prime(p2)
+# Маппинг Ak (зависит от порядка poles_h, scipy обычно сортирует их)
+# Для надежности найдем индексы по значению полюсов
+idx1 = np.argmin(np.abs(poles_h - p1))
+idx2 = np.argmin(np.abs(poles_h - p2))
 
-res['A1_r'] = A1.real
-res['A2_r'] = A2.real
-res['A2_i'] = A2.imag
-res['A2_mag_half'] = abs(A2)
-res['A2_mag'] = 2 * abs(A2)
-res['A2_arg'] = np.degrees(cmath.phase(A2))
+ex5['A1'] = res_h[idx1].real
+ex5['A2'] = {'c': res_h[idx2]}
+ex5['A2']['r'], phi_rad = cmath.polar(res_h[idx2])
+ex5['A2']['phi'] = math.degrees(phi_rad)
+ex5['A2']['mag'] = 2 * abs(res_h[idx2])
+ex5['A3'] = {'c': res_h[idx2].conjugate(), 'r': ex5['A2']['r'], 'phi': -ex5['A2']['phi']}
 
-# Вычеты для переходной характеристики h1(t) = H(s)/s
-# Полюсы: 0, p1, p2, p3
-B0 = tf['N0'] / tf['D0']
-B1 = A1 / p1
-B2 = A2 / p2
+# Оригинал h(t)
+h_t['a'] = ex5['A1']
+h_t['b'] = p1
+h_t['c'] = ex5['A2']['mag']
+h_t['d'] = p2.real
+h_t['e'] = p2.imag
+h_t['f'] = abs(ex5['A2']['phi'])
 
-res['B0'] = B0
-res['B1_r'] = B1.real
-res['B2_r'] = B2.real
-res['B2_i'] = B2.imag
-res['B2_mag_half'] = abs(B2)
-res['B2_mag'] = 2 * abs(B2)
-res['B2_arg'] = np.degrees(cmath.phase(B2))
+# --- Расчет H1(s) = H(s)/s ---
+# Полюса: 0, p1, p2, p3
+den_h1 = np.poly([0, p1, p2, p3])
+res_h1, poles_h1, _ = signal.residue(num_h, den_h1)
 
-# Параметры численного метода Эйлера
-res['tau1'] = 1 / abs(tf['p1_re'])
-res['tau2'] = 1 / abs(tf['p2_re'])
-res['T2'] = 2 * np.pi / abs(tf['p2_im'])
+# Маппинг Bk
+idx_b1 = np.argmin(np.abs(poles_h1 - 0))   # B1 для 1/s
+idx_b2 = np.argmin(np.abs(poles_h1 - p1))  # B2 для 1/(s+p1)
+idx_b3 = np.argmin(np.abs(poles_h1 - p2))  # B3 для 1/(s+p2)
 
-dt_calc = 0.2 * min(res['tau1'], res['tau2'], res['T2'] / 4)
-res['dt'] = round(dt_calc, 3)
-if res['dt'] == 0: res['dt'] = 0.001
+ex5['B1'] = res_h1[idx_b1].real
+ex5['B2'] = res_h1[idx_b2].real
+ex5['B3'] = {'c': res_h1[idx_b3]}
+ex5['B3']['r'], b_phi_rad = cmath.polar(res_h1[idx_b3])
+ex5['B3']['phi'] = math.degrees(b_phi_rad)
+ex5['B3']['mag'] = 2 * abs(res_h1[idx_b3])
+ex5['B4'] = {'c': ex5['B3']['c'].conjugate(), 'r': ex5['B3']['r'], 'phi': -ex5['B3']['phi']}
 
-res['t_max'] = 3 * max(res['tau1'], res['tau2'])
-steps = int(res['t_max'] / res['dt'])
+# Оригинал h1(t)
+h1_t['a'] = ex5['B1']
+h1_t['b'] = ex5['B2']
+h1_t['c'] = p1
+h1_t['d'] = ex5['B3']['mag']
+h1_t['e'] = p2.real
+h1_t['f'] = p2.imag
+h1_t['g'] = ex5['B3']['phi']
 
-# Инициализация переменных состояния
-x1, x2, x3 = 0.0, 0.0, 0.0
-input_F = 1.0
+# --- Численный метод (Эйлер) ---
+ex5['tau1'] = 1 / abs(p1)
+ex5['tau2'] = 1 / abs(p2.real)
+ex5['T2'] = 2 * np.pi / abs(p2.imag)
 
-# Фиксация первых двух шагов для демонстрации в отчете
-res['dx1_0'] = mat['A11']*x1 + mat['A12']*x2 + mat['A13']*x3 + mat['B11']*input_F
-res['dx2_0'] = mat['A21']*x1 + mat['A22']*x2 + mat['A23']*x3 + mat['B21']*input_F
-res['dx3_0'] = mat['A31']*x1 + mat['A32']*x2 + mat['A33']*x3 + mat['B31']*input_F
+dt_calc = 0.2 * min(ex5['tau1'], ex5['tau2'], ex5['T2'] / 4)
+ex5['dt'] = round(dt_calc, 3) if dt_calc > 0.001 else 0.001
+ex5['t_max'] = 5 * max(ex5['tau1'], ex5['tau2']) # берем с запасом для ПП
+steps = int(ex5['t_max'] / ex5['dt'])
 
-res['x1_1'] = x1 + res['dt'] * res['dx1_0']
-res['x2_1'] = x2 + res['dt'] * res['dx2_0']
-res['x3_1'] = x3 + res['dt'] * res['dx3_0']
+# Начальные условия
+x = np.array([0.0, 0.0, 0.0]) # [uC1, iL1, iL2]
+A_mat = np.array([
+    [mat['A11'], mat['A12'], mat['A13']],
+    [mat['A21'], mat['A22'], mat['A23']],
+    [mat['A31'], mat['A32'], mat['A33']]
+])
+B_mat = np.array([mat['B11'], mat['B21'], mat['B31']])
+F = 1.0
 
-res['dx1_1'] = mat['A11']*res['x1_1'] + mat['A12']*res['x2_1'] + mat['A13']*res['x3_1'] + mat['B11']*input_F
-res['dx2_1'] = mat['A21']*res['x1_1'] + mat['A22']*res['x2_1'] + mat['A23']*res['x3_1'] + mat['B21']*input_F
-res['dx3_1'] = mat['A31']*res['x1_1'] + mat['A32']*res['x2_1'] + mat['A33']*res['x3_1'] + mat['B31']*input_F
+# Фиксация первых шагов для отчета
+def get_dx(curr_x):
+    return A_mat @ curr_x + B_mat * F
 
-res['x1_2'] = res['x1_1'] + res['dt'] * res['dx1_1']
-res['x2_2'] = res['x2_1'] + res['dt'] * res['dx2_1']
-res['x3_2'] = res['x3_1'] + res['dt'] * res['dx3_1']
+dx0 = get_dx(x)
+ex5['x1_1'], ex5['x2_1'], ex5['x3_1'] = x + ex5['dt'] * dx0
+
+dx1 = get_dx(np.array([ex5['x1_1'], ex5['x2_1'], ex5['x3_1']]))
+ex5['x1_2'], ex5['x2_2'], ex5['x3_2'] = np.array([ex5['x1_1'], ex5['x2_1'], ex5['x3_1']]) + ex5['dt'] * dx1
 
 # Аналитическая функция h1(t)
 def h1_an(t):
-    return res['B0'] + res['B1_r'] * np.exp(tf['p1_re'] * t) + \
-           res['B2_mag'] * np.exp(tf['p2_re'] * t) * np.cos(tf['p2_im'] * t + np.radians(res['B2_arg']))
+    return h1_t['a'] + h1_t['b'] * np.exp(h1_t['c'] * t) + \
+           h1_t['d'] * np.exp(h1_t['e'] * t) * np.cos(np.radians(h1_t['f'] * math.degrees(t) + h1_t['g']))
+# Поправка: частота в h1_t['f'] уже в рад/с, t в секундах.
+def h1_analytical(t):
+    return h1_t['a'] + h1_t['b'] * math.exp(h1_t['c'] * t) + \
+           h1_t['d'] * math.exp(h1_t['e'] * t) * math.cos(h1_t['f'] * t + math.radians(h1_t['g']))
 
-# Формирование данных для таблицы LaTeX
-euler_t, euler_x1, euler_x2, euler_x3, euler_an = [], [], [], [],[]
-print_step = max(1, steps // 15)
+# Цикл Эйлера для таблицы
+euler_t, euler_x1, euler_x2, euler_x3, euler_an = [], [], [], [], []
+print_step = max(1, steps // 12) # Примерно 10-15 строк
 
-x1, x2, x3 = 0.0, 0.0, 0.0
+curr_x = np.array([0.0, 0.0, 0.0])
 for i in range(steps + 1):
-    t = i * res['dt']
-    
-    if i % print_step == 0 or i == steps:
+    t = i * ex5['dt']
+    if i % print_step == 0:
         euler_t.append(t)
-        euler_x1.append(x1)
-        euler_x2.append(x2)
-        euler_x3.append(x3)
-        euler_an.append(h1_an(t))
-        
-    dx1 = mat['A11']*x1 + mat['A12']*x2 + mat['A13']*x3 + mat['B11']*input_F
-    dx2 = mat['A21']*x1 + mat['A22']*x2 + mat['A23']*x3 + mat['B21']*input_F
-    dx3 = mat['A31']*x1 + mat['A32']*x2 + mat['A33']*x3 + mat['B31']*input_F
+        euler_x1.append(curr_x[0])
+        euler_x2.append(curr_x[1])
+        euler_x3.append(curr_x[2])
+        euler_an.append(h1_analytical(t))
     
-    x1 += res['dt'] * dx1
-    x2 += res['dt'] * dx2
-    x3 += res['dt'] * dx3
+    curr_x = curr_x + ex5['dt'] * get_dx(curr_x)
 
-res['euler_t'] = euler_t
-res['euler_x1'] = euler_x1
-res['euler_x2'] = euler_x2
-res['euler_x3'] = euler_x3
-res['euler_an'] = euler_an
+ex5['euler_t'], ex5['euler_x1'], ex5['euler_x2'], ex5['euler_x3'], ex5['euler_an'] = euler_t, euler_x1, euler_x2, euler_x3, euler_an
