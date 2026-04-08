@@ -1,0 +1,67 @@
+\begin{table}[H]
+    \centering
+    \caption{Определение параметров катушек ($f = 1~\text{кГц}$)}
+    \label{tab:params}
+    \begin{tblr}{
+        colspec = { Q[c,m,l] X[c,m] X[c,m] X[c,m] },
+        hlines, vlines, 
+    }
+        Подключена к ГС & $U_\text{вх}$, В & $I_\text{вх}$, мА & $U_\text{вых}$, В \\
+        \midrule
+        Катушка 1 ($1-1'$) & & & \\
+        Катушка 2 ($2-2'$) & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Исследование последовательного соединения ($f = 1~\text{кГц}$, $U_\text{общ} = 2~\text{В}$)}
+    \label{tab:series_conn}
+    \begin{tblr}{
+        colspec = { Q[c,m,l] X[c,m] X[c,m] X[c,m] },
+        hlines, vlines,
+    }
+        Включение & $I_\text{общ}$, мА & $U_1$, В & $U_2$, В \\
+        \midrule
+        Согласное & & & \\
+        Встречное & & & \\
+    \end{tblr}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Исследование параллельного соединения ($f = 1~\text{кГц}$, $U = 1~\text{В}$)}
+    \label{tab:parallel_conn}
+    \begin{tblr}{
+        colspec = { Q[c,m,l] X[c,m] },
+        hlines, vlines,
+    }
+        Включение & $I_\text{общ}$, мА \\
+        \midrule
+        Согласное & \\
+        Встречное & \\
+    \end{tblr}
+\end{table}
+\newpage
+\begin{table}[H]
+    \centering
+    \caption{Исследование АЧХ трансформатора ($U_1 = 1~\text{В}$)}
+    \label{tab:afc}
+    \begin{tblr}{
+        colspec = { Q[c,m] *{2}{X[c,m]} },
+        hlines, vlines,
+    }
+        & \SetCell[c=2]{c} Нагрузка \\
+        \cmidrule{2-3}
+        $f$, кГц & {$R_{\text{н}1} = 100~\text{Ом}$} & {$R_{\text{н}2} = 1000~\text{Ом}$} \\
+        & {$U_2$, В} & {$U_2$, В} \\
+        \midrule
+        0.1 & & \\
+        0.2 & & \\
+        0.5 & & \\
+        1.0 & & \\
+        2.0 & & \\
+        5.0 & & \\
+        10.0 & & \\
+    \end{tblr}
+\end{table}
