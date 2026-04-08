@@ -1,0 +1,171 @@
+\section*{Цель работы}
+Изучить принцип работы D- и JK-триггеров с использованием среды Verilog, проанализировать их RTL интерпретации и временные диаграммы.
+
+\subsection*{ \fbox{ Задание 1 и 1а. } }
+\begin{quote}
+    \textit{Собрать схему синхронного D-триггера в текстовом редакторе. Изучить схему, реализованную в RTL-Viewer. Построить временные диаграммы, иллюстрирующие работу устройства. Период тактового сигнала задать $20$ нс, время моделирования --- $500$ нс. }
+
+    \textit{Ввести в D-триггер сигнал сброса. Проделать всё то же самое, что и для простого D-триггера. Синхронным или асинхронным является сигнал сброса? Объяснить, почему.}
+\end{quote}
+
+\subsubsection*{Реализация на языке Verilog}
+Коды на языке Verilog для D-триггера и D-триггера с сигналом сброса представлены в листингах \cref{lst:d-trigger} и \cref{lst:d-trigger-reset} соответственно.
+ 
+\begin{listing}[H]
+    \caption{D-триггер}
+    \label{lst:d-trigger}
+    \inputminted[]{verilog}{scripts/d.v}
+\end{listing}
+
+\begin{listing}[H]
+    \caption{D-триггер с сигналом сброса}
+    \label{lst:d-trigger-reset}
+    \inputminted[]{verilog}{scripts/d+r.v}
+\end{listing}
+
+\subsubsection*{RTL-схемы}
+Результат интерпретации Verilog кода программой Quartus II в виде RTL схем показаны на \cref{fig:d-rtl}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/d_RTL.pdf}
+        \caption{D-триггер}
+        \label{fig:d-rtl-simple}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/dr_RTL.pdf}
+        \caption{D-триггер с сигналом сброса}
+        \label{fig:d-rtl-reset}
+    \end{subfigure}
+    \caption{RTL-схемы D-триггеров}
+    \label{fig:d-rtl}
+\end{figure}
+
+\begin{itemize}
+    \item \textit{D-триггер (\cref{fig:d-rtl-simple,lst:d-trigger}).} Из RTL-схемы видно, что Quartus II интерпретирует \mintinline{verilog}§always @(posedge clock) q <= Data;§ как стандартный элемент.
+
+    \item \textit{D-триггер с сигналом сброса (\cref{fig:d-rtl-reset,lst:d-trigger-reset}).} Добавление условного оператора \mintinline{verilog}§if (reset)§ в тело блока \mintinline{verilog}§always§ приводит к появлению нового в рамках выполненных лабораторных работ блоку, который называется <<мультиплексор>> ($mux$). Поступающий в мультиплексор сверху $reset$ работает как переключатель: если $reset=1$, то на выходе будет сигнал, который поступает на вход под знаком $1$, аналогично для $reset=0\implies0$. Это полностью соответствует логике на строках 9--12 на \cref{lst:d-trigger-reset}. В остальном триггер интерпретируется как стандартный элемент аналогично \cref{fig:d-rtl-simple}.
+\end{itemize}
+
+\subsubsection*{Временные диаграммы}
+Временные диаграммы, полученные в результате функционального и временного моделирования, приведены на \cref{fig:d-wave,fig:dr-wave}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/d_wave_f.png}
+        \caption{Функциональное моделирование}
+        \label{fig:d-wave-f}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/d_wave_t.png}
+        \caption{Временное моделирование}
+        \label{fig:d-wave-t}
+    \end{subfigure}
+    \caption{Временные диаграммы работы D-триггера}
+    \label{fig:d-wave}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/dr_wave_f.png}
+        \caption{Функциональное моделирование}
+        \label{fig:dr-wave-f}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/dr_wave_t.png}
+        \caption{Временное моделирование}
+        \label{fig:dr-wave-t}
+    \end{subfigure}
+    \caption{Временные диаграммы работы D-триггера с сигналом сброса}
+    \label{fig:dr-wave}
+\end{figure}
+
+\subsubsection*{Анализ сигнала сброса}
+Синхронным является сигнал, значение которого считывается в момент изменения значения такта с $0$ на $1$ (передний фронт) или с $1$ на $0$ (задний фронт). Если же значение сигнала считывается в каждый момент времени, то он называется асинхронным, поскольку не зависит от таковых сигналов.
+
+Из определения выше становится понятно, что сигнал сброса $reset$ в D-триггере (\cref{fig:d-rtl-reset,lst:d-trigger-reset}) является синхронным, поскольку находится внутри блока \mintinline{verilog}§always @(possedge clock)§, который устанавливает отклик устройства на поступающие сигналы только в момент переднего фронта тактового сигнала $clock$.
+
+Сигнал сброса $reset$ мог бы быть асинхронным только если бы был включен в список чувствительности: \mintinline{verilog}§always @(... or ... reset)§
+
+\subsection*{ \fbox{ Задание 2. } }
+\begin{quote}
+    \textit{Собрать схему синхронного J-K-триггера в текстовом редакторе. Изучить схему, реализованную в RTL-Viewer. Построить временные диаграммы, иллюстрирующие работу устройства. Период тактового сигнала задать 40 нс, время моделирования – 900 нс.}
+\end{quote}
+
+\subsubsection*{Реализация и RTL-схема}
+Verilog-описание JK-триггера представлено в \cref{lst:jk-trigger}. Соответствующая ему RTL-схема приведена на \cref{fig:jk-rtl}.
+
+\begin{listing}[H]
+    \caption{Verilog-описание JK-триггера (jk1.v)}
+    \label{lst:jk-trigger}
+    \inputminted[]{verilog}{scripts/jk1.v}
+\end{listing}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/jk_RTL.pdf}
+    \caption{RTL-схема JK-триггера}
+    \label{fig:jk-rtl}
+\end{figure}
+
+Проанализируем \cref{fig:jk-rtl}. Выделив два основных блока:
+\begin{enumerate}
+    \item \textit{Регистр памяти.} В основе схемы лежит D-триггер (обозначенный как \mintinline{text}§q~reg0§). 
+
+    \item \textit{Логика вычисления следующего состояния.} Вся остальная часть схемы, состоящая из логических элементов И, НЕ и мультиплексоров. Задача этого блока --- вычислить значение, которое должно быть записано в триггер на следующем тактовом импульсе. Назовём этот блок для краткости блоком <<Состояния>>.
+\end{enumerate}
+
+Опишем принцип работы схемы.
+
+На входы Состояния поступают управляющие сигналы $J$ и $K$, а также выходной сигнал $q$.
+
+Последовательное включение мультиплексоров, как стало ясно на примере D-триггера с сигналом сброса, выполняет логику условных блоков \mintinline{verilog}§if-elseif-elseif§. Действительно, если мы проследим за RTL-схемой, будет возможно воссоздать логику условных блоков из \cref{lst:jk-trigger}.
+
+Таким образом, на основе значений сигналов $J, K, q_\text{тек}$ блок Состояния вычисляет значение следующего выходного сигнала ($q_\text{след}$), которое подается на D-вход триггера.
+
+С наступлением переднего фронта тактового сигнала $clock$ значение с D-входа триггера записывается на его выход, обновляя его состояние: $q_\text{тек} \implies q_\text{след}$.
+
+
+\subsubsection*{Временные диаграммы и режимы работы}
+Временные диаграммы на \cref{fig:jk-wave} демонстрируют все четыре режима работы синхронного JK-триггера:
+\begin{enumerate}
+    \item \textit{Режим хранения.} При $J=0, K=0$ состояние триггера не изменяется.
+    \item \textit{Режим сброса.} При $J=0, K=1$ триггер переходит в состояние $q=0$.
+    \item \textit{Режим установки.} При $J=1, K=0$ триггер переходит в состояние $q=1$.
+    \item \textit{Инверсный режим.} При $J=1, K=1$ триггер инвертирует свое состояние при каждом тактовом импульсе.
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/jk_wave_f.png}
+        \caption{Функциональное моделирование}
+        \label{fig:jk-wave-f}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/jk_wave_t.png}
+        \caption{Временное моделирование}
+        \label{fig:jk-wave-t}
+    \end{subfigure}
+    \caption{Временные диаграммы работы JK-триггера}
+    \label{fig:jk-wave}
+\end{figure}
+
+\section*{Выводы}
+
+В ходе выполнения работы были реализованы и проанализированы D- и JK-триггеры. Были построены их RTL-схемы и временные диаграммы (функциональные и временные), иллюстрирующие их работу. Проведено исследование влияния сигнала синхронного сброса $reset$ на работу D-триггера.
