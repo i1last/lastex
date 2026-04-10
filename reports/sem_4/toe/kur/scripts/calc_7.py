@@ -1,37 +1,35 @@
 import numpy as np
-from scipy.optimize import fsolve
+from scipy.signal import find_peaks
 from scripts.calc_6 import ex6
+from scripts.calc_1 import n
 from scripts.calc_3 import freq
 
 ex7 = {}
 
-# Перенос базовых параметров
 Im = ex6['Im']
-tu = ex6['tu']
-
-# Значение амплитудного спектра на нулевой частоте (площадь импульса)
-ex7['A1_0'] = Im * tu
-
-# Частота первого нуля спектра
-ex7['w_y1'] = 2 * np.pi / tu
-
-# Функция амплитудного спектра для численного поиска
-def A1_func(w):
-    if w == 0:
-        return ex7['A1_0']
-    return np.abs((2 * Im / w) * np.sin(w * tu / 2))
-
-# Определение ширины спектра по 10%-му критерию
-target_level = 0.1 * ex7['A1_0']
-
-# Начальное приближение (из свойства функции sinc(x) = 0.1 при x ~ 2.85)
-guess = 5.7 / tu 
-
-def eq(w):
-    return A1_func(w) - target_level
-
-w_sp = fsolve(eq, guess)[0]
-ex7['w_sp'] = w_sp
-
-# Полоса пропускания цепи (из п. 3)
 ex7['w_c'] = freq['w_c']
+
+def calc_spectrum_params(ti):
+    res = {}
+    res['A1_0'] = Im * ti
+    res['w_y1'] = 2 * np.pi / ti
+    
+    # Теоретическая ширина по огибающей
+    res['w_sp_env'] = 20.0 / ti
+    
+    # Практическая ширина (поиск пика лепестка, ближайшего к 10% уровню)
+    w_max = 5 * res['w_y1']
+    w = np.linspace(1e-5, w_max, 5000)
+    A1 = np.abs((2 * Im / w) * np.sin(w * ti / 2))
+    
+    target = 0.1 * res['A1_0']
+    peaks, _ = find_peaks(A1)
+    
+    # Находим индекс пика, амплитуда которого максимально близка к target
+    idx_peak = peaks[np.argmin(np.abs(A1[peaks] - target))]
+    res['w_sp'] = w[idx_peak]
+    
+    return res
+
+ex7['ti1'] = calc_spectrum_params(n['ti1'])
+ex7['ti2'] = calc_spectrum_params(n['ti2'])

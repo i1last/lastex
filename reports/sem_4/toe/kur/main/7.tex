@@ -1,5 +1,7 @@
 \begin{python}
 from scripts.calc_7 import *
+from scripts.calc_1 import n
+from scripts.calc_6 import ex6
 \end{python}
 
 \section{Определение спектральных характеристик одиночного импульса воздействия}
@@ -33,9 +35,14 @@ from scripts.calc_7 import *
     \frac{\omega t_{\text{и}}}{2} =
     \pi k
     \implies
-    \omega_\text{yзл}^k = 2\pi k / t_\text{и}
+    \omega_\text{yзл}^k = \frac{2\pi k}{t_\text{и}}
 \end{equation}
-Первый ноль находится на частоте $\omega_{y}^1 \approx \pv[.3]{ex7['w_y1']}$.
+
+Частоты первых нулей для заданных длительностей импульсов:
+\begin{itemize}
+    \item Для $t_{\text{и1}}$: $\omega_{\text{yзл1}}^1 \approx \pv[.3]{ex7['ti1']['w_y1']}$
+    \item Для $t_{\text{и2}}$: $\omega_{\text{yзл2}}^1 \approx \pv[.3]{ex7['ti2']['w_y1']}$
+\end{itemize}
 
 При вычислении значения амплитудного спектра на нулевой частоте возникает неопределенность вида $\left[ \frac{0}{0} \right]$. Применим первый замечательный предел:
 \begin{equation}
@@ -53,24 +60,52 @@ from scripts.calc_7 import *
     \end{multlined}
 \end{equation}
 
-Контроль: значение амплитудного спектра на нулевой частоте $A_1(0) = \pv[.2]{ex6['Im']} \cdot \pv[.2]{ex6['tu']} = \pv[.3]{ex7['A1_0']}$ равно площади входного импульса тока.
+Контроль: значение амплитудного спектра на нулевой частоте равно площади входного импульса тока.
+\begin{itemize}
+    \item Для $t_{\text{и1}}$: $A_1(0) = \pv[.2]{ex6['Im']} \cdot \pv[.2]{n['ti1']} = \pv[.3]{ex7['ti1']['A1_0']}$
+    \item Для $t_{\text{и2}}$: $A_1(0) = \pv[.2]{ex6['Im']} \cdot \pv[.2]{n['ti2']} = \pv[.3]{ex7['ti2']['A1_0']}$
+\end{itemize}
 
-Графики амплитудного и фазового спектров одиночного импульса воздействия показаны на \cref{fig:plot_spec_A,fig:plot_spec_Phi}.
+Графики АС и ФС воздействия для $t_{\text{и1}}$ и $t_{\text{и2}}$ показаны на \cref{fig:plot_spec_A_ti1,fig:plot_spec_A_ti2,fig:plot_spec_Phi_ti1,fig:plot_spec_Phi_ti2}.
  
 \begin{figure}[H]
     \centering
-    \input{figs/plot_spec_A.pgf}
-    \caption{Амплитудный спектр одиночного импульса воздействия}
-    \label{fig:plot_spec_A}
+    \input{figs/plot_spec_A_ti1.pgf}
+    \caption{Амплитудные спектры одиночных импульсов воздействия для $t_\text{и} = \pv[.1]{n['ti1']}$}
+    \label{fig:plot_spec_A_ti1}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \input{figs/plot_spec_Phi.pgf}
-    \caption{Фазовый спектр одиночного импульса воздействия}
-    \label{fig:plot_spec_Phi}
+    \input{figs/plot_spec_A_ti2.pgf}
+    \caption{Амплитудные спектры одиночных импульсов воздействия для $t_\text{и} = \pv[.1]{n['ti2']}$}
+    \label{fig:plot_spec_A_ti2}
 \end{figure}
 
-Ширина спектра импульсного входного сигнала, определенная по 10\%-му амплитудному критерию, составляет $\Delta\omega_{\text{сп}} \in [0; \pv[.2]{ex7['w_sp']}]$. 
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_spec_Phi_ti1.pgf}
+    \caption{Фазовые спектры одиночных импульсов воздействия для $t_\text{и} = \pv[.1]{n['ti1']}$}
+    \label{fig:plot_spec_Phi_ti1}
+\end{figure}
 
-Сравнение ширины спектра воздействия $\Delta\omega_{\text{сп}} \approx \pv[.2]{ex7['w_sp']}$ и полосы пропускания цепи $\omega_{\text{с}} \approx \pv[.2]{ex7['w_c']}$ (см. \cref{form:omega_propuskaniya}) показывает, что $\Delta\omega_{\text{сп}} < \omega_{\text{с}}$. WIP
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_spec_Phi_ti2.pgf}
+    \caption{Фазовые спектры одиночных импульсов воздействия для $t_\text{и} = \pv[.1]{n['ti2']}$}
+    \label{fig:plot_spec_Phi_ti2}
+\end{figure}
+
+Ширина спектра импульсного входного сигнала определяется по 10\%-му амплитудному критерию. Из \cref{fig:plot_spec_A_ti1,fig:plot_spec_A_ti2} видно, что
+\begin{equation}
+    \Delta\omega_{\text{сп1}} \approx \pv[.2]{ex7['ti1']['w_sp']} \text{ при } t_\text{и} = \pv[.1]{n['ti1']},
+\end{equation}
+\begin{equation}
+    \Delta\omega_{\text{сп2}} \approx \pv[.2]{ex7['ti2']['w_sp']} \text{ при } t_\text{и} = \pv[.1]{n['ti2']}.
+\end{equation}
+
+Сравнение ширины спектра воздействия и полосы пропускания цепи $\omega_{\text{ср}} \approx \pv[.2]{ex7['w_c']}$ (см. \cref{form:omega_propuskaniya}) показывает:
+\begin{itemize}
+    \item Для $t_{\text{и1}}$: $\Delta\omega_{\text{сп1}}$ и $\omega_{\text{с}}$ соотносятся как WIP.
+    \item Для $t_{\text{и2}}$: $\Delta\omega_{\text{сп2}}$ и $\omega_{\text{с}}$ соотносятся как WIP.
+\end{itemize}

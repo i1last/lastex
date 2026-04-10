@@ -1,5 +1,6 @@
 \begin{python}
 from scripts.calc_3 import *
+import numpy as np
 \end{python}
 
 \section{Расчет частотных характеристик цепи}
@@ -99,4 +100,15 @@ from scripts.calc_3 import *
     \label{form:omega_propuskaniya}
 \end{equation}
  
-Время запаздывания сигнала при прохождении через цепь в области низких частот определяется как $t_{\text{з}} = \frac{|d\Phi|}{d\omega} = \frac{\operatorname{rad}(|-25^\circ|)}{0.5} \approx \pv[.2]{freq['td']} \text{ с}$.
+Время запаздывания сигнала при прохождении через цепь в области низких частот определяется как
+\begin{equation}
+    t_{\text{з}} =
+    \frac{|d\Phi|}{d\omega} =
+    \frac{
+        \operatorname{rad}(|\pv[.1]{freq['td']['deg']}^\circ|)
+    }{
+        \pv[.1]{freq['td']['w']}
+    }
+    \approx
+    \pv[.2]{freq['td']['res']}.
+\end{equation}

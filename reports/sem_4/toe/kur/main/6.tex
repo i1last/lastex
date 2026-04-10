@@ -1,5 +1,6 @@
 \begin{python}
 from scripts.calc_6 import *
+from scripts.calc_6 import n
 \end{python}
 
 \section{Вычисление реакции цепи при воздействии одиночного импульса}
@@ -33,13 +34,25 @@ from scripts.calc_6 import *
     i_{21}(t) = \pv[.3]{i21_t['a']} - \pv[.3]{abs(i21_t['b'])} e^{\pv[.2]{i21_t['c']} t} + \pv[.3]{i21_t['d']} e^{\pv[.2]{i21_t['e']} t} \cos(\pv[.2]{i21_t['f']} t + \pv[.1]{i21_t['g']}^\circ)
 \end{equation}
 
-Графики входного одиночного импульса и реакции цепи, построенные на основе полученных аналитических выражений, приведены на \cref{fig:plot_reaction}.
+Учитывая сигнал в виде меандра получаем итоговое выражние для $i_2(t)$:
+\begin{equation}
+    i_2(t) = i_{21}(t)\cdot\delta_1(t) - 2i_{21}(t - t_\text{и})\cdot\delta_1(t - t_\text{и}) + i_{21}(t - 2t_\text{и})\cdot\delta_1(t - 2t_\text{и})
+\end{equation}
+
+Графики воздействия и реакции цепи, построенные на основе полученных аналитических выражений, приведены на \cref{fig:plot_reaction_ti1,fig:plot_reaction_ti2}.
 
 \begin{figure}[H]
     \centering
-    \input{figs/plot_reaction.pgf}
-    \caption{Графики входного воздействия $i_1(t)$ и реакции цепи $i_2(t)$}
-    \label{fig:plot_reaction}
+    \input{figs/plot_reaction_i1.pgf}
+    \caption{Графики входного воздействия $i_1(t)$ и реакции цепи $i_2(t)$ для $t_\text{и} = \pv[.1]{n['ti1']}$}
+    \label{fig:plot_reaction_ti1}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_reaction_i2.pgf}
+    \caption{Графики входного воздействия $i_1(t)$ и реакции цепи $i_2(t)$ для $t_\text{и} = \pv[.1]{n['ti2']}$}
+    \label{fig:plot_reaction_ti2}
+\end{figure}
+ 
 Из графиков следует, что при прохождении через исследуемую цепь форма сигнала претерпевает существенные искажения, WIP

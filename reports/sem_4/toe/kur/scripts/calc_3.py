@@ -37,4 +37,7 @@ a_w, phi_w = get_response(w)
 
 freq['level'] = 0.707 * freq['A0']
 freq['w_c'] = np.interp(freq['level'], a_w[::-1], w[::-1])
-freq['td'] = np.radians(25) / 0.5
+freq['td'] = {}
+freq['td']['deg'] = min(np.degrees(phi_w))
+freq['td']['w'] = w[np.argmin(np.degrees(phi_w))]
+freq['td']['res'] = np.radians(abs(freq['td']['deg'])) / freq['td']['w']

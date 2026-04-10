@@ -26,7 +26,8 @@ p2 = complex(tf['p2_re'], tf['p2_im'])
 p3 = complex(tf['p2_re'], -tf['p2_im']) # сопряженный
 
 # --- Расчет H(s) ---
-num_h = np.poly([z1, z2])
+K = tf['N2'] / tf['D3']
+num_h = K * np.poly([z1, z2])
 den_h = np.poly([p1, p2, p3])
 res_h, poles_h, _ = signal.residue(num_h, den_h)
 
@@ -83,7 +84,9 @@ ex5['tau2'] = 1 / abs(p2.real)
 ex5['T2'] = 2 * np.pi / abs(p2.imag)
 
 dt_calc = 0.2 * min(ex5['tau1'], ex5['tau2'], ex5['T2'] / 4)
-ex5['dt'] = round(dt_calc, 3) if dt_calc > 0.001 else 0.001
+ex5['dt_orig'] = round(dt_calc, 3) if dt_calc > 0.001 else 0.001
+ex5['dt_acc'] = 2
+ex5['dt'] = ex5['dt_orig'] / ex5['dt_acc']
 ex5['t_max'] = 5 * max(ex5['tau1'], ex5['tau2']) # берем с запасом для ПП
 steps = int(ex5['t_max'] / ex5['dt'])
 

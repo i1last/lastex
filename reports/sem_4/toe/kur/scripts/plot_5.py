@@ -5,14 +5,15 @@ from scripts.calc_4 import mat
 from scripts.calc_5 import ex5
 
 t_max = ex5['t_max']
-t = np.linspace(0, t_max, 500)
+t = np.linspace(0, t_max, 1000)
 
 # Импульсная характеристика h(t)
 h_t = ex5['A1'] * np.exp(tf['p1_re'] * t) + ex5['A2']['mag'] * np.exp(tf['p2_re'] * t) * np.cos(tf['p2_im'] * t + np.radians(ex5['A2']['phi']))
 
 plt.figure()
 plt.plot(t, h_t, marker='')
-plt.xlabel(r'$t$, с')
+plt.xlim(left=min(t))
+plt.xlabel(r'$t$')
 plt.ylabel(r'$h(t)$')
 plt.grid(True)
 plt.savefig('plot_h.pgf')
@@ -38,9 +39,12 @@ for i in range(steps + 1):
 
 plt.figure()
 plt.plot(t, h1_t, label='Аналитический расчет', marker='')
-plt.plot(t_num, h1_num, label='Численный расчет (Эйлер)', marker='')
-plt.xlabel(r'$t$, с')
+plt.plot(t_num, h1_num, label=fr'Численный расчет ($\Delta t = {round(dt, 3)}$)', marker='')
+plt.xlim(left=min(t))
+plt.ylim(bottom=min(h1_t))
+plt.xlabel(r'$t$')
 plt.ylabel(r'$h_1(t)$')
 plt.legend(ncol=2)
 plt.grid(True)
+plt.text(5, 0.1, fr'')
 plt.savefig('plot_h1.pgf')
