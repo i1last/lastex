@@ -1,1 +1,64 @@
-\section{8}
+\begin{python}
+from scripts.calc_8 import *
+\end{python}
+
+\section{Вычисление спектра реакции при одиночном импульсе на входе}
+
+В соответствии со спектральным методом расчета, спектр реакции цепи ${I}_2(j\omega)$ определяется как произведение спектра входного воздействия ${I}_1(j\omega)$ (см. \cref{form:I1jw}) на АФХ цепи ${H}(j\omega)$ (см. \cref{form:hs}):
+\begin{equation}
+    {I}_2(j\omega) = {I}_1(j\omega) \cdot {H}(j\omega).
+\end{equation}
+
+Из соотношения выше следует, что амплитудный спектр реакции $A_2(\omega)$ равен произведению амплитудного спектра входного сигнала $A_1(\omega)$ и АЧХ цепи $A(\omega)$:
+\begin{equation}
+    A_2(\omega) = A_1(\omega) \cdot A(\omega).
+\end{equation}
+
+Фазовый же спектр реакции $\Phi_2(\omega)$ определяется как алгебраическая сумма фазового спектра воздействия $\Phi_1(\omega)$ и ФЧХ цепи $\Phi(\omega)$:
+\begin{equation}
+    \Phi_2(\omega) = \Phi_1(\omega) + \Phi(\omega).
+\end{equation}
+ 
+Для контроля правильности расчетов вычислим значения амплитудного спектра реакции на нулевой частоте для двух заданных длительностей импульса. Используем полученные в предыдущих разделах значения $A_1(0)$ и $A(0) = \pv[.3]{freq['A0']}$:
+\begin{itemize}
+    \item Для $t_{\text{и}1} = \pv[.2]{n['ti1']}$: 
+    \begin{equation*}
+        A_2(0) = A_1(0) \cdot A(0) = \pv[.3]{ex8['A1_0_1']} \cdot \pv[.3]{freq['A0']} = \pv[.3]{ex8['A2_0_1']}
+    \end{equation*}
+    \item Для $t_{\text{и}2} = \pv[.2]{n['ti2']}$: 
+    \begin{equation*}
+        A_2(0) = A_1(0) \cdot A(0) = \pv[.3]{ex8['A1_0_2']} \cdot \pv[.3]{freq['A0']} = \pv[.3]{ex8['A2_0_2']}
+    \end{equation*}
+\end{itemize}
+
+Графики амплитудного и фазового спектров реакции цепи для импульсов длительностью $t_{\text{и}1}$ и $t_{\text{и}2}$ приведены на \cref{fig:plot_spec_A2_1,fig:plot_spec_Phi2_1,fig:plot_spec_A2_2,fig:plot_spec_Phi2_2}.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_spec_A2_1.pgf}
+    \caption{Амплитудный спектр реакции цепи $A_2(\omega)$ для $t_{\text{и}} = \pv[.2]{n['ti1']}$}
+    \label{fig:plot_spec_A2_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_spec_Phi2_1.pgf}
+    \caption{Фазовый спектр реакции цепи $\Phi_2(\omega)$ для $t_{\text{и}} = \pv[.2]{n['ti1']}$}
+    \label{fig:plot_spec_Phi2_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_spec_A2_2.pgf}
+    \caption{Амплитудный спектр реакции цепи $A_2(\omega)$ для $t_{\text{и}} = \pv[.2]{n['ti2']}$}
+    \label{fig:plot_spec_A2_2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_spec_Phi2_2.pgf}
+    \caption{Фазовый спектр реакции цепи $\Phi_2(\omega)$ для $t_{\text{и}} = \pv[.2]{n['ti2']}$}
+    \label{fig:plot_spec_Phi2_2}
+\end{figure}
+
+Сравнение полученных графиков с графиками спектров входного воздействия (см. \cref{sec:oprspechar}) показывает, что WIP

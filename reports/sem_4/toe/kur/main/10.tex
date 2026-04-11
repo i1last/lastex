@@ -1,1 +1,49 @@
-\section{10}
+\begin{python}
+from scripts.calc_10 import *
+\end{python}
+
+\section{Определение спектра периодического входного сигнала}
+
+Для периодического сигнала спектральные характеристики представляют собой набор дискретных гармоник, кратных основной частоте сигнала $\omega_1$. Для заданного меандра с периодом $T = 2t_{\text{и}} = \pv[.2]{ex10['T']}$ основная частота равна:
+\begin{equation}
+    \omega_1 = \frac{2\pi}{T} = \frac{2\pi}{\pv[.2]{ex10['T']}} = \pv[.3]{ex10['w1']}
+\end{equation}
+
+Коэффициенты ряда Фурье для симметричного двуполярного меандра определяются аналитически:
+\begin{itemize}
+    \item Постоянная составляющая $A_0 = 0$.
+    \item Амплитуды гармоник: $A_k = \frac{4 I_m}{k\pi}$ для нечетных $k$, и $A_k = 0$ для четных $k$.
+    \item Начальные фазы: $\Phi_k = 0$ для всех гармоник.
+\end{itemize}
+
+Дискретные амплитудный и фазовый спектры, рассчитанные для $N=\pv[.0]{ex10['N']}$ гармоник, приведены на \cref{fig:plot_disc_spec_A,fig:plot_disc_spec_Phi}.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_disc_spec_A.pgf}
+    \caption{Дискретный амплитудный спектр входного сигнала}
+    \label{fig:plot_disc_spec_A}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_disc_spec_Phi.pgf}
+    \caption{Дискретный фазовый спектр входного сигнала}
+    \label{fig:plot_disc_spec_Phi}
+\end{figure}
+
+% Отрезок ряда Фурье, аппроксимирующий входной периодический сигнал 
+при $N=\pv[.0]{ex10['N']}$ (учитываются гармоники $k=1, 3, 5$)
+% , имеет вид:
+\begin{equation}
+    i_1(t) \approx \pv[.3]{ex10['A1k'][1]} \cos(\pv[.3]{ex10['w1']}t) + \pv[.3]{ex10['A1k'][2]} \cos(\pv[.3]{3*ex10['w1']}t) + \pv[.3]{ex10['A1k'][3]} \cos(\pv[.3]{5*ex10['w1']}t)
+\end{equation}
+
+% На \cref{fig:plot_fourier_approx} представлен график исходного периодического сигнала и его аппроксимация отрезком ряда Фурье. Тонкими линиями показаны отдельные гармоники, составляющие аппроксимацию.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_fourier_approx.pgf}
+    \caption{Аппроксимация входного сигнала отрезком ряда Фурье}
+    \label{fig:plot_fourier_approx}
+\end{figure}

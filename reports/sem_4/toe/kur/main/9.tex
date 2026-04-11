@@ -1,1 +1,49 @@
-\section{9}
+\begin{python}
+from scripts.calc_9 import *
+\end{python}
+
+\section{Приближенный расчет реакции по спектру}
+
+Связь между спектральной плотностью сигнала и его временным представлением устанавливается с помощью обратного преобразования Фурье^
+\begin{equation}
+    i_2(t) = \frac{1}{\pi} \int_{0}^{\infty} A_2(\omega) \cos(\omega t + \Phi_2(\omega)) d\omega.
+\end{equation}
+
+Аналитическое вычисление данного интеграла затруднительно. Приближенный расчет осуществляется путем замены бесконечного верхнего предела интегрирования на конечное значение $\omega_{\text{max}}$ и применения методов численного интегрирования.
+
+Спектр реакции на меандр ${I}_{2, \text{меандр}}(j\omega)$ вычисляется через спектр одиночного импульса ${I}_{1, \text{имп}}(j\omega)$ и передаточную функцию цепи ${H}(j\omega)$:
+\begin{equation}
+    {I}_{2, \text{меандр}}(j\omega) = {H}(j\omega) \cdot {I}_{1, \text{имп}}(j\omega) \cdot \left(1 - e^{-j\omega t_{\text{и}}}\right)
+\end{equation}
+
+Продемонстрируем вычисление для двух длительностей меандра в контрольных точках:
+\begin{itemize}
+    \item Для $t_{\text{и}1} = \pv[.2]{n['ti1']}$ в момент $t = \pv[.2]{n['ti1']*1.5}$:
+    \begin{align*}
+        i_{2\text{ (прибл)}} &= \pv[.4]{ex9['i2_approx_demo1']}  \\
+        i_{2\text{ (точн)}} &= \pv[.4]{ex9['i2_exact_demo1']} 
+    \end{align*}
+    \item Для $t_{\text{и}2} = \pv[.2]{n['ti2']}$ в момент $t = \pv[.2]{n['ti2']*1.5}$:
+    \begin{align*}
+        i_{2\text{ (прибл)}} &= \pv[.4]{ex9['i2_approx_demo2']}  \\
+        i_{2\text{ (точн)}} &= \pv[.4]{ex9['i2_exact_demo2']} 
+    \end{align*}
+\end{itemize}
+
+Сравнительные графики реакций цепи, полученные точным операторным и приближенным спектральным методами, представлены на \cref{fig:plot_approx_reaction_1,fig:plot_approx_reaction_2}.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_approx_reaction_1.pgf}
+    \caption{Сравнение точного и приближенного расчета реакции цепи для $t_{\text{и}} = \pv[.2]{n['ti1']}$}
+    \label{fig:plot_approx_reaction_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_approx_reaction_2.pgf}
+    \caption{Сравнение точного и приближенного расчета реакции цепи для $t_{\text{и}} = \pv[.2]{n['ti2']}$}
+    \label{fig:plot_approx_reaction_2}
+\end{figure}
+
+Анализ графиков показывает практически полное совпадение кривых для обеих длительностей меандра. Это подтверждает корректность расчетов спектральных характеристик и адекватность применения спектрального метода для анализа реакции цепи на сложные воздействия.
