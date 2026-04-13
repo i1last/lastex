@@ -43,4 +43,4 @@ git add .gitattributes
 *   [Руководство пользователя (USAGE.md)](docs/USAGE.md) — работа с CLI, макросами, таблицами и Lua.
 *   [Архитектура проекта (ARCHITECTURE.md)](docs/ARCHITECTURE.md) — конвейер сборки, Docker, прекомпиляция формата.
 *   [Устранение неполадок (TROUBLESHOOTING.md)](docs/TROUBLESHOOTING.md) — решение типовых проблем с компиляцией и контейнером.
-*   [Интеграция с ИИ (AI_GUIDELINES.md)](docs/AI_GUIDELINES.md) — системные промпты для генерации кода и текста.
+*   [API (API.md)](docs/API.md).
