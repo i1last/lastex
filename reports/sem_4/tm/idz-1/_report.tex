@@ -1,0 +1,131 @@
+\documentclass{etulab}
+% <- ПОДКЛЮЧЕНИЕ СТИЛЯ
+
+\renewcommand{\maketitle}{
+    \begin{titlepage}
+        \begin{center}
+            МИНОБРНАУКИ РОССИИ \\
+            \rule{10cm}{0.4pt} \\
+            Санкт-Петербургский государственный электротехнический \\
+            университет <<ЛЭТИ>> им. В. И. Ульянова (Ленина) \\
+            \rule{10cm}{0.4pt} \\
+            Кафедра \mDepartment
+        \end{center}
+
+        \vfill
+
+        \begin{center}
+            \textbf{
+                Индивидуальное домашнее задание \\
+                По дисциплине «\mDiscipline» \\
+            }
+        \end{center}
+
+        \vfill
+
+        \noindent
+        \begin{tabularx}{\textwidth}{l X r}
+            Студент гр. \mGroup & \hrulefill & \mStudentName \\\\
+            Проверила    & \hrulefill & \mTeacherName
+        \end{tabularx}
+
+        \vfill
+
+        \begin{center}
+            Санкт-Петербург \\
+            \mYear \\
+        \end{center}
+        \thispagestyle{empty}
+    \end{titlepage}
+    \newpage
+    \setcounter{page}{2}
+}
+
+
+% === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
+\newcommand{\mDepartment}{ЭОП}
+\newcommand{\mDiscipline}{Тайм-менеджмент}
+\newcommand{\mGroup}{4494}
+\newcommand{\mStudentName}{Рахметов А. Р.}
+\newcommand{\mTeacherName}{Скрынская О. А.}
+\newcommand{\mYear}{2026}
+
+% Включение библиографии
+% bibtex автоматически будет включен в процесс сборки документа
+% при обнаружении файла references.bib в директории с основным _report.tex файлом
+
+% === КОНФИГУРАЦИЯ ДОКУМЕНТА
+% --- Если нужна нумерация формул НЕ по разделам.
+% --- Было: 0.1, 0.2, ..., 1.1, 1.2, ...
+% --- Будет: 1, 2, 3, ...
+\renewcommand{\theequation}{\arabic{equation}}
+
+% === СБОРКА ДОКУМЕНТА ===
+\begin{document}
+
+
+
+% --- ТИТУЛЬНЫЙ ЛИСТ ---
+\maketitle
+
+
+
+% --- ОГЛАВЛЕНИЕ ---
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+
+
+% --- ВВЕДЕНИЕ ---
+\newpage
+\addcontentsline{toc}{section}{Введение}
+\phantomsection
+\centeredsection{\uppercase{Введение}}
+\input{introduction.tex}
+
+
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+\newpage
+\section{{Диагностика и определение вариантов профессионального развития}}
+\input{s1.tex}
+
+\newpage
+\section{{Реализация по первому пути}}
+\input{s2.tex}
+
+\newpage
+\section{{Реализация по второму пути}}
+\input{s3.tex}
+
+\newpage
+\section{{График Ганта}}
+\input{s4.tex}
+% --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+
+
+% --- ЗАКЛЮЧЕНИЕ ---
+\newpage
+\addcontentsline{toc}{section}{Заключение}
+\phantomsection
+\centeredsection{\uppercase{Заключение}}
+\input{conclusion.tex}
+
+
+
+% --- СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ ---
+% \newpage
+% \addcontentsline{toc}{section}{Список использованных источников}
+% \phantomsection
+% \centeredsection{\uppercase{Список использованных источников}}
+% \printbibliography
+
+
+% --- ПРИЛОЖЕНИЯ ---
+% \begin{appendices}
+%     \input{appendix.tex}
+% \end{appendices}
+
+
+
+\end{document}
