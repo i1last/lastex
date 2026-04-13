@@ -129,7 +129,7 @@
     "SubFigures": {
         "prefix": "subfig",
         "body": [
-            "\\begin{figure}[h!]",
+            "\\begin{figure}[H]",
             "    \\centering",
             "",
             "    \\begin{subfigure}[a]{0.48\\textwidth}",
