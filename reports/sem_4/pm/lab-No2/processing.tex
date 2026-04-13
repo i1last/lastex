@@ -1,0 +1,178 @@
+\begin{python}
+    from scripts.processing import *
+    from scripts.protocol import *
+\end{python}
+
+\subsection*{\fbox{Экспериментальные графики}}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/wood_along.jpg}
+    \caption{Дерево вдоль волокон}
+    \label{fig:wood_along.jpg}
+\end{figure}
+ 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/wood_across.jpg}
+    \caption{Дерево поперек волокон}
+    \label{fig:wood_across.jpg}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/plastic.jpg}
+    \caption{Пластик}
+    \label{fig:plastic.jpg}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/wood_along_before.jpg}
+        \caption{До}
+        \label{fig:wood_along_before}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/wood_along_after.jpg}
+        \caption{После}
+        \label{fig:wood_along_after}
+    \end{subfigure}
+
+    \caption{Дерево вдоль волокон}
+    \label{fig:wood_along_photo}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/wood_across_before.jpg}
+        \caption{До}
+        \label{fig:wood_across_before}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/wood_across_after.jpg}
+        \caption{После}
+        \label{fig:wood_across_after}
+    \end{subfigure}
+
+    \caption{Дерево поперек волокон}
+    \label{fig:wood_across_photo}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/plastic_before.jpg}
+        \caption{До}
+        \label{fig:plastic_before}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[a]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/plastic_after.jpg}
+        \caption{После}
+        \label{fig:plastic_after}
+    \end{subfigure}
+
+    \caption{Пластик}
+    \label{fig:plastic_photo}
+\end{figure}
+
+\subsection*{\fbox{Задание 1.}}
+\begin{quote}
+    \textit{Для каждого образца вычислить площадь поперечного сечения до начала испытаний.}
+\end{quote}
+
+Площадь поперечного сечения $S_0$ для образцов прямоугольного сечения вычисляется как произведение его сторон $a$ и $b$
+\begin{equation}
+    S_0 = a \cdot b.
+\end{equation}
+
+Пример расчета для образца из древесины при сжатии вдоль волокон:
+\begin{equation}
+    S_{0, \text{вдоль}} = \pv[.2]{p['wood_along']['before']['a']} \cdot \pv[.2]{p['wood_along']['before']['b']} = \pv[.2]{r['wood_along']['S0'] / 1e-4} \text{ см}^2.
+\end{equation}
+
+\subsection*{\fbox{Задание 2.}}
+\begin{quote}
+    \textit{Для каждого материала рассчитать механические характеристики: предел текучести $\sigma_T$, временное сопротивление $\sigma_B$ и напряжение в момент прекращения опыта $\sigma_K$.}
+\end{quote}
+
+Нормальное напряжение $\sigma$ при сжатии определяется по формуле:
+\begin{equation} \label{eq:stress}
+    \sigma = \frac{P}{S_0},
+\end{equation}
+где $P$ --- сжимающая нагрузка; $S_0$ --- начальная площадь поперечного сечения образца.
+
+\subsubsection*{Дерево (сжатие вдоль волокон)}
+Древесина при сжатии вдоль волокон проявляет свойства хрупкого материала. Разрушение происходит при достижении максимальной нагрузки $P_\text{max}$. Основной характеристикой является предел прочности $\sigma_B$. Предел текучести для хрупких материалов не определяется.
+\begin{equation}
+    \sigma_B = \frac{P_\text{max}}{S_0} = \frac{\pv[.2e]{loads['P_max_wood_along']}}{\pv[.3e]{r['wood_along']['S0']}} = \pv[6.2e]{r['wood_along']['sigma_B']} \text{ Па} = \pv[6.2]{r['wood_along']['sigma_B']} \text{ МПа}
+\end{equation}
+
+\subsubsection*{Дерево (сжатие поперек волокон)}
+При сжатии поперек волокон древесина ведет себя как пластичный материал. Определяется предел текучести $\sigma_T$, соответствующий пределу пропорциональности $P_1$. Временное сопротивление $\sigma_B$ в данном случае не является показательной характеристикой.
+\begin{equation}
+    \sigma_T = \frac{P_1}{S_0} = \frac{\pv[.2e]{loads['P1_wood_across']}}{\pv[.3e]{r['wood_across']['S0']}} = \pv[6.2e]{r['wood_across']['sigma_T']} \text{ Па} = \pv[6.2]{r['wood_across']['sigma_T']} \text{ МПа}
+\end{equation}
+Напряжение в момент прекращения опыта $\sigma_K$ при нагрузке $P_K$:
+\begin{equation}
+    \sigma_K = \frac{P_K}{S_0} = \frac{\pv[.2e]{loads['Pk_wood_across']}}{\pv[.3e]{r['wood_across']['S0']}} = \pv[6.2e]{r['wood_across']['sigma_K']} \text{ Па} = \pv[6.2]{r['wood_across']['sigma_K']} \text{ МПа}
+\end{equation}
+
+\subsubsection*{Пластик}
+Образец из пластика является типичным пластичным материалом. Для него определяется предел текучести $\sigma_T$ при нагрузке $P_T$.
+\begin{equation}
+    \sigma_T = \frac{P_T}{S_0} = \frac{\pv[.2e]{loads['Pt_plastic']}}{\pv[.3e]{r['plastic']['S0']}} = \pv[6.2e]{r['plastic']['sigma_T']} \text{ Па} = \pv[6.2]{r['plastic']['sigma_T']} \text{ МПа}
+\end{equation}
+Напряжение в момент прекращения опыта $\sigma_K$ при нагрузке $P_K$:
+\begin{equation}
+    \sigma_K = \frac{P_K}{S_0} = \frac{\pv[.2e]{loads['Pk_plastic']}}{\pv[.3e]{r['plastic']['S0']}} = \pv[6.2e]{r['plastic']['sigma_K']} \text{ Па} = \pv[6.2]{r['plastic']['sigma_K']} \text{ МПа}
+\end{equation}
+
+\subsection*{\fbox{Задание 3.}}
+\begin{quote}
+    \textit{Результаты подсчетов занести в таблицу.}
+\end{quote}
+Сводные результаты вычисления механических характеристик представлены в \cref{tab:results}.
+
+\begin{table}[H]
+    \centering
+    \caption{Результаты вычисления механических характеристик}
+    \label{tab:results}
+    \begin{tblr}{
+        colspec = { Q[l, m] *{3}{X[c, m]} },
+        hlines, vlines,
+        row{1} = {c},
+        row{2} = {m},
+    }
+        \SetCell[r=2]{m} Материал образца & \SetCell[c=3]{c} Напряжение, МПа \\
+        & $\sigma_T$ & $\sigma_B$ & $\sigma_K$ \\
+        \midrule
+        Дерево (вдоль волокон) & \pv[6.2]{r['wood_along']['sigma_T']} & \pv[6.2]{r['wood_along']['sigma_B']} & \pv[6.2]{r['wood_along']['sigma_K']} \\
+        Дерево (поперек волокон) & \pv[6.2]{r['wood_across']['sigma_T']} & \pv[6.2]{r['wood_across']['sigma_B']} & \pv[6.2]{r['wood_across']['sigma_K']} \\
+        Пластик & \pv[6.2]{r['plastic']['sigma_T']} & \pv[6.2]{r['plastic']['sigma_B']} & \pv[6.2]{r['plastic']['sigma_K']} \\
+    \end{tblr}
+\end{table}
+
+\section*{Выводы}
+
+В ходе данной лабораторной работы были проведены испытания различных материалов на сжатие.
+
+
+Испытания над древесиной подтвердили ее анизотропические свойства. При сжатии вдоль волокон образец вел себя как хрупкий материал: деформация была преимущественно упругой вплоть до достижения предела прочности $\sigma_B = \pv[6.2]{r['wood_along']['sigma_B']} \text{ МПа}$, после чего происходило его разрушение. В то же время, при нагружении поперек волокон тот же материал проявлял пластические свойства: после достижения предела текучести $\sigma_T = \pv[6.2]{r['wood_across']['sigma_T']} \text{ МПа}$ образец подвергался значительным пластическим деформациям без разрушения. Установлено, что прочность древесины вдоль волокон многократно превышает ее прочность в поперечном направлении.
+
+Образец из пластика показал поведение, характерное для пластичных материалов. После упругой деформации наблюдался переход к состоянию текучести при напряжении $\sigma_T = \pv[6.2]{r['plastic']['sigma_T']} \text{ МПа}$. Дальнейшее нагружение приводило к интенсивной пластической деформации, сопровождающейся значительным упрочнением материала, о чем свидетельствует высокое значение напряжения в момент прекращения опыта $\sigma_K = \pv[6.2]{r['plastic']['sigma_K']} \text{ МПа}$. Разрушения образца не произошло.
+
+Итак, экспериментально подтверждено, что выбор материала и его ориентации являются определяющими факторами для обеспечения прочности и надежности конструкций, работающих в условиях сжатия.

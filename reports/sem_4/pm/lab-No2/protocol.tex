@@ -1,0 +1,59 @@
+\begin{python}
+    from scripts.protocol import *
+\end{python}
+
+\begin{table}[H]
+    \centering
+    \caption{Дерево --- вдоль}
+    \label{p:wood_along}
+
+    \begin{tblr}{
+        colspec = { Q[l, m] X[c, m] X[c, m] },
+        hlines = 1, vlines = 1,
+    }
+        Параметр & До & После \\
+        \midrule
+        $S_\text{основания} \text{ см}^2$ & \pv*[.2]{p['wood_along']['before']['a'] * p['wood_along']['before']['b']} & \pv*[.2]{p['wood_along']['after']['a'] * p['wood_along']['after']['b']} \\
+        $h_\text{высота} \text{ см}$ & \pv*[.2]{p['wood_along']['before']['h']} & \pv*[.2]{p['wood_along']['before']['h']} \\
+        $b_\text{ширина} \text{ см}$ & \pv*[.2]{p['wood_along']['before']['b']} & \pv*[.2]{p['wood_along']['before']['b']} \\
+        $a_\text{глубина} \text{ см}$ & \pv*[.2]{p['wood_along']['before']['a']} & \pv*[.2]{p['wood_along']['before']['a']} \\
+    \end{tblr}
+\end{table}
+\textit{Деревянный, шершавый, без лака, не новый.}
+
+\begin{table}[H]
+    \centering
+    \caption{Дерево --- поперек}
+    \label{p:wood_across}
+
+    \begin{tblr}{
+        colspec = { Q[l, m] X[c, m] X[c, m] },
+        hlines = 1, vlines = 1,
+    }
+        Параметр & До & После \\
+        \midrule
+        $S_\text{основания} \text{ см}^2$ & \pv*[.2]{p['wood_across']['before']['a'] * p['wood_across']['before']['b']} & \pv*[.2]{p['wood_across']['after']['a'] * p['wood_across']['after']['b']} \\
+        $h_\text{высота} \text{ см}$ & \pv*[.2]{p['wood_across']['before']['h']} & \pv*[.2]{p['wood_across']['before']['h']} \\
+        $b_\text{ширина} \text{ см}$ & \pv*[.2]{p['wood_across']['before']['b']} & \pv*[.2]{p['wood_across']['before']['b']} \\
+        $a_\text{глубина} \text{ см}$ & \pv*[.2]{p['wood_across']['before']['a']} & \pv*[.2]{p['wood_across']['before']['a']} \\
+    \end{tblr}
+\end{table}
+\textit{Деревянный, шершавый, без лака, не новый.}
+
+\begin{table}[H]
+    \centering
+    \caption{Пластик}
+    \label{p:plastic}
+    \begin{tblr}{
+        colspec = { Q[l, m] X[c, m] X[c, m] },
+        hlines = 1, vlines = 1,
+    }
+        Параметр & До & После \\
+        \midrule
+        $S_\text{основания} \text{ см}^2$ & \pv*[.2]{p['plastic']['before']['a'] * p['plastic']['before']['b']} & \pv*[.2]{p['plastic']['after']['a'] * p['plastic']['after']['b']} \\
+        $h_\text{высота} \text{ см}$ & \pv*[.2]{p['plastic']['before']['h']} & \pv*[.2]{p['plastic']['before']['h']} \\
+        $b_\text{ширина} \text{ см}$ & \pv*[.2]{p['plastic']['before']['b']} & \pv*[.2]{p['plastic']['before']['b']} \\
+        $a_\text{глубина} \text{ см}$ & \pv*[.2]{p['plastic']['before']['a']} & \pv*[.2]{p['plastic']['before']['a']} \\
+    \end{tblr}
+\end{table}
+\textit{Красный, гладкий.}
