@@ -76,7 +76,7 @@
 \def\@Discipline{ДИСЦИПЛИНА}
 \def\@WorkTitle{ТЕМА РАБОТЫ}
 \def\@Group{0000}
-\def\@Variant{0}
+\def\@Variant{}
 \def\@StudentName{ФИО_СТУДЕНТА}
 \def\@TeacherName{ФИО_ПРЕПОДАВАТЕЛЯ}
 \def\@Year{0000}
@@ -106,7 +106,7 @@
 
         \noindent
         \begin{tabularx}{\textwidth}{l X r}
-            Студент гр. \@Group, вар. \@Variant & \hrulefill & \@StudentName \\\\
+            Студент гр. \@Group \ifdefempty{\@Variant}{}{, вар. \@Variant}& \hrulefill & \@StudentName \\\\
             Преподаватель    & \hrulefill & \@TeacherName
         \end{tabularx}
 
