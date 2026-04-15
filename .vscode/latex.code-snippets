@@ -212,12 +212,10 @@
             "    expand = \\expanded,",
             "]{",
             "    colspec = { | X[j,m] | X[j,m] | X[j,m] | X[j,h] | },",
-            "    hlines,",
+            "    hlines, vlines,",
             "    rowhead = 1,",
-            "    column{1} = {font=\\bfseries},",
-            "    row{1} = {font=\\bfseries}",
             "}",
-            "    ${0:header row} \\\\\\\\",
+            "    ${0:CONTENT} \\\\\\\\",
             "\\end{longtblr}"
         ],
         "description": "longtblr с подписью и повтором заголовка"
