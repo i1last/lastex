@@ -6,7 +6,7 @@ from core.lib.config import DEFAULT_FILENAME, CONTAINER_NAME
 from core.lib.utils import sync_matplotlib_config
 
 def run_single_python(script_path):
-    """Запускает один скрипт и перемещает ВСЕ созданные pgf в /pgfs/."""
+    """Запускает один скрипт и перемещает созданные pgf/pdf в /figs/ (если они есть)."""
     ensure_container_running()
     sync_matplotlib_config()
     
@@ -20,7 +20,6 @@ def run_single_python(script_path):
     
     docker_project_path = normalize_docker_path(project_dir)
     rel_script_from_project = os.path.relpath(script_abs, project_dir).replace('\\', '/')
-    script_dir_rel = os.path.dirname(rel_script_from_project)
     rel_script_from_project_as_module = rel_script_from_project.replace('/', '.').replace('.py', '')
 
     
@@ -28,29 +27,29 @@ def run_single_python(script_path):
     abs_figs_path = f"/workdir/{docker_project_path}/figs"
 
     print(f"🐍 Запуск: {rel_script_from_project} (Корень: {docker_project_path})")
-    
-    # 1. Переход в корень проекта.
-    # 2. Запуск скрипта.
-    # 3. Создание целевой директории figs.
-    # 4. Поиск всех .pdf и .pgf файлов, исключая директории out и figs.
-    # 5. Перемещение найденных объектов в figs.
+
     cmd = (
         f"cd /workdir/{docker_project_path} && "
         f"python3 -m {rel_script_from_project_as_module} && "
+        f"files=$(find . -maxdepth 3 \\( -path './out' -o -path './figs' \\) -prune -o \\( -name '*.pdf' -o -name '*.pgf' \\) -type f -print) && "
+        f"if [ -n \"$files\" ]; then "
         f"mkdir -p {abs_figs_path} && "
-        f"find . -maxdepth 3 "
-        f"\\( -path './out' -o -path './figs' \\) -prune "
-        f"-o \\( -name '*.pdf' -o -name '*.pgf' \\) -type f "
-        f"-exec mv -v {{}} {abs_figs_path}/ \\;"
+        f"echo \"$files\" | xargs -I {{}} mv {{}} {abs_figs_path}/; "
+        f"fi"
     )
     
-    result = subprocess.run(["docker", "exec", CONTAINER_NAME, "bash", "-c", cmd], capture_output=True, text=True)
+    # Используем Popen для живого вывода в терминал
+    process = subprocess.Popen(
+        ["docker", "exec", CONTAINER_NAME, "bash", "-c", cmd],
+        stdout=sys.stdout, # Перенаправляем стандартный вывод в терминал
+        stderr=sys.stderr, # Перенаправляем ошибки в терминал
+        text=True
+    )
     
-    if result.returncode == 0:
-        print(f"✅ Скрипт выполнен.")
-        if result.stderr:
-             # Выводим stderr (предупреждения matplotlib и т.д.)
-             print(f"📄 Log:\n{result.stderr}")
+    process.wait() # Ждем завершения
+    
+    if process.returncode == 0:
+        print(f"✅ Скрипт успешно завершен.")
     else:
-        print(f"❌ Ошибка выполнения скрипта:\n{result.stderr}")
-        sys.exit(1)
+        print(f"❌ Ошибка выполнения скрипта (Exit code: {process.returncode})")
+        sys.exit(process.returncode)
