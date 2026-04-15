@@ -1,3 +1,7 @@
+\begin{python}
+    from scripts.protocol import *
+\end{python}
+
 \begin{table}[H]
     \centering
     \caption{Определение начального участка статической характеристики}
@@ -6,16 +10,8 @@
         colspec = { X[c,m] X[c,m] },
         hlines, vlines
     }
-        {$R_\text{п}$, кОм} & {$R$, кОм} \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
+        {$R_\text{п}$, Ом} & {$R$, Ом} \\
+        \expanded{\pt*[.0, .2]{p['sc']['Rp'], p['sc']['R']}}
     \end{tblr}
 \end{table}
 
@@ -28,16 +24,7 @@
         hlines, vlines
     }
         {$R_\text{п}$, кОм} & {$R$, кОм} \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
-        & \\
+        \expanded{\pt*[3.2, 3.2]{p['ie']['Rp'], p['ie']['R']}}
     \end{tblr}
 \end{table}
 
@@ -46,15 +33,18 @@
     \caption{Измерение сопротивлений резисторов}
     \label{tab:resistors_protocol}
     \begin{tblr}{
-        colspec = { Q[c,m] Q[c,m] Q[c,m] },
+        colspec = { X[c,m] X[c,m] Q[c,m] },
         width = \linewidth,
         hlines, vlines
     }
         {Номер резистора} & {Диапазон измерения} & {Показание ЦИП $R_\text{п}$, кОм} \\
-        1 & & \\
-        2 & & \\
-        3 & & \\
-        4 & & \\
-        5 & & \\
+        % \expanded{\pt*[, .0, .3]{%
+        %     list(p['r'].keys()),
+        %     p['r'][p['r'].keys()[1]]['range'],
+        %     p['r'][p['r'].keys()[1]]['Rp']
+        % }}
+        \pv*[]{list(p['r'].keys())[0]} & \pv*[]{p['r'][list(p['r'].keys())[0]]['range']} & \pv*[.3]{p['r'][list(p['r'].keys())[0]]['Rp']} \\
+        \pv*[]{list(p['r'].keys())[1]} & \pv*[]{p['r'][list(p['r'].keys())[1]]['range']} & \pv*[.3]{p['r'][list(p['r'].keys())[1]]['Rp']} \\
+        \pv*[]{list(p['r'].keys())[2]} & \pv*[]{p['r'][list(p['r'].keys())[2]]['range']} & \pv*[.3]{p['r'][list(p['r'].keys())[2]]['Rp']} \\
     \end{tblr}
 \end{table}
