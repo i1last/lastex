@@ -19,7 +19,6 @@
 _minted/
 fmt_builder.tex
 etulab_fmt.pdf
-# *.pdf
 
 # Системные файлы
 .DS_Store
@@ -38,12 +37,11 @@ Thumbs.db
 # из-за ошибок с путями Windows
 [Cc]:\\Users/
 
-# Пользовательские файлы "бэкапы" и "на удаление"
+# Пользовательские
 *.bak
 *.delete
-
-# Пользовательские файлы "на удаление"
 *.del
+test/
 
 # drawio
 *.dtmp
