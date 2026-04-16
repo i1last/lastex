@@ -19,6 +19,7 @@
 _minted/
 fmt_builder.tex
 etulab_fmt.pdf
+*.bbl-SAVE-ERROR
 
 # Системные файлы
 .DS_Store
