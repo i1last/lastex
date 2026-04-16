@@ -8,6 +8,7 @@ import cmath
 import os
 import sys
 import re
+import sympy as sp
 
 def _check_and_import_safe():
     """
@@ -211,6 +212,51 @@ def _pt(exprs_str: str, fmts_str: str, start_idx: int, end_idx: int, is_math: bo
         
     # Объединение строк таблицы
     return " \\\\ ".join(rows)
+
+def _ps(expr_name, values_dict_name, mode='all', is_math=False, precision=4):
+    """
+    Универсальный рендер для SymPy:
+    mode='all': Подстановка = Ответ
+    mode='step': Только подстановка
+    mode='res': Только ответ
+    mode='expr': Только сама формула (latex)
+    """
+    try:
+        # Достаем объекты из глобального контекста
+        expr = eval(expr_name)
+        values_dict = eval(values_dict_name) if values_dict_name.strip() else {}
+        
+        output = ""
+        
+        if mode == 'expr':
+            output = sp.latex(expr, mul_symbol="dot")
+        
+        elif mode == 'res':
+            res = expr.subs(values_dict).evalf(precision)
+            final = int(res) if res == int(res) else res
+            output = sp.latex(final, mul_symbol="dot")
+            
+        elif mode == 'step' or mode == 'all':
+            # Формируем подстановку через "пустышки" Symbol
+            subs_map = {
+                sym: sp.Symbol(sp.latex(sp.Float(val, precision), mul_symbol="dot")) 
+                for sym, val in values_dict.items()
+            }
+            intermediate = expr.subs(subs_map)
+            
+            if mode == 'step':
+                output = sp.latex(intermediate, mul_symbol="dot")
+            else:
+                # Режим 'all': подстановка = ответ
+                res = expr.subs(values_dict).evalf(precision)
+                final = int(res) if res == int(res) else res
+                output = f"{sp.latex(intermediate, mul_symbol="dot")} = {sp.latex(final, mul_symbol="dot")}"
+        
+        # Обертка в $...$, если активна звездочка
+        return f"${output}$" if is_math else output
+        
+    except Exception as e:
+        return f"?? ({e}) ??"
 \end{python}
 
 % Макросы пользовательского интерфейса
@@ -221,5 +267,12 @@ def _pt(exprs_str: str, fmts_str: str, start_idx: int, end_idx: int, is_math: bo
 \NewExpandableDocumentCommand{\pt}{s O{} O{1} O{-1} m}{%
     \py{_pt("""#5""", """#2""", #3, #4, \IfBooleanTF{#1}{True}{False})}%
 }
+
+% \ps*[режим][точность][словарь]{формула}
+% Режимы: all (дефолт), step, final, expr
+\NewExpandableDocumentCommand{\ps}{s O{final} O{4} O{} m}{%
+    \py{_ps("""#5""", """#4""", mode="""#2""", is_math=\IfBooleanTF{#1}{True}{False}, precision=#3)}%
+}
+
 
 \endinput
