@@ -16,8 +16,8 @@ def get_H(w):
 def get_I1(w, tu):
     """Комплексный спектр входного импульса"""
     w_safe = np.where(w == 0, 1e-10, w)
-    val = (2 * Im / w_safe) * np.sin(w_safe * tu / 2) * np.exp(-1j * w_safe * tu / 2)
-    val = np.where(w == 0, Im * tu, val)
+    val = (-4 * np.sin(w_safe * tu / 4)**2 * Im / w_safe) * np.exp(-1j * (w_safe * tu / 4 + np.pi))
+    val = np.where(w == 0, 0, val)
     return val
 
 # Перенос базовых параметров
@@ -27,8 +27,8 @@ tu2 = n['ti2']
 A0 = freq['A0']
 
 # Значения амплитудного спектра входного сигнала на нулевой частоте (из п. 7)
-ex8['A1_0_1'] = Im * tu1
-ex8['A1_0_2'] = Im * tu2
+ex8['A1_0_1'] = 0
+ex8['A1_0_2'] = 0
 
 # Значения амплитудного спектра реакции на нулевой частоте A2(0) = A1(0) * A(0)
 ex8['A2_0_1'] = ex8['A1_0_1'] * A0

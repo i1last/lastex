@@ -10,7 +10,7 @@ tu2 = n['ti2']
 
 def plot_reaction_spectra(tu, suffix):
     # Определение диапазона частот для построения (до 4-го нуля спектра)
-    w_max = 4 * (2 * np.pi / tu)
+    w_max = 4 * (4 * np.pi / tu)
     w = np.linspace(0, w_max, 2000)
 
     # Вычисление спектра реакции I2(jw) = I1(jw) * H(jw)
