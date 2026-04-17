@@ -11,8 +11,8 @@ ex7['w_c'] = freq['w_c']
 
 def calc_spectrum_params(ti):
     res = {}
-    res['A1_0'] = Im * ti
-    res['w_y1'] = 2 * np.pi / ti
+    res['A1_0'] = 0
+    res['w_y1'] = 4 * np.pi / ti
     
     # Теоретическая ширина по огибающей
     res['w_sp_env'] = 20.0 / ti

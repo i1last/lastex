@@ -9,34 +9,54 @@ from scripts.calc_6 import ex6
 С учетом полученного ранее изображения по Лапласу, комплексный спектр импульсного воздействия определяется подстановкой $s = j\omega$:
 \begin{equation}
     \begin{aligned}
-        I_1(j\omega) &= I_1(s) \Big|_{s=j\omega} =
-        \frac{I_m}{j\omega} \left(1 - e^{-j\omega t_{\text{и}}}\right) = \\
-        &= \frac{I_m}{j\omega} e^{-\frac12j{\omega t_{\text{и}}}} \left( e^{\frac12j{\omega t_{\text{и}}}} - e^{-\frac{1}{2}j{\omega t_{\text{и}}}} \right) = 
-        \frac{2I_m}{\omega} \sin\left(\frac{\omega t_{\text{и}}}{2}\right) e^{-\frac12j{\omega t_{\text{и}}}} = \\
-        &= A_1(\omega)\cdot e^{j\Phi_1(\omega)}
+        I_1(j\omega)
+            &= I_1(s) \Big|_{s=j\omega} \\
+            &= \frac{I_m}{j\omega} \left(
+                1 - 2e^{-j\omega \frac12 t_{\text{и}}} + e^{-j\omega t_{\text{и}}}
+            \right) = \\
+            &=
+                \frac{I_m}{j\omega} \left(
+                    1 - e^{-j\omega\frac{t_\text{и}}2}
+                \right)^2 = \\
+            &=
+                \frac{I_m}{j\omega} \left[
+                    e^{-j\omega\frac{t_\text{и}}4} \cdot \left(
+                        e^{j\omega t_\text{и} / 4} -
+                        e^{-j\omega t_\text{и} / 4}
+                    \right)
+                \right]^2 = \\
+            &=
+                \frac{I_m}{j\omega} \left[
+                    e^{-j\omega\frac{t_\text{и}}4} \cdot \left(
+                        2j\sin(\omega t_\text{и} / 4)
+                    \right)
+                \right]^2 = \\
+            &= \frac{I_m}{j\omega} e^{-j\omega\frac{t_\text{и}}4} \cdot (-4) \cdot \sin^2(\omega t_\text{и} / 4) = \\
+            &= -4\sin^2(\omega t_\text{и} / 4) \cdot \frac{I_m}{\omega} e^{-j(\omega t_\text{и}/4 + 90^\circ)} = \\
+            &= A_1(\omega)\cdot e^{j\Phi_1(\omega)}
     \end{aligned}
     \label{form:I1jw}
 \end{equation}
 
 Амплитудный спектр входного сигнала:
 \begin{equation}
-    A_1(\omega) = \left| \frac{2I_m}{\omega} \sin\left(\frac{\omega t_{\text{и}}}{2}\right) \right|
+    A_1(\omega) = \left|
+        -4\frac{I_m}{\omega} \sin^2\left(\frac{\omega t_{\text{и}}}{4}\right)
+    \right|
 \end{equation}
  
 Фазовый спектр входного сигнала:
 \begin{equation}
-    \Phi_1(\omega) = -\frac12\omega t_\text{и}
+    \Phi_1(\omega) = -\frac{\omega t_\text{и}}{4} - 90^\circ
 \end{equation}
 
 Для построения графика амплитудного спектра определяются его нули, то есть значения частот $\omega_\text{yзл}^k$, при которых спектр равен нулю:
 \begin{equation}
-    A_1(\omega) =
-    0 \text{ при } \sin\left(\frac{\omega t_{\text{и}}}{2}\right) = 0
+    A_1(\omega) = 0 \text{ при } \sin^2\left(\frac{\omega t_{\text{и}}}{4}\right) = 0
     \iff
-    \frac{\omega t_{\text{и}}}{2} =
-    \pi k
+    \frac{\omega t_{\text{и}}}{4} = \pi k
     \implies
-    \omega_\text{yзл}^k = \frac{2\pi k}{t_\text{и}}
+    \omega_\text{yзл}^k = \frac{4\pi k}{t_\text{и}}
 \end{equation}
 
 Частоты первых нулей для заданных длительностей импульсов:
@@ -47,24 +67,34 @@ from scripts.calc_6 import ex6
 
 При вычислении значения амплитудного спектра на нулевой частоте возникает неопределенность вида $\left[ \frac{0}{0} \right]$. Применим первый замечательный предел:
 \begin{equation}
-    \begin{multlined}
-        A_1(0) = \lim_{\omega \to 0} \frac{2I_m}{\omega} \sin\left(\frac{\omega t_{\text{и}}}{2}\right) = \\
-        = 2I_m \lim_{\omega \to 0} \frac{
-                \sin\left(\frac{\omega t_{\text{и}}}{2}\right)
-            }{
+    \begin{aligned}
+        A_1(0) 
+        &= \lim_{\omega \to 0} 4\frac{I_m}{\omega} \sin^2\left(
+            \frac{\omega t_{\text{и}}}{4}
+        \right) = \\
+        &= 4I_m \lim_{\omega \to 0} \frac{
+                \sin^2\left(\frac{\omega t_{\text{и}}}{4}\right)
+        }{
                 \omega
-            } = \lim_{\omega \to 0} \bcancel{2}I_m \frac{
-                \cancel{\omega} t_\text{и}
-            }{
-                \bcancel{2} \cancel{\omega}
-            } = I_m \cdot t_{\text{и}}
-    \end{multlined}
+        }
+        = \bcancel{4}I_m \lim_{\omega \to 0} \frac{
+                \omega^{\cancel{2}} t^2_\text{и}
+        }{
+                \bcancel{4}\cdot 4 \cancel{\omega}
+        } \\
+        &= I_m \lim_{\omega \to 0} \frac{
+                \omega t^2_\text{и}
+        }{
+                4
+        }
+        = 0
+    \end{aligned}
 \end{equation}
 
 Контроль: значение амплитудного спектра на нулевой частоте равно площади входного импульса тока.
 \begin{itemize}
-    \item Для $t_{\text{и1}}$: $A_1(0) = \pv[.2]{ex6['Im']} \cdot \pv[.2]{n['ti1']} = \pv[.3]{ex7['ti1']['A1_0']}$
-    \item Для $t_{\text{и2}}$: $A_1(0) = \pv[.2]{ex6['Im']} \cdot \pv[.2]{n['ti2']} = \pv[.3]{ex7['ti2']['A1_0']}$
+    \item Для $t_{\text{и1}}$: $A_1(0) = 0$
+    \item Для $t_{\text{и2}}$: $A_1(0) = 0$
 \end{itemize}
 
 Графики АС и ФС воздействия для $t_{\text{и1}}$ и $t_{\text{и2}}$ показаны на \cref{fig:plot_spec_A_ti1,fig:plot_spec_A_ti2,fig:plot_spec_Phi_ti1,fig:plot_spec_Phi_ti2}.

@@ -20,29 +20,15 @@ w2 = np.linspace(1e-5, w_max2, 2000)
 w2 = np.insert(w2, 0, 0)
 
 def compute_spectra(ti, w):
-    A1 = np.zeros_like(w)
-    Phi1 = np.zeros_like(w)
+    # Чтобы избежать деления на 0, используем малую добавку для расчетов
+    w_safe = np.where(w == 0, 1e-20, w)
     
-    A1[0] = Im * ti
-    Phi1[0] = 0
+    # Амплитудный спектр по формуле (7.2): | -4*Im/w * sin^2(w*ti/4) | 
+    A1 = np.abs(-4 * Im / w_safe * np.sin(w_safe * ti / 4)**2)
+    A1[w == 0] = 0  # В нуле амплитуда 0, так как площадь меандра = 0
     
-    for i in range(1, len(w)):
-        val = (2 * Im / w[i]) * np.sin(w[i] * ti / 2)
-        A1[i] = np.abs(val)
-        
-        # Расчет фазы в радианах
-        if val >= 0:
-            p_rad = -w[i] * ti / 2
-        else:
-            p_rad = np.pi - w[i] * ti / 2
-        
-        # Перевод в градусы и приведение к диапазону (-360, 0]
-        p_deg = np.degrees(p_rad)
-        Phi1[i] = np.remainder(p_deg, -360)
-        
-        # Устранение вертикальных линий сшивки на графике фазы (замена скачков на NaN)
-        if i > 1 and np.abs(Phi1[i] - Phi1[i-1]) > 180:
-            Phi1[i-1] = np.nan
+    # Фазовый спектр по формуле (7.3): -w*ti/4 - 90 градусов 
+    Phi1 = np.remainder(-np.degrees(w * ti / 4) - 90, -360)
             
     return A1, Phi1
 
@@ -54,7 +40,7 @@ plt.figure()
 plt.plot(w1, A1_1, label=rf'$A_1(\omega)$ при $t_\mathrm{{и}}={ti1}$', marker='')
 plt.xlim(left=0)
 plt.ylim(bottom=0)
-target1 = 0.1 * ex7['ti1']['A1_0']
+target1 = 0.1 * np.max(A1_1)
 plt.axhline(target1, linestyle='--', alpha=0.5)
 peaks1, _ = find_peaks(A1_1)
 idx_peak1 = peaks1[np.argmin(np.abs(A1_1[peaks1] - target1))]
@@ -72,7 +58,7 @@ plt.figure()
 plt.plot(w2, A1_2, label=rf'$A_1(\omega)$ при $t_\mathrm{{и}}={ti2}$', marker='')
 plt.xlim(left=0)
 plt.ylim(bottom=0)
-target2 = 0.1 * ex7['ti2']['A1_0']
+target2 = 0.1 * np.max(A1_2)
 plt.axhline(target2, linestyle='--', alpha=0.5)
 peaks2, _ = find_peaks(A1_2)
 idx_peak2 = peaks2[np.argmin(np.abs(A1_2[peaks2] - target2))]
@@ -93,7 +79,7 @@ plt.xlabel(r'$\omega$')
 plt.ylabel(r'$\Phi_1(\omega), ^\circ$')
 plt.legend()
 plt.grid(True)
-plt.yticks(np.arange(0, -181, -45))
+plt.yticks(np.arange(0, -361, -45))
 plt.tight_layout()
 plt.savefig('plot_spec_Phi_ti1.pgf')
 
@@ -105,7 +91,7 @@ plt.xlabel(r'$\omega$')
 plt.ylabel(r'$\Phi_1(\omega), ^\circ$')
 plt.legend()
 plt.grid(True)
-plt.yticks(np.arange(0, -181, -45))
+plt.yticks(np.arange(0, -361, -45))
 plt.tight_layout()
 plt.savefig('plot_spec_Phi_ti2.pgf')
 
