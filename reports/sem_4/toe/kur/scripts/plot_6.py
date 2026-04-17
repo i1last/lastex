@@ -5,8 +5,8 @@ from scripts.calc_1 import n
 
 def plot_meander_reaction(ti, figure_num, index_label):
     # Адаптивный временной интервал: от небольшого отрицательного смещения до 5*ti
-    t_min = -0.2 * ti
-    t_max = 3.0 * ti
+    t_min = -0.05 * ti
+    t_max = 1.75 * ti
     t = np.linspace(t_min, t_max, 2000)
 
     # Вычисление реакции цепи
@@ -16,8 +16,8 @@ def plot_meander_reaction(ti, figure_num, index_label):
     y_input = np.piecewise(t,
         [
             (t < 0),
-            (t >= 0) & (t <= ti),
-            (t > ti) & (t <= 2 * ti)
+            (t >= 0) & (t <= 0.5 * ti),
+            (t > 0.5 * ti) & (t <= ti)
         ], 
         [
             0,
