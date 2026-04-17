@@ -1,1 +1,117 @@
-\section{11}
+\begin{python}
+from scripts.calc_11 import *
+\end{python}
+
+\section{Расчёт реакции при периодическом воздействии}
+
+Расчёт реакции в общем виде осуществляется на основе спектра входного воздействия и АФХ цепи $H(j\omega)$ (см. \cref{form:Ainp,form:Phiinp} для спектров; \cref{form:AChH,form:FChH} для частотных характеристик): 
+\begin{equation}
+    A_{\text{вых}}(k) = A_{\text{вх}}(k) \cdot A(k\omega_1);
+\end{equation}
+\begin{equation}
+    \Phi_{\text{вых}}(k) = \Phi_{\text{вх}}(k) + \Phi(k\omega_1),
+\end{equation}
+где $\omega_1$ — основная частота.
+
+\subsection{Первый сигнал}
+
+\begin{equation}
+    \omega = \omega_1 k; \quad \omega_{1(1)} = \pv[.3]{ex10['w1_1']}
+\end{equation}
+
+Амплитудный и фазовый спектры реакции приведены соответственно на \cref{fig:plot_disc_spec_A_out_1,fig:plot_disc_spec_Phi_out_1}. Пунктирной линией обозначены огибающие непрерывного спектра, вертикальными линиями — дискретные гармоники.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_disc_spec_A_out_1.pgf}
+    \caption{Амплитудный дискретный спектр реакции на первый входной сигнал}
+    \label{fig:plot_disc_spec_A_out_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_disc_spec_Phi_out_1.pgf}
+    \caption{Фазовый дискретный спектр реакции на первый входной сигнал}
+    \label{fig:plot_disc_spec_Phi_out_1}
+\end{figure}
+
+\subsection{Второй сигнал}
+
+\begin{equation}
+    \omega = \omega_1 k; \quad \omega_{1(2)} = \pv[.3]{ex10['w1_2']}
+\end{equation}
+
+Амплитудный и фазовый спектры реакции на второй сигнал приведены на \cref{fig:plot_disc_spec_A_out_2,fig:plot_disc_spec_Phi_out_2}.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_disc_spec_A_out_2.pgf}
+    \caption{Амплитудный дискретный спектр реакции на второй входной сигнал}
+    \label{fig:plot_disc_spec_A_out_2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_disc_spec_Phi_out_2.pgf}
+    \caption{Фазовый дискретный спектр реакции на второй входной сигнал}
+    \label{fig:plot_disc_spec_Phi_out_2}
+\end{figure}
+
+Результаты расчетов для двух импульсов представим в виде таблицы:
+
+\begin{longtblr}[
+    caption = {Результаты расчета дискретных спектров реакции},
+    label = {tab:spec_out_results},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $k$ & 0 & 1 & 2 & 3 & 4 & 5 \\
+    \midrule
+    \SetCell[c=7]{c} Первый импульс & & & & & & \\
+
+    $\omega = \omega_1 k$ & \pv*[.3]{ex11['tab_wk_1'][0]} & \pv*[.3]{ex11['tab_wk_1'][1]} & \pv*[.3]{ex11['tab_wk_1'][2]} & \pv*[.3]{ex11['tab_wk_1'][3]} & \pv*[.3]{ex11['tab_wk_1'][4]} & \pv*[.3]{ex11['tab_wk_1'][5]} \\
+    
+    $A_{\text{вых1}}(k)$ & \pv*[.3]{ex11['tab_Ak_1'][0]} & \pv*[.3]{ex11['tab_Ak_1'][1]} & \pv*[.3]{ex11['tab_Ak_1'][2]} & \pv*[.3]{ex11['tab_Ak_1'][3]} & \pv*[.3]{ex11['tab_Ak_1'][4]} & \pv*[.3]{ex11['tab_Ak_1'][5]} \\
+    
+    $\Phi_{\text{вых1}}(k),\,{}^\circ$ & \pv*[.1]{ex11['tab_Phik_1'][0]} & \pv*[.1]{ex11['tab_Phik_1'][1]} & \pv*[.1]{ex11['tab_Phik_1'][2]} & \pv*[.1]{ex11['tab_Phik_1'][3]} & \pv*[.1]{ex11['tab_Phik_1'][4]} & \pv*[.1]{ex11['tab_Phik_1'][5]} \\
+
+    \midrule
+    \SetCell[c=7]{c} Второй импульс & & & & & & \\
+    
+    $\omega = \omega_1 k$ & \pv*[.3]{ex11['tab_wk_2'][0]} & \pv*[.3]{ex11['tab_wk_2'][1]} & \pv*[.3]{ex11['tab_wk_2'][2]} & \pv*[.3]{ex11['tab_wk_2'][3]} & \pv*[.3]{ex11['tab_wk_2'][4]} & \pv*[.3]{ex11['tab_wk_2'][5]} \\
+    
+    $A_{\text{вых2}}(k)$ & \pv*[.3]{ex11['tab_Ak_2'][0]} & \pv*[.3]{ex11['tab_Ak_2'][1]} & \pv*[.3]{ex11['tab_Ak_2'][2]} & \pv*[.3]{ex11['tab_Ak_2'][3]} & \pv*[.3]{ex11['tab_Ak_2'][4]} & \pv*[.3]{ex11['tab_Ak_2'][5]} \\
+    
+    $\Phi_{\text{вых2}}(k),\,{}^\circ$ & \pv*[.1]{ex11['tab_Phik_2'][0]} & \pv*[.1]{ex11['tab_Phik_2'][1]} & \pv*[.1]{ex11['tab_Phik_2'][2]} & \pv*[.1]{ex11['tab_Phik_2'][3]} & \pv*[.1]{ex11['tab_Phik_2'][4]} & \pv*[.1]{ex11['tab_Phik_2'][5]} \\
+\end{longtblr}
+
+Таким образом, выходные сигналы в виде отрезка ряда Фурье имеют следующий вид:
+\begin{enumerate}
+    \item Первый:
+        $\begin{autobreak}
+            i_{\text{н1}}(t) = \pv{ex11['fs_1']}
+        \end{autobreak}$
+    \item Второй:
+        $\begin{autobreak}
+            i_{\text{н2}}(t) = \pv{ex11['fs_2']}
+        \end{autobreak}$
+\end{enumerate}
+
+На \cref{fig:plot_fourier_approx_out_1,fig:plot_fourier_approx_out_2} приведены графики ряда Фурье реакции, а также отдельные гармоники.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_fourier_approx_out_1.pgf}
+    \caption{Ряд Фурье реакции на первый периодический сигнал}
+    \label{fig:plot_fourier_approx_out_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_fourier_approx_out_2.pgf}
+    \caption{Ряд Фурье реакции на второй периодический сигнал}
+    \label{fig:plot_fourier_approx_out_2}
+\end{figure}

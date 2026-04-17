@@ -7,9 +7,11 @@ from scripts.calc_10 import *
 Спектр периодического воздействия в общем виде определяется через непрерывный спектр одиночного импульса:
 \begin{equation}
     A_{\text{вх}}(k) = \frac{2}{T} A_{\text{вх}}(\omega) \Big|_{\omega=k\omega_1};
+    \label{form:Ainp}
 \end{equation}
 \begin{equation}
     \Phi_{\text{вх}}(k) = \Phi_{\text{вх}}(\omega) \Big|_{\omega=k\omega_1},
+    \label{form:Phiinp}
 \end{equation}
 где $k \in \mathbb{N}_0$ — количество гармоник в ряде Фурье, $\omega_1 = \frac{2\pi}{T}$ — основная частота.
 
@@ -101,7 +103,7 @@ from scripts.calc_10 import *
     
     $A_{\text{вх1}}(k)$ & \pv*[.3]{ex10['tab_Ak_1'][0]} & \pv*[.3]{ex10['tab_Ak_1'][1]} & \pv*[.3]{ex10['tab_Ak_1'][2]} & \pv*[.3]{ex10['tab_Ak_1'][3]} & \pv*[.3]{ex10['tab_Ak_1'][4]} & \pv*[.3]{ex10['tab_Ak_1'][5]} \\
     
-    $\Phi_{\text{вх1}}(k)$ & \pv*[.1]{ex10['tab_Phik_1'][0]} & \pv*[.1]{ex10['tab_Phik_1'][1]} & \pv*[.1]{ex10['tab_Phik_1'][2]} & \pv*[.1]{ex10['tab_Phik_1'][3]} & \pv*[.1]{ex10['tab_Phik_1'][4]} & \pv*[.1]{ex10['tab_Phik_1'][5]} \\
+    $\Phi_{\text{вх1}}(k),\,{}^\circ$ & \pv*[.1]{ex10['tab_Phik_1'][0]} & \pv*[.1]{ex10['tab_Phik_1'][1]} & \pv*[.1]{ex10['tab_Phik_1'][2]} & \pv*[.1]{ex10['tab_Phik_1'][3]} & \pv*[.1]{ex10['tab_Phik_1'][4]} & \pv*[.1]{ex10['tab_Phik_1'][5]} \\
 
     \midrule
     \SetCell[c=7]{c} Второй импульс & & & & & & \\
@@ -110,19 +112,19 @@ from scripts.calc_10 import *
     
     $A_{\text{вх2}}(k)$ & \pv*[.3]{ex10['tab_Ak_2'][0]} & \pv*[.3]{ex10['tab_Ak_2'][1]} & \pv*[.3]{ex10['tab_Ak_2'][2]} & \pv*[.3]{ex10['tab_Ak_2'][3]} & \pv*[.3]{ex10['tab_Ak_2'][4]} & \pv*[.3]{ex10['tab_Ak_2'][5]} \\
     
-    $\Phi_{\text{вх2}}(k)$ & \pv*[.1]{ex10['tab_Phik_2'][0]} & \pv*[.1]{ex10['tab_Phik_2'][1]} & \pv*[.1]{ex10['tab_Phik_2'][2]} & \pv*[.1]{ex10['tab_Phik_2'][3]} & \pv*[.1]{ex10['tab_Phik_2'][4]} & \pv*[.1]{ex10['tab_Phik_2'][5]} \\
+    $\Phi_{\text{вх2}}(k),\,{}^\circ$ & \pv*[.1]{ex10['tab_Phik_2'][0]} & \pv*[.1]{ex10['tab_Phik_2'][1]} & \pv*[.1]{ex10['tab_Phik_2'][2]} & \pv*[.1]{ex10['tab_Phik_2'][3]} & \pv*[.1]{ex10['tab_Phik_2'][4]} & \pv*[.1]{ex10['tab_Phik_2'][5]} \\
 \end{longtblr}
 
 Таким образом, входные сигналы в виде отрезка ряда Фурье имеют следующий вид:
 \begin{itemize}
     \item Первый:
-        \begin{autobreak}
+        $\begin{autobreak}
             i_{01}(t) = \pv{ex10['fs_1']}
-        \end{autobreak}
+        \end{autobreak}$
     \item Второй:
-        \begin{autobreak}
+        $\begin{autobreak}
             i_{02}(t) = \pv{ex10['fs_2']}
-        \end{autobreak}
+        \end{autobreak}$
 \end{itemize}
  
 На \cref{fig:plot_fourier_approx_1,fig:plot_fourier_approx_2} приведены графики аппроксимации рядом Фурье, а также отдельные гармоники пунктирной линией.

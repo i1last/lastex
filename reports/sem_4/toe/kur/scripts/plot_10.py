@@ -72,9 +72,9 @@ def plot_approx(tu, T, w1, A_k, Phi_k, prefix):
     
     colors =['c', 'm', 'y', 'g', 'b']
     for i, harm in enumerate(harmonics):
-        plt.plot(t, harm, color=colors[i % len(colors)], marker='', linestyle=':', linewidth=1)
+        plt.plot(t, harm, color=colors[i % len(colors)], marker='', linestyle='-', linewidth=1)
         
-    plt.xlim(left=(-0.05 * T))   
+    plt.xlim(left=(-0.05 * T))
     plt.xlabel(r'$t$')
     plt.ylabel(r'$i_0(t)$')
     plt.legend(ncol=2)
