@@ -1,67 +1,87 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scripts.calc_10 import ex10
+from scripts.calc_10 import ex10, calc_spectra
+from scripts.source import s
+from scripts.calc_1 import n
 
-# --- Графики дискретных спектров ---
-k = np.array(ex10['k'])
-A1k = np.array(ex10['A1k'])
-Phi1k_deg = np.array(ex10['Phi1k_deg'])
+Im = s['Im']
+tu1 = ex10['tu1']
+tu2 = ex10['tu2']
+T1 = ex10['T1']
+T2 = ex10['T2']
+w1_1 = ex10['w1_1']
+w1_2 = ex10['w1_2']
 
-# Амплитудный дискретный спектр
-plt.figure()
-plt.stem(k, A1k, linefmt='k--', markerfmt='ko', basefmt='k-')
-plt.xlabel(r'$k$')
-plt.ylabel(r'$A_{1k}$')
-plt.xticks(k)
-plt.savefig('plot_disc_spec_A.pgf')
-plt.close()
+w_k1, A_k1, Phi_k1, A_cont1, Phi_cont1 = calc_spectra(tu1, T1, w1_1)
+w_k2, A_k2, Phi_k2, A_cont2, Phi_cont2 = calc_spectra(tu2, T2, w1_2)
 
-# Фазовый дискретный спектр
-plt.figure()
-plt.stem(k, Phi1k_deg, linefmt='k--', markerfmt='ko', basefmt='k-')
-plt.xlabel(r'$k$')
-plt.ylabel(r'$\Phi_{1k}, ^\circ$')
-plt.xticks(k)
-plt.ylim(-10, 10) # Улучшение вида для нулевой фазы
-plt.savefig('plot_disc_spec_Phi.pgf')
-plt.close()
+def plot_spectra(w_k, A_k, Phi_k, A_cont, Phi_cont, w1, prefix):
+    w_dense = np.linspace(0, max(w_k) * 1.1, 500)
+    
+    # Амплитудный спектр
+    plt.figure()
+    plt.plot(w_dense, A_cont(w_dense), 'r--', label=r'Огибающая $\frac{2}{T}A(\omega)$')
+    plt.stem(w_k, A_k, linefmt='b-', markerfmt='bo', basefmt='k-')
+    plt.xlabel(r'$\omega$')
+    plt.ylabel(r'$A_{\mathrm{вх}}(\omega)$')
+    plt.xlim(left=0)
+    plt.ylim(bottom=0)
+    plt.xticks(w_k, [r'$0$'] +[rf'${i}\omega_1$' for i in range(1, len(w_k))])
+    plt.grid()
+    plt.legend()
+    plt.savefig(f'plot_disc_spec_A_{prefix}.pgf')
+    
+    # Фазовый спектр
+    plt.figure()
+    plt.plot(w_dense, Phi_cont(w_dense), 'r--', label=r'Огибающая $\Phi(\omega)$')
+    plt.stem(w_k, Phi_k, linefmt='b-', markerfmt='bo', basefmt='k-')
+    plt.xlabel(r'$\omega$')
+    plt.ylabel(r'$\Phi_{\mathrm{вх}}(\omega), ^\circ$')
+    plt.xlim(left=-0.01)
+    plt.xticks(w_k, [r'$0$'] +[rf'${i}\omega_1$' for i in range(1, len(w_k))])
+    plt.yticks(np.arange(90, -361, -90))
+    plt.grid()
+    plt.legend()
+    plt.savefig(f'plot_disc_spec_Phi_{prefix}.pgf')
 
-# --- График аппроксимации ряда Фурье ---
-T = ex10['T']
-t = np.linspace(-0.5 * T, 1.5 * T, 1000)
+plot_spectra(w_k1, A_k1, Phi_k1, A_cont1, Phi_cont1, w1_1, '1')
+plot_spectra(w_k2, A_k2, Phi_k2, A_cont2, Phi_cont2, w1_2, '2')
 
-# Исходный меандр
-y_input = np.piecewise(t,
-    [
-        (t % T < T / 2)
-    ], 
-    [
-        ex10['A1k'][1] * np.pi / 4, # Im
-        -ex10['A1k'][1] * np.pi / 4 # -Im
-    ]
-)
+def plot_approx(tu, T, w1, A_k, Phi_k, prefix):
+    t = np.linspace(-0.2 * T, 1.2 * T, 1000)
+    
+    # Формирование идеального меандра
+    t_mod = t % T
+    y_input = np.piecewise(t_mod,[
+            (t_mod < tu / 2),
+            (t_mod >= tu / 2)
+        ],[Im, -Im]
+    )
+    
+    y_approx = np.zeros_like(t)
+    harmonics = []
+    for i in range(1, len(A_k)):
+        if A_k[i] > 1e-4:
+            harm = A_k[i] * np.cos(i * w1 * t + np.radians(Phi_k[i]))
+            y_approx += harm
+            harmonics.append(harm)
+            
+    plt.figure()
+    plt.plot(t, y_input, marker='', label='Исходный сигнал')
+    plt.plot(t, y_approx, marker='', label='Аппроксимация')
+    
+    colors =['c', 'm', 'y', 'g', 'b']
+    for i, harm in enumerate(harmonics):
+        plt.plot(t, harm, color=colors[i % len(colors)], marker='', linestyle=':', linewidth=1)
+        
+    plt.xlim(left=(-0.05 * T))   
+    plt.xlabel(r'$t$')
+    plt.ylabel(r'$i_0(t)$')
+    plt.legend(ncol=2)
+    plt.grid()
+    plt.savefig(f'plot_fourier_approx_{prefix}.pgf')
 
-# Аппроксимация
-y_approx = np.full_like(t, ex10['A1_0'])
-harmonics_lines = []
-for i, k_val in enumerate(ex10['k']):
-    if k_val != 0:
-        harmonic = ex10['A1k'][i] * np.cos(k_val * ex10['w1'] * t + np.radians(ex10['Phi1k_deg'][i]))
-        y_approx += harmonic
-        harmonics_lines.append(harmonic)
+plot_approx(tu1, T1, w1_1, A_k1, Phi_k1, '1')
+plot_approx(tu2, T2, w1_2, A_k2, Phi_k2, '2')
 
-plt.figure()
-plt.plot(t, y_input, '--', label='Исходный сигнал', color='black')
-plt.plot(t, y_approx, '-', label='Аппроксимация рядом Фурье', color='red')
-
-# Добавление отдельных гармоник тонкими линиями
-colors = ['blue', 'green', 'purple']
-for i, h_line in enumerate(harmonics_lines):
-    if i < len(colors):
-        plt.plot(t, h_line, ':', linewidth=1, color=colors[i], label=f'Гармоника k={ex10["k"][i+1]}')
-
-plt.xlabel(r'$t$')
-plt.ylabel(r'$i_1(t)$')
-plt.legend()
-plt.savefig('plot_fourier_approx.pgf')
-plt.close()
+# plt.show()

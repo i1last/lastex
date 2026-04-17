@@ -4,46 +4,66 @@ from scripts.calc_1 import n
 
 ex10 = {}
 Im = s['Im']
-tu = n['ti1'] # Используем первую длительность, как основную
-T = 2 * tu # Период для меандра
-ex10['T'] = T
-ex10['w1'] = 2 * np.pi / T
+tu1 = n['ti1']
+tu2 = n['ti2']
 
-# Количество гармоник для аппроксимации (0, 1, 3, 5)
-ex10['N'] = 5
-harmonics = [k for k in range(ex10['N'] + 1) if k % 2 != 0 or k == 0]
-ex10['harmonics'] = harmonics
+# Принимаем период равным длительности полного импульса
+ex10['tu1'] = tu1
+ex10['tu2'] = tu2
+ex10['T1'] = tu1
+ex10['T2'] = tu2
+ex10['w1_1'] = 2 * np.pi / ex10['T1']
+ex10['w1_2'] = 2 * np.pi / ex10['T2']
 
-# Массивы для дискретного спектра
-ex10['k'] = []
-ex10['A1k'] = []
-ex10['Phi1k_deg'] = []
+K = 5
+k_arr = np.arange(K + 1)
+ex10['k'] = k_arr.tolist()
 
-# Вычисление коэффициентов ряда Фурье для двуполярного меандра
-# A1k = 2/T * A1(k*w1), Phi1k = Phi1(k*w1)
-# Аналитическое решение для меандра:
-# A0 = 0
-# Ak = 4*Im / (k*pi) for odd k
-# Phi_k = 0 for odd k
-ex10['A1_0'] = 0.0 # Постоянная составляющая для симметричного меандра
-
-for k in harmonics:
-    ex10['k'].append(k)
-    if k == 0:
-        A1k_val = ex10['A1_0']
-        Phi1k_val_deg = 0.0
-    else:
-        A1k_val = (4 * Im) / (k * np.pi)
-        Phi1k_val_deg = 0.0
+def calc_spectra(tu, T, w1):
+    w_k = k_arr * w1
+    A_k = np.zeros_like(w_k, dtype=float)
+    Phi_k = np.zeros_like(w_k, dtype=float)
     
-    ex10['A1k'].append(A1k_val)
-    ex10['Phi1k_deg'].append(Phi1k_val_deg)
+    def A_cont(w):
+        w_safe = np.where(w == 0, 1e-10, w)
+        val = (2 / T) * np.abs(4 * Im / w_safe * np.sin(w_safe * tu / 4)**2)
+        return np.where(w == 0, 0.0, val)
+        
+    def Phi_cont(w):
+        phi_deg = np.degrees(np.pi / 2 - w * tu / 2)
+        return np.where(phi_deg > 0, phi_deg % 360, phi_deg % -360)
+    
+    for i in range(len(k_arr)):
+        w = w_k[i]
+        A_k[i] = A_cont(w)
+        Phi_k[i] = Phi_cont(w)
+        
+    return w_k, A_k, Phi_k, A_cont, Phi_cont
 
-# Генерация выражения для ряда Фурье
-fourier_terms = []
-for k_val, A_val, Phi_val in zip(ex10['k'], ex10['A1k'], ex10['Phi1k_deg']):
-    if k_val != 0:
-        term = f"{A_val:.3f} \\cos({k_val * ex10['w1']:.3f}t + {Phi_val:.1f}^\\circ)"
-        fourier_terms.append(term)
+w_k1, A_k1, Phi_k1, A_cont1, Phi_cont1 = calc_spectra(tu1, ex10['T1'], ex10['w1_1'])
+w_k2, A_k2, Phi_k2, A_cont2, Phi_cont2 = calc_spectra(tu2, ex10['T2'], ex10['w1_2'])
 
-ex10['fourier_series_str'] = f"i_1(t) \\approx {ex10['A1_0']:.3f} + " + " + ".join(fourier_terms)
+ex10['tab_wk_1'] = w_k1.tolist()
+ex10['tab_Ak_1'] = A_k1.tolist()
+ex10['tab_Phik_1'] = Phi_k1.tolist()
+
+ex10['tab_wk_2'] = w_k2.tolist()
+ex10['tab_Ak_2'] = A_k2.tolist()
+ex10['tab_Phik_2'] = Phi_k2.tolist()
+
+def gen_fourier_str(A_k, Phi_k, w1):
+    terms =[]
+    for i in range(1, K + 1):
+        if A_k[i] > 1e-4:
+            term = f"{A_k[i]:.3f} \\cos({i * w1:.3f}t "
+            if Phi_k[i] < 0:
+                term += f"- {abs(Phi_k[i]):.3f}^\\circ)"
+            else:
+                term += f"+ {Phi_k[i]:.1f}^\\circ)"
+            terms.append(term)
+    if not terms:
+        return "0"
+    return " + ".join(terms)
+
+ex10['fs_1'] = gen_fourier_str(A_k1, Phi_k1, ex10['w1_1'])
+ex10['fs_2'] = gen_fourier_str(A_k2, Phi_k2, ex10['w1_2'])
