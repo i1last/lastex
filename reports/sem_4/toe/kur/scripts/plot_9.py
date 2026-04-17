@@ -19,9 +19,7 @@ def get_approx_reaction(tu, t_arr):
     w_safe = np.where(w_arr == 0, 1e-10, w_arr)
     I1_w = get_I1(w_safe, tu)
     
-    I1_meandr_w = I1_w * (1 - np.exp(-1j * w_arr * tu))
-    
-    I2_w = I1_meandr_w * H_w
+    I2_w = I1_w * H_w
     A2 = np.abs(I2_w)
     Phi2 = np.angle(I2_w)
     
@@ -29,13 +27,13 @@ def get_approx_reaction(tu, t_arr):
     i2_approx = np.zeros_like(t_arr)
     for i, t in enumerate(t_arr):
         integrand = A2 * np.cos(w_arr * t + Phi2)
-        i2_approx[i] = np.trapezoid(integrand, w_arr) / np.pi
+        i2_approx[i] = np.trapz(integrand, w_arr) / np.pi
         
     return i2_approx
 
 def plot_comparison(tu, suffix):
     t_max = 3 * tu
-    t_arr = np.linspace(0, t_max, 500)
+    t_arr = np.linspace(-0.05, t_max, 500)
     
     i2_approx = get_approx_reaction(tu, t_arr)
     i2_exact = np.array([reaction(t, tu) for t in t_arr])

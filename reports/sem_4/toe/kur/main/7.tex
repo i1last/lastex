@@ -32,7 +32,8 @@ from scripts.calc_6 import ex6
                     \right)
                 \right]^2 = \\
             &= \frac{I_m}{j\omega} e^{-j\omega\frac{t_\text{и}}4} \cdot (-4) \cdot \sin^2(\omega t_\text{и} / 4) = \\
-            &= -4\sin^2(\omega t_\text{и} / 4) \cdot \frac{I_m}{\omega} e^{-j(\omega t_\text{и}/4 + 90^\circ)} = \\
+            &= 4\sin^2(\omega t_\text{и} / 4) \cdot \frac{I_m}{\omega} e^{-j(\omega t_\text{и}/2 - 90^\circ)} = \\
+            &= \frac{4I_m}{\omega} \sin^2(\omega t_\text{и} / 4) \cdot e^{j(90^\circ - \omega t_\text{и}/2)} = \\
             &= A_1(\omega)\cdot e^{j\Phi_1(\omega)}
     \end{aligned}
     \label{form:I1jw}
@@ -41,13 +42,13 @@ from scripts.calc_6 import ex6
 Амплитудный спектр входного сигнала:
 \begin{equation}
     A_1(\omega) = \left|
-        -4\frac{I_m}{\omega} \sin^2\left(\frac{\omega t_{\text{и}}}{4}\right)
+        \frac{4I_m}{\omega} \sin^2\left(\frac{\omega t_{\text{и}}}{4}\right)
     \right|
 \end{equation}
  
 Фазовый спектр входного сигнала:
 \begin{equation}
-    \Phi_1(\omega) = -\frac{\omega t_\text{и}}{4} - 90^\circ
+    \Phi_1(\omega) = 90^\circ - \frac{\omega t_\text{и}}{2}
 \end{equation}
 
 Для построения графика амплитудного спектра определяются его нули, то есть значения частот $\omega_\text{yзл}^k$, при которых спектр равен нулю:

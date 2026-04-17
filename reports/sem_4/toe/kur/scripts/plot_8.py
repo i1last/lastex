@@ -19,7 +19,12 @@ def plot_reaction_spectra(tu, suffix):
     I2 = I1 * H
 
     A2 = np.abs(I2)
-    Phi2_deg = np.degrees(np.angle(I2))
+    phi_raw = np.degrees(
+        np.unwrap(
+            np.angle(I2)
+        )
+    )
+    Phi2_deg = np.where(phi_raw > 0, phi_raw % 360, phi_raw % -360)
 
     # График амплитудного спектра реакции
     plt.figure()
@@ -34,6 +39,7 @@ def plot_reaction_spectra(tu, suffix):
     plt.figure()
     plt.plot(w, Phi2_deg, marker='')
     plt.xlim(left=min(w))
+    plt.yticks(np.arange(90, -361, -45))
     plt.xlabel(r'$\omega$')
     plt.ylabel(r'$\Phi_2(\omega), ^\circ$')
     plt.savefig(f'plot_spec_Phi2_{suffix}.pgf')

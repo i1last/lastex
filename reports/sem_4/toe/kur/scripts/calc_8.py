@@ -16,7 +16,7 @@ def get_H(w):
 def get_I1(w, tu):
     """Комплексный спектр входного импульса"""
     w_safe = np.where(w == 0, 1e-10, w)
-    val = (-4 * np.sin(w_safe * tu / 4)**2 * Im / w_safe) * np.exp(-1j * (w_safe * tu / 4 + np.pi))
+    val = (4 * Im / w_safe * np.sin(w_safe * tu / 4)**2) * np.exp(1j * (np.pi/2 - w_safe * tu / 2))
     val = np.where(w == 0, 0, val)
     return val
 

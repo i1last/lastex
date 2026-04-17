@@ -20,7 +20,7 @@ def calc_spectrum_params(ti):
     # Практическая ширина (поиск пика лепестка, ближайшего к 10% уровню)
     w_max = 5 * res['w_y1']
     w = np.linspace(1e-5, w_max, 5000)
-    A1 = np.abs((2 * Im / w) * np.sin(w * ti / 2))
+    A1 = np.abs((4 * Im / w) * np.sin(w * ti / 4)**2)
     
     target = 0.1 * res['A1_0']
     peaks, _ = find_peaks(A1)
