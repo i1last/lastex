@@ -54,7 +54,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 RUN tlmgr update --self && tlmgr install \
     xfrac \
-    cancel
+    cancel \
+    autobreak
 
 RUN mktexlsr && tlmgr path add && fmtutil-sys --all
 
