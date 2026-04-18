@@ -63,7 +63,13 @@
 
 % --- ПРОТОКОЛ ---
 % \newpage
-% \centeredsection{ПРОТОКОЛ НАБЛЮДЕНИЙ}
+% \makeatletter
+%     \centeredsection{{
+%         ПРОТОКОЛ НАБЛЮДЕНИЙ \\ 
+%         По \@WorkType
+%     }}
+% \makeatother
+% \input{protocol.tex}
 
 % \input{protocol.tex}
 
