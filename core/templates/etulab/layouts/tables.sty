@@ -16,7 +16,7 @@
 \DeclareTblrTemplate{middlehead,lasthead}{default}{
     \UseTblrTemplate{conthead}{default}
 }
-\DefTblrTemplate{caption}{default}{
+\DeclareTblrTemplate{caption}{default}{
     \raggedright
     \parindent=0pt
     \UseTblrTemplate{caption-tag}{}{Таблица~\thetable}
@@ -29,15 +29,14 @@
 \SetTblrTemplate{contfoot-text}{normal}
 \SetTblrTemplate{conthead-text}{normal}
 
-\NewTblrTheme{mytable}{  % Глобальный стиль
-  \SetTblrInner[
-    caption = {template = my-caption},
+\SetTblrInner{%
     caption-pos = t,
     caption-skip = 6pt,
     conthead-text = default
-  ]
 }
-\SetTblrOuter{expand=\expanded}
+\SetTblrOuter[tblr,longtblr]{%
+    expand=\expanded
+}
 
 % --- Принудительный отступ для окружения table ---
 % Добавляем 18pt (примерно одна пустая строка) перед каждой таблицей
