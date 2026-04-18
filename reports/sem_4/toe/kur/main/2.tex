@@ -93,14 +93,14 @@ from scripts.calc_2 import *
 
 Нули функции $H(s)$ определяются из уравнения $\pv[.3]{tf['N2']}s^2 + \pv[.3]{tf['N0']} = 0$:
 \begin{equation}
-    s_{01,02} = \pm j \pv[.2]{tf['z1_im']}
+    s_{01,02} = \pm j \pv[.3]{tf['z1_im']}
     \label{form:zeros}
 \end{equation}
 
 Полюсы функции $H(s)$ находятся как корни характеристического полинома знаменателя:
 \begin{align}
-    s_1 &= \pv[.2]{tf['p1_re']} \\
-    s_{2,3} &= \pv[.2]{tf['p2_re']} \pm j \pv[.2]{tf['p2_im']}
+    s_1 &= \pv[.3]{tf['p1_re']} \\
+    s_{2,3} &= \pv[.3]{tf['p2_re']} \pm j \pv[.3]{tf['p2_im']}
     \label{form:poles}
 \end{align}
 

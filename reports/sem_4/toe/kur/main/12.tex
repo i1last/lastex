@@ -1,1 +1,56 @@
-\section{12}
+\begin{python}
+from scripts.calc_12 import *
+\end{python}
+
+\section{Определение в «замкнутой» форме вынужденной составляющей реакции при периодическом входном сигнале}
+
+Расчёт реакции в замкнутой форме позволяет получить точное аналитическое выражение для установившегося режима без использования бесконечных рядов. Для цепи с АФХ $H(s)$ точная вынужденная реакция на меандр с амплитудой $I_m$ и периодом $T$ определяется выражением:
+\begin{equation}
+    i_{\text{н.уст}}(t) = I_m \cdot H(\infty) + I_m \sum_{k=1}^{N} \frac{A_k}{p_k} \left( \frac{2 e^{p_k t}}{1 + e^{p_k T/2}} - 1 \right),
+\end{equation}
+где $p_k$ — полюсы передаточной функции, $A_k$ — соответствующие вычеты, $H(\infty)$ — значение АФХ при $\omega \to \infty$.
+
+На интервале $T/2 \le t < T$ в силу антисимметрии воздействия реакция определяется как:
+\begin{equation}
+    i_{\text{н.уст}}(t) = -i_{\text{н.уст}}(t - T/2).
+\end{equation}
+
+Приведем все параметры:
+\begin{itemize}
+    \item $I_m = \pv[.3]{ex12['Im']}$.
+    \item $H(\infty) = \pv[.3]{ex12['H_inf']}$.
+    \item Полюсы \cref{form:zeros,form:poles} и вычеты \cref{form:vichetiAk} представлены в \cref{tab:poles_residues}.
+\end{itemize}
+
+\begin{longtblr}[
+    caption = {Полюсы и вычеты передаточной функции},
+    label = {tab:poles_residues},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $k$ & $p_k$ & $A_k$ \\
+    \pv*[.0]{ex12['k_indices'][0]} & $\pv[.3]{ex12['poles_real'][0]} \pv[+.3]{ex12['poles_imag'][0]}j$ & $\pv[.3]{ex12['res_real'][0]} \pv[+.3]{ex12['res_imag'][0]}j$ \\
+    \pv*[.0]{ex12['k_indices'][1]} & $\pv[.3]{ex12['poles_real'][1]} \pv[+.3]{ex12['poles_imag'][1]}j$ & $\pv[.3]{ex12['res_real'][1]} \pv[+.3]{ex12['res_imag'][1]}j$ \\
+    \pv*[.0]{ex12['k_indices'][2]} & $\pv[.3]{ex12['poles_real'][2]} \pv[+.3]{ex12['poles_imag'][2]}j$ & $\pv[.3]{ex12['res_real'][2]} \pv[+.3]{ex12['res_imag'][2]}j$ \\
+\end{longtblr}
+
+На \cref{fig:plot_exact_vs_fourier_1,fig:plot_exact_vs_fourier_2} представлено сравнение реакции цепи, полученной методом в замкнутой форме, приближенной реакции ряда Фурье и точного аналитического решения.
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_exact_vs_fourier_1.pgf}
+    \caption{Сравнение точной реакции и отрезка ряда Фурье (первый сигнал)}
+    \label{fig:plot_exact_vs_fourier_1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_exact_vs_fourier_2.pgf}
+    \caption{Сравнение точной реакции и отрезка ряда Фурье (второй сигнал)}
+    \label{fig:plot_exact_vs_fourier_2}
+\end{figure}
+
+Из графиков видно, что, в отличие от ряда Фурье, решение в замкнутой форме описывает поведение цепи точно, отражая реальную физическую кривую установившегося процесса.
