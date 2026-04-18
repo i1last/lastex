@@ -38,7 +38,7 @@ def plot_comparison(tu, T, w1, prefix):
     plt.xlim(left=min(t))
     plt.xlabel(r'$t$')
     plt.ylabel(r'$i_{\mathrm{н}}(t)$')
-    plt.legend(ncol=3)
+    plt.legend(ncol=2)
     plt.grid()
     plt.tight_layout()
     plt.savefig(f'plot_exact_vs_fourier_{prefix}.pgf')
