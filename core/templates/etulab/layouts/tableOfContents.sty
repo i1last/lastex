@@ -12,8 +12,9 @@
 \renewcommand{\cftsubsecleader   }{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
 
-\renewcommand{\cfttoctitlefont}{\normalfont\normalsize\bfseries\centering\uppercase} % -- Форматирование заголовка Содержания
-\renewcommand{\contentsname}{СОДЕРЖАНИЕ} % -- Меняем название на "СОДЕРЖАНИЕ"
+\renewcommand{\cfttoctitlefont}{\hfill\normalfont\normalsize\bfseries\MakeUppercase}
+\renewcommand{\contentsname}{{СОДЕРЖАНИЕ}}
+\renewcommand{\cftaftertoctitle}{\hfill\mbox{}}
 
 % --- Убираем жирный шрифт с разделов и номеров страниц
 \renewcommand{\cftsecfont       }{\normalfont} 
