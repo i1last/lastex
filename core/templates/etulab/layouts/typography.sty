@@ -1,6 +1,15 @@
 \ProvidesFile{etulab/layouts/typography.sty}
 
-\babelprovide[main]{russian}    % Указываем babel использовать основной шрифт для всех языков по умолчанию
+\@ifpackageloaded{biblatex}{
+    \babelprovide[main]{russian}    % Указываем babel использовать основной шрифт для всех языков по умолчанию
+
+    % Убираем заголовок "Список литературы", который biblatex добавляет по умолчанию
+    \defbibheading{bibliography}[\refname]{}
+
+    % Нумерация библиографии в квадратных скобках
+    \DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
+}{}
+
 
 \onehalfspacing                 % Установка полуторного межстрочного интервала
 \setlength{\parindent}{1.25cm}  % Отступ красной строки - 1.25 см
@@ -40,14 +49,6 @@
 
 \numberwithin{equation}{section}  % Нумерация формул по секциям
 
-\@ifpackageloaded{biblatex}{
-    % Убираем заголовок "Список литературы", который biblatex добавляет по умолчанию
-    \defbibheading{bibliography}[\refname]{}
-
-    % Нумерация библиографии в квадратных скобках
-    \DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
-}{}
-
 \hypersetup{
     unicode=true,
     pdfencoding=auto
@@ -57,3 +58,32 @@
 % алгоритмы отрисовки, которые есть в системе
 \pgfplotsset{compat=newest}
 \newcommand{\mathdefault}[1]{#1}
+
+
+% --- Автоматически оборачиваем ВСЮ кириллицу в math-режиме в \text{}
+%     (работает в индексах, верхних индексах, переменных и т.д.)
+\makeatletter
+    \def\etulab@textcyr#1{\text{#1}}
+    \def\etulab@setupcyrmath#1{%
+    \mathcode`#1="8000
+    \begingroup
+        \lccode`~=`#1
+        \lowercase{\endgroup\def~}{\etulab@textcyr{#1}}%
+    }
+    % Нижний регистр
+    \etulab@setupcyrmath{а}\etulab@setupcyrmath{б}\etulab@setupcyrmath{в}\etulab@setupcyrmath{г}\etulab@setupcyrmath{д}
+    \etulab@setupcyrmath{е}\etulab@setupcyrmath{ё}\etulab@setupcyrmath{ж}\etulab@setupcyrmath{з}\etulab@setupcyrmath{и}
+    \etulab@setupcyrmath{й}\etulab@setupcyrmath{к}\etulab@setupcyrmath{л}\etulab@setupcyrmath{м}\etulab@setupcyrmath{н}
+    \etulab@setupcyrmath{о}\etulab@setupcyrmath{п}\etulab@setupcyrmath{р}\etulab@setupcyrmath{с}\etulab@setupcyrmath{т}
+    \etulab@setupcyrmath{у}\etulab@setupcyrmath{ф}\etulab@setupcyrmath{х}\etulab@setupcyrmath{ц}\etulab@setupcyrmath{ч}
+    \etulab@setupcyrmath{ш}\etulab@setupcyrmath{щ}\etulab@setupcyrmath{ъ}\etulab@setupcyrmath{ы}\etulab@setupcyrmath{ь}
+    \etulab@setupcyrmath{э}\etulab@setupcyrmath{ю}\etulab@setupcyrmath{я}
+    % Верхний регистр
+    \etulab@setupcyrmath{А}\etulab@setupcyrmath{Б}\etulab@setupcyrmath{В}\etulab@setupcyrmath{Г}\etulab@setupcyrmath{Д}
+    \etulab@setupcyrmath{Е}\etulab@setupcyrmath{Ё}\etulab@setupcyrmath{Ж}\etulab@setupcyrmath{З}\etulab@setupcyrmath{И}
+    \etulab@setupcyrmath{Й}\etulab@setupcyrmath{К}\etulab@setupcyrmath{Л}\etulab@setupcyrmath{М}\etulab@setupcyrmath{Н}
+    \etulab@setupcyrmath{О}\etulab@setupcyrmath{П}\etulab@setupcyrmath{Р}\etulab@setupcyrmath{С}\etulab@setupcyrmath{Т}
+    \etulab@setupcyrmath{У}\etulab@setupcyrmath{Ф}\etulab@setupcyrmath{Х}\etulab@setupcyrmath{Ц}\etulab@setupcyrmath{Ч}
+    \etulab@setupcyrmath{Ш}\etulab@setupcyrmath{Щ}\etulab@setupcyrmath{Ъ}\etulab@setupcyrmath{Ы}\etulab@setupcyrmath{Ь}
+    \etulab@setupcyrmath{Э}\etulab@setupcyrmath{Ю}\etulab@setupcyrmath{Я}
+\makeatother

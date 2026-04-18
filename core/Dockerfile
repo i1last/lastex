@@ -55,7 +55,8 @@ RUN apt-get update && apt-get install -y \
 RUN tlmgr update --self && tlmgr install \
     xfrac \
     cancel \
-    autobreak
+    autobreak \
+    unicode-math
 
 RUN mktexlsr && tlmgr path add && fmtutil-sys --all
 
