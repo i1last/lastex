@@ -1,5 +1,6 @@
 \ProvidesFile{etulab/layouts/tables.sty}
 
+% --- Настройки окружения table
 \captionsetup[table]{
     position=top,              % Подпись над таблицей
     justification=raggedright, % Выравнивание по левому краю
@@ -8,42 +9,31 @@
     font=normalsize,           % Обычный размер шрифта (не курсив)
     skip=6pt                   % Отступ перед таблицей
 }
+\BeforeBeginEnvironment{table}{\addvspace{0.5\baselineskip}}
+\AfterEndEnvironment{table}{\addvspace{0.5\baselineskip}}
 
 
 % --- Настройки tabularray
 \UseTblrLibrary{booktabs}
 
+\DeclareTblrTemplate{caption-tag}{default}{Таблица~\thetable}
+\DeclareTblrTemplate{caption-sep}{default}{~--~}
+\DeclareTblrTemplate{caption-text}{default}{\InsertTblrText{caption}}
+\DeclareTblrTemplate{contfoot-text}{default}{\textit{Продолжение на следующей странице}}
+\DeclareTblrTemplate{conthead-text}{default}{\textit{Продолжение таблицы \thetable}}
 \DeclareTblrTemplate{middlehead,lasthead}{default}{
     \UseTblrTemplate{conthead}{default}
 }
 \DeclareTblrTemplate{caption}{default}{
     \raggedright
     \parindent=0pt
-    \UseTblrTemplate{caption-tag}{}{Таблица~\thetable}
-    \UseTblrTemplate{caption-sep}{}{--}
+    \UseTblrTemplate{caption-tag}{default}
+    \UseTblrTemplate{caption-sep}{default}
     \UseTblrTemplate{caption-text}{default}
 }
+\SetTblrInner{}
+\SetTblrOuter[tblr,longtblr]{expand=\expanded}
 
-\DeclareTblrTemplate{contfoot-text}{normal}{\textit{Продолжение на следующей странице}}
-\DeclareTblrTemplate{conthead-text}{normal}{\textit{Продолжение табл. \thetable}}
-\SetTblrTemplate{contfoot-text}{normal}
-\SetTblrTemplate{conthead-text}{normal}
-
-\SetTblrInner{%
-    caption-pos = t,
-    caption-skip = 6pt,
-    conthead-text = default
-}
-\SetTblrOuter[tblr,longtblr]{%
-    expand=\expanded
-}
-
-% --- Принудительный отступ для окружения table ---
-% Добавляем 18pt (примерно одна пустая строка) перед каждой таблицей
-\BeforeBeginEnvironment{table}{\addvspace{0.5\baselineskip}}
-
-% Добавляем отступ после таблицы (по желанию)
-\AfterEndEnvironment{table}{\addvspace{0.5\baselineskip}}
 
 % === ВНИМАНИЕ! Последующие настройки таблиц нужны для сохранения
 % === обратной совместимости. В реальность используется tabularray
