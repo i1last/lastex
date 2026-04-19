@@ -1,0 +1,83 @@
+\begin{python}
+    from scripts.protocol import *
+\end{python}
+
+\begin{longtblr}[
+    caption = {Пленочные резисторы (поз. 1--3)},
+    label = {p:pr13},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    Материал & $R$, Ом & Ширина $b$, мм & Длина $l$, мм \\
+    \midrule
+    \expanded{\pt*[.0, .2, -3.2, -3.2]{p['pr13']['material'],p['pr13']['R'],p['pr13']['b'],p['pr13']['l']}} \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Проволочные резисторы (поз. 6--10)},
+    label = {p:pr610},
+    expand = \expanded,
+]{
+    colspec = { Q[l,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    Материал & $R$, Ом & Длина $l$, мм & Диаметр $d$, мм \\
+    \midrule
+    \expanded{
+        \pt*[.0, .2, -3.0, -3.2]{
+            p['pr610']['material'],
+            p['pr610']['R'],
+            p['pr610']['l'],
+            p['pr610']['d']
+        }
+    } \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Температурные зависимости сопротивлений},
+    label = {p:rt},
+    expand = \expanded,
+]{
+    colspec = { X[c,m] *{3}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 2,
+}
+    \SetCell[r=2]{c} {$t$, °C} & \SetCell[c=3]{c} Сопротивление $R$, Ом & & \\
+                               & Никель & Медь & Константан \\
+    \midrule
+    \expanded{
+        \pt*[.0, .2, .2, .2]{
+            p['rt']['t'],
+            p['rt']['R_Ni'],
+            p['rt']['R_Cu'],
+            p['rt']['R_Const']
+        }
+    }
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Зависимость термоЭДС от разности температур},
+    label = {p:eds},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] Q[c,m] *{3}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 2,
+}
+    \SetCell[r=2]{c} {$t_{гор}$, °C} & \SetCell[r=2]{c} {$t_{хол}$, °C} & \SetCell[c=3]{c} {$\Delta U$, мВ} & & \\
+    & & Медь-железо & Медь-константан & Медь-манганин \\
+    \midrule
+    \expanded{
+        \pt*[.0, .0, -3.3, -3.3, -3.3]{
+            p['eds']['t_hot'],
+            p['eds']['t_cold'],
+            p['eds']['U_Cu_Fe'],
+            p['eds']['U_Cu_Const'],
+            p['eds']['U_Cu_Mang']
+        }
+    }
+\end{longtblr}

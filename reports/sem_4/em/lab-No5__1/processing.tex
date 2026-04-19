@@ -1,0 +1,256 @@
+\begin{python}
+from scripts.calc import *
+\end{python}
+
+\subsection*{ \fbox{Задание 1.} }
+\begin{quote}
+    \textit{Рассчитать удельное сопротивление металлических проводников и сопротивление квадрата поверхности металлических пленок.}
+\end{quote}
+
+Удельное сопротивление проволочных резисторов рассчитывается по формуле
+\begin{equation}
+    \rho = \frac{R S}{l} = \frac{R \pi d^2}{4 l}.
+\end{equation}
+
+Пример расчета для меди (поз. 7):
+\begin{equation}
+    \rho 
+    = \frac{
+        \pv[.2]{p['pr610']['R'][1]} \cdot \pi \cdot (\pv[.2e]{p['pr610']['d'][1]})^2
+    }{
+        4 \cdot \pv[.2]{p['pr610']['l'][1]}
+    }
+    = \pv[.2e]{r['rho'][1]} \text{ Ом}\cdot\text{м}.
+\end{equation}
+
+Сопротивление квадрата поверхности для пленочных резисторов
+\begin{equation}
+    R_\square = \frac{R b}{l}.
+\end{equation}
+
+Пример расчета для образца 1:
+\begin{equation}
+    R_\square
+    = \frac{
+        \pv[.2]{p['pr13']['R'][0]} \cdot \pv[.2e]{p['pr13']['b'][0]}
+    }{
+        \pv[.2e]{p['pr13']['l'][0]}
+    } 
+    = \pv[.2]{r['R_sq'][0]} \text{ Ом}.
+\end{equation}
+
+\begin{longtblr}[
+    caption = {Расчет сопротивления квадрата поверхности (пленочные резисторы)},
+    label = {tab:r_sq},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    Материал & $R$, Ом & $b$, мм & $l$, мм & $R_\square$, Ом \\
+    \midrule
+    \expanded{\pt*[.0, .2, -3.2, -3.2, .2]{p['pr13']['material'], p['pr13']['R'], p['pr13']['b'], p['pr13']['l'], r['R_sq']}} \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Расчет удельного сопротивления (проволочные резисторы)},
+    label = {tab:rho},
+    expand = \expanded,
+]{
+    colspec = { Q[l,m] X[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    Материал & $R$, Ом & $l$, мм & $d$, мм & $\rho$, мкОм$\cdot$м \\
+    \midrule
+    \expanded{\pt*[.0, .2, -3.2, -3.2, -6.2]{p['pr610']['material'], p['pr610']['R'], p['pr610']['l'], p['pr610']['d'], r['rho']}} \\
+\end{longtblr}
+
+\subsection*{ \fbox{Задание 2.} }
+\begin{quote}
+    \textit{Построить температурные зависимости сопротивления $R=f(t)$ для исследованных резисторов.}
+\end{quote}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_rt_R_Cu.pgf}
+    \caption{Температурная зависимость меди}
+    \label{fig:plot_rt_R_Cu}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_rt_R_Ni.pgf}
+    \caption{Температурная зависимость никеля}
+    \label{fig:plot_rt_R_Ni}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_rt_R_Const.pgf}
+    \caption{Температурная зависимость константанта}
+    \label{fig:plot_rt_R_Const}
+\end{figure}
+
+\subsection*{ \fbox{Задание 3.} }
+\begin{quote}
+    \textit{Рассчитать температурный коэффициент удельного сопротивления металлов и сплавов.}
+\end{quote}
+
+Температурный коэффициент удельного сопротивления определяется через температурные коэффициенты сопротивления и линейного расширения:
+\begin{equation}
+    \alpha_\rho = \alpha_R + \alpha_l = \frac{1}{R_t} \frac{dR}{dt} + \alpha_l,
+\end{equation}
+где $R_t$ --- сопротивление образца при данной температуре.
+
+Величина $\alpha_l$ дана для каждого материала:
+\begin{align}
+    \alpha_l^{Медь}        &= \pv[.2e]{alpha_l_Cu}\,K^{-1}, \\
+    \alpha_l^{Никель}      &= \pv[.2e]{alpha_l_Ni}\,K^{-1}, \\
+    \alpha_l^{Константант} &= \pv[.2e]{alpha_l_Const}\,K^{-1}.
+\end{align}
+
+Так как экспериментальные зависимости $R(t)$ хорошо аппроксимируются прямыми линиями, отношение $\Delta R / \Delta t$ остается постоянным во всем интервале температур. Значение производной найдено как угловой коэффициент линейной аппроксимации (см. \cref{fig:plot_rt_R_Cu,fig:plot_rt_R_Ni,fig:plot_rt_R_Const}).
+\begin{align}
+    \frac{dR}{dt}_{Медь}        &= \pv[.4]{r['dR_Cu_dt']}\,Ом/К, \\
+    \frac{dR}{dt}_{Никель}      &= \pv[.4]{r['dR_Ni_dt']}\,Ом/К, \\
+    \frac{dR}{dt}_{Константант} &= \pv[.4]{r['dR_Const_dt']}\,Ом/К.
+\end{align}
+
+Пример расчета для никеля при $t = \pv[.0]{p['rt']['t'][0]} ^\circ\text{C}$:
+\begin{equation}
+    \alpha_\rho 
+    = \frac{
+        \pv[.4]{r['dR_Ni_dt']}
+    }{
+        \pv[.2]{p['rt']['R_Ni'][0]}
+    } + \pv[.2e]{alpha_l_Ni}
+    = \pv[.2e]{r['alpha_rho_Ni'][0]} \text{ К}^{-1}.
+\end{equation}
+
+\begin{longtblr}[
+    caption = {Температурный коэффициент удельного сопротивления $\alpha_\rho$, К$^{-1}$},
+    label = {tab:alpha},
+    expand = \expanded,
+]{
+    colspec = { X[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $t$, $^\circ$C & Никель & Медь & Константан \\
+    \midrule
+    \expanded{\pt*[.0, .3e, .3e, .3e]{p['rt']['t'], r['alpha_rho_Ni'], r['alpha_rho_Cu'], r['alpha_rho_Const']}} \\
+\end{longtblr}
+
+\subsection*{ \fbox{Задание 4.} }
+\begin{quote}
+    \textit{Построить зависимость $\alpha_\rho = f(t)$ для исследованных материалов.}
+\end{quote}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_alpha_Cu.pgf}
+    \caption{Зависимость температурного коэффициента удельного сопротивления от температуры для меди}
+    \label{fig:plot_alpha_Cu}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_alpha_Ni.pgf}
+    \caption{Зависимость температурного коэффициента удельного сопротивления от температуры для никеля}
+    \label{fig:plot_alpha_Ni}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_alpha_Const.pgf}
+    \caption{Зависимость температурного коэффициента удельного сопротивления от температуры для константанта}
+    \label{fig:plot_alpha_Const}
+\end{figure}
+
+\subsection*{ \fbox{Задание 5.} }
+\begin{quote}
+    \textit{Рассчитать зависимости удельного сопротивления и температурного коэффициента от состава для сплавов системы Cu-Ni при комнатной температуре.}
+\end{quote}
+
+Удельное сопротивление сплава описывается выражением
+\begin{equation}
+    \rho_{\text{Cu-Ni}} = \rho_{\text{Ni}} x_{\text{Ni}} + \rho_{\text{Cu}} (1 - x_{\text{Ni}}) + C x_{\text{Ni}} (1 - x_{\text{Ni}}).
+\end{equation}
+
+Коэффициент $C$ определяется по параметрам константана ($x_{\text{Ni}} = 0.4$; см. $\rho_i$ в \cref{tab:rho}):
+\begin{equation}
+    C = \frac{\rho_{\text{Const}} - \rho_{\text{Ni}} \cdot 0.4 - \rho_{\text{Cu}} \cdot 0.6}{0.4 \cdot 0.6} = \pv[.2e]{r['C']} \text{ Ом}\cdot\text{м}
+\end{equation}
+
+ТКС сплава рассчитывается по формуле:
+\begin{equation}
+    \alpha_{\rho\,\text{Cu-Ni}}
+    = \frac{
+        1
+    }{
+        \rho_{\text{Cu-Ni}}
+    } \biggl[
+        (1 - x_{\text{Ni}}) \rho_{\text{Cu}} \alpha_{\rho\text{Cu}} +
+        x_{\text{Ni}} \rho_{\text{Ni}} \alpha_{\rho\text{Ni}}
+    \biggr]
+\end{equation}
+
+\begin{longtblr}[
+    caption = {Характеристики сплавов системы Cu-Ni},
+    label = {tab:alloy},
+    expand = \expanded,
+]{
+    colspec = { X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $x_{\text{Ni}}$ & $\rho$, Ом$\cdot$м & $\alpha_\rho$, К$^{-1}$ \\
+    \midrule
+    \expanded{\pt*[.1, .2e, .2e]{r['x_Ni'], r['rho_alloy'], r['alpha_rho_alloy']}} \\
+\end{longtblr}
+
+\subsection*{ \fbox{Задание 6.} }
+\begin{quote}
+    \textit{Построить зависимости удельного сопротивления и ТКС от состава сплава.}
+\end{quote}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_alloy.pgf}
+    \caption{Зависимость свойств сплава Cu-Ni от массовой доли никеля}
+    \label{fig:plot_alloy}
+\end{figure}
+
+\subsection*{ \fbox{Задание 7.} }
+\begin{quote}
+    \textit{Построить температурные зависимости термоЭДС $\Delta U(\Delta t)$ для исследованных термопар.}
+\end{quote}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_eds_CuFe.pgf}
+    \caption{Зависимость термоЭДС от разности температур спаев для Медь-Железо}
+    \label{fig:plot_eds_CuFe}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_eds_CuConst.pgf}
+    \caption{Зависимость термоЭДС от разности температур спаев для Медь-Константант}
+    \label{fig:plot_eds_CuConst}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_eds_CuMang.pgf}
+    \caption{Зависимость термоЭДС от разности температур спаев для Медь-Манганин}
+    \label{fig:plot_eds_CuMang}
+\end{figure}
+
+\section*{Выводы}
+
+В ходе выполнения работы были определены удельные сопротивления и сопротивления квадрата поверхности для различных материалов.
+
+Анализ температурных зависимостей показал линейный рост сопротивления для чистых металлов (медь, никель) и линейный отрицательный рост сплава (константант) в исследуемом диапазоне температур.
+
+Построение концентрационных зависимостей для системы Cu-Ni продемонстрировало отрицательный параболический характер изменения удельного сопротивления с увеличением массовой доли никеля и положительный параболический характер для температурного коэффициента удельного сопротивления. 
+
+Измерения термоЭДС выявили линейную зависимость напряжения от разности температур спаев для всех исследованных пар.
