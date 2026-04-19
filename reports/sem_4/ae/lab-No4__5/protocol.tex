@@ -1,0 +1,70 @@
+\begin{python}
+    from scripts.protocol import *
+\end{python}
+
+\begin{longtblr}[
+    caption = {Параллельно по напряжению},
+    label = {tab:parPoU},
+]{
+    colspec = { Q[l,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    {Частота $f$, кГц} & {$U_{вх}$, мВ} & {$U_{вых}$, мВ} \\
+    \expanded{
+        \pt*[3.1, -3.0, -3.1]{
+            p['fPoU'],
+            [p['Uin'] for _ in range(11)],
+            p['UparPoU']
+        }
+    }
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Последовательно по напряжению},
+    label = {tab:serPoU},
+]{
+    colspec = { Q[l,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    {Частота $f$, кГц} & {$U_{вх}$, мВ} & {$U_{вых}$, мВ} \\
+    \expanded{
+        \pt*[3.1, -3.0, -3.1]{
+            p['fPoU'],
+            [p['Uin'] for _ in range(11)],
+            p['UserPoU']
+        }
+    }
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Параллельно по току},
+    label = {tab:parPoI},
+]{
+    colspec = { Q[l,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    {Частота $f$, кГц} & {$U_{вх}$, мВ} & {$U_{вых}$, мВ} \\
+    \expanded{
+        \pt*[3.1, -3.0, -3.1]{
+            p['fPoI'],
+            [p['Uin'] for _ in range(16)],
+            p['UparPoI']
+        }
+    }
+\end{longtblr}
+\newpage
+\begin{equation}
+    R_{вх} = \pv[.0]{p['Rin']['parPoU']}~Ом\text{ (параллельно по напряжению)}
+\end{equation}
+\begin{equation}
+    R_{вх} = \pv[.0]{p['Rin']['parPoI']}~Ом\text{ (параллельно по току)}
+\end{equation}
+\begin{equation}
+    R_{вых} = \pv[.2]{p['Rout']['parPoU']}~Ом\text{ (параллельно по напряжению)}
+\end{equation}
+\begin{equation}
+    R_{вых} = \pv[.2]{p['Rout']['parPoI']}~Ом\text{ (параллельно по току)}
+\end{equation}
