@@ -53,7 +53,7 @@ axes.edgecolor: black
 # --- Легенда ---
 legend.frameon: False
 legend.fontsize: 12
-legend.numpoints: 2
+legend.numpoints: 1
 legend.handlelength: 3
 legend.loc: upper center
 legend.borderaxespad: -2.5
