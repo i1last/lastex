@@ -1,0 +1,149 @@
+\begin{python}
+from scripts.calc import *
+\end{python}
+
+\subsection*{ \fbox{Задание 1.} }
+\begin{quote} \textit{Построить графики АЧХ и определить по ним граничные частоты.} \end{quote}
+
+Расчет коэффициента передачи выполняется по формуле:
+\begin{equation}
+    K 
+    = \frac{
+        U_{вых}
+    }{
+        U_{вх}
+    } 
+    \overset{напр.}{=} \frac{
+        U_{вых~ДЦ}(f=10~Гц)
+    }{
+        U_{вх}
+    } 
+    = \frac{
+        \pv[.3]{p['ad']['Udc'][0]}
+    }{
+        \pv[.1]{p['ad']['Uin']}
+    } 
+    = \pv[.3]{r['K_dc'][0]}
+\end{equation}
+
+Граничная частота $f_{\text{гр}}$ определяется по уровню $K(f_{\text{гр}}) = K_{\text{max}}/\sqrt{2}$. На графиках (\cref{fig:afc_passive}, \cref{fig:afc_active}) данный уровень и соответствующие ему частоты показаны пунктирными линиями.
+
+\begin{longtblr}[
+    caption = {Рассчитанные коэффициенты передачи цепей},
+    label = {tab:k_calc},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] *{4}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $f$, Гц & $K_{\text{ПДЦ}}$ & $K_{\text{ПИЦ}}$ & $K_{\text{АДЦ}}$ & $K_{\text{АИЦ}}$ \\
+    \expanded{
+        \pt*[.0, .3, .3, .3, .3]{
+            p['ad']['f'],
+            r['K_dc'],
+            r['K_ic'],
+            r['K_actdc'],
+            r['K_actic']
+        }
+    }
+\end{longtblr}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/afc_passive.pgf}
+    \caption{АЧХ пассивных цепей с графическим определением граничных частот}
+    \label{fig:afc_passive}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/afc_active.pgf}
+    \caption{АЧХ активных цепей с графическим определением граничных частот}
+    \label{fig:afc_active}
+\end{figure}
+
+Сравнение граничных частот, определенных графически, с экспериментальными данными из протокола приведено в \cref{tab:fgr_comp}.
+
+\begin{longtblr}[
+    caption = {Граничные частоты цепей, определенные по графикам АЧХ},
+    label = {tab:fgr_comp},
+]{
+    colspec = { Q[l,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    Цепь & $f_{\text{н. гр}}$, Гц & $f_{\text{в. гр}}$, Гц \\
+    Пассивная ДЦ & \pv[.0]{r['f_n_gr_graph_dc']} & --- \\
+    Пассивная ИЦ & --- & \pv[.0]{r['f_v_gr_graph_ic']} \\
+    Активная ДЦ & \pv[.0]{r['f_n_gr_graph_actdc']} & \pv[.0]{r['f_v_gr_graph_actdc']} \\
+    Активная ИЦ & --- & \pv[.0]{r['f_v_gr_graph_actic']} \\
+\end{longtblr}
+
+\subsection*{ \fbox{Задание 3.} }
+\begin{quote} \textit{Рассчитать ошибки дифференцирования и интегрирования.} \end{quote}
+
+Определим длительность импульса по \cref{fig:pdc}. Длительность сигнала в клетках составляет $\pv[.0]{r['cletok']}$. Масштаб развертки --- $\pv[-3.1]{r['razvertka']}$ мс/дел. Тогда
+\begin{equation}
+    \tau_{\text{и}} 
+    = \pv[.0]{r['cletok']} \cdot \pv[.4]{r['razvertka']}
+    = \pv[.4]{r['tau_i']} \text{ с}
+\end{equation}
+
+Определим постоянную времени по \cref{fig:pic}.
+\begin{equation}
+    U_{max} 
+    = \pv[.1]{r['UmaxKL']}~дел \cdot \pv[.1]{r['UmaxVD']}~В/дел
+    = \pv[.2]{r['Umax']}~В
+\end{equation}
+\begin{equation}
+    U_{5\%}~дел
+    = \frac{
+        U_{max}~В \cdot 5\%
+    }{
+        \pv[.1]{r['UmaxVD']}~В/дел
+    }
+    = \frac{
+        \pv[.3]{r['U5p']}~В
+    }{
+        \pv[.1]{r['UmaxVD']}~В/дел
+    }
+    = \pv[.3]{r['U5pKL']}~дел.
+\end{equation}
+\begin{equation}
+    \tau
+    = \pv[.1]{r['tauKL']}~дел \cdot \pv[-3.1]{r['tauTD']}~мc/дел
+    = \pv[-3.2]{r['tau']}~мс
+\end{equation}
+
+Ошибка дифференцирования пассивной ДЦ:
+\begin{equation}
+    \varepsilon_{\text{д}} = \frac{3\tau}{\tau_{\text{и}}} \cdot 100\% 
+    = \frac{
+        3 \cdot \pv[.5]{r['tau']}
+    }{
+        \pv[.4]{r['tau_i']}
+    } \cdot 100\% 
+    = \pv[.2]{r['err_d_p_cond'] * 100} \%
+\end{equation}
+
+Ошибка интегрирования пассивной ИЦ:
+\begin{equation}
+    \varepsilon_{\text{и}} = \frac{\tau_{\text{и}}}{3\tau} \cdot 100\% 
+    = \frac{
+        \pv[.4]{r['tau_i']}
+    }{
+        3 \cdot \pv[.5]{r['tau']}
+    } \cdot 100\% 
+    = \pv[.2]{r['err_i_p_cond'] * 100} \%
+\end{equation}
+
+
+\section*{Выводы}
+В ходе выполнения работы были исследованы пассивные и активные дифференцирующие и интегрирующие цепи.
+
+Построены амплитудно-частотные характеристики, подтверждающие, что ДЦ выполняют функцию фильтров высоких частот, а ИЦ — фильтров низких частот. Определены граничные частоты.
+
+Экспериментально установлено, что для пассивной ДЦ при выбранных параметрах ($\tau = \pv[-3.2]{r['tau']}~мс$; $\tau_{\text{и}} = \pv[.4]{r['tau_i']}\text{ с}$) условие качественного дифференцирования $3\tau<\tau_и$ не выполняется. Это привело к большой погрешности $\varepsilon_{\text{д}} = \pv[.2]{r['err_d_p_cond'] * 100} \%$, что визуально выражается в отсутствии коротких разнополярных импульсов на выходе.
+
+Для пассивной ИЦ условие $3\tau>\tau_и$ выполняется, однако значение ошибки $\varepsilon_{\text{и}} = \pv[.2]{r['err_i_p_cond'] * 100} \%$ указывает на низкое качество интегрирования. Для получения более линейного выходного сигнала необходимо значительное увеличение постоянной времени $\tau$ или уменьшение длительности импульса $\tau_и$.

@@ -1,64 +1,92 @@
-\subsection*{1. Исследование амплитудно-частотных характеристик (АЧХ)}
+\begin{python}
+    from scripts.protocol import *
+\end{python}
 
-\begin{table}[H]
+\begin{longtblr}[
+    caption = {Результаты измерения АЧХ цепей при $C_1,R_1$. $U_{вх}=\pv[.0]{p['ad']['Uin']}$ В.},
+    label = {tab:ach_data},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] *{4}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $f$, Гц & $U_{\text{вых. ДЦ}}$, В & $U_{\text{вых. ИЦ}}$, В & $U_{\text{вых. акт. ДЦ}}$, В & $U_{\text{вых. акт. ИЦ}}$, В \\
+        \expanded{
+            \pt*[.0e, .3, .3, .3, .3]{
+                p['ad']['f'],
+                p['ad']['Udc'],
+                p['ad']['Uic'],
+                p['ad']['Uactdc'],
+                p['ad']['Uactic']
+            }
+        }\\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Параметры выходных сигналов при подаче меандра. $f=\pv[.0]{p['id']['f']}$ Гц.},
+    label = {tab:impulse_data},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] X[c,m]},
+    hlines, vlines,
+    rowhead = 1,
+}
+    Тип цепи & $U_0$ (вх.), В \\
+    Пассивная ДЦ & \pv*[.0]{p['id']['U0']} \\
+    Пассивная ИЦ & \pv*[.0]{p['id']['U0']} \\
+    Активная ДЦ  & \pv*[.0]{p['id']['U0']} \\
+    Активная ИЦ  & \pv*[.0]{p['id']['U0']} \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Граничные частоты цепей},
+    label = {tab:f_gr},
+    expand = \expanded,
+]{
+    colspec = { Q[l,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    Цепь & Пасс. ДЦ & Пасс. ИЦ & Акт. ДЦ & Акт. ИЦ \\
+    $f_{гр}$ (эксп.), Гц & \pv*[.0]{p['fgr']['dc']} & \pv*[.0]{p['fgr']['ic']} & \pv*[.0]{p['fgr']['actdc']} & \pv*[.0]{p['fgr']['actic']} \\
+\end{longtblr}
+
+\begin{figure}[H]
     \centering
-    \caption{Результаты измерения АЧХ цепей при $R = \text{\dots}$, $C = \text{\dots}$}
-    \label{tab:ach_data}
-    \begin{tblr}[expand=\directlua]{
-        colspec = { Q[c,m] *{4}{X[c,m]} },
-        hlines, vlines,
-        rows = {m, font=\small},
-        rowhead = 1,
-    }
-        $f$, Гц & $U_{\text{вых. ДЦ}}$, В & $U_{\text{вых. ИЦ}}$, В & $U_{\text{вых. акт. ДЦ}}$, В & $U_{\text{вых. акт. ИЦ}}$, В \\
-        10 Гц   &                         &                         &                              & \\
-        20 Гц   &                         &                         &                              & \\
-        50 Гц   &                         &                         &                              & \\
-        100 Гц  &                         &                         &                              & \\
-        200 Гц  &                         &                         &                              & \\
-        500 Гц  &                         &                         &                              & \\
-        1 кГц   &                         &                         &                              & \\
-        2 кГц   &                         &                         &                              & \\
-        5 кГц   &                         &                         &                              & \\
-        10 кГц  &                         &                         &                              & \\
-        20 кГц  &                         &                         &                              & \\
-        50 кГц  &                         &                         &                              & \\
-        100 кГц &                         &                         &                              & \\
-        200 кГц &                         &                         &                              & \\
-        500 кГц &                         &                         &                              & \\
-        1 МГц   &                         &                         &                              & \\
-    \end{tb lr}
-\end{table}
 
-\subsection*{2. Исследование переходных процессов (импульсный режим)}
+    \begin{subfigure}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/pdc.jpg}
+        \caption{Пассивная ДЦ. $0.1ms;\; 0.5V$.}
+        \label{fig:pdc}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/pic.jpg}
+        \caption{Пассивная ИЦ $0.1ms;\; 0.5V$.}
+        \label{fig:pic}
+    \end{subfigure}
 
-\begin{table}[H]
-    \centering
-    \caption{Параметры выходных сигналов при подаче меандра}
-    \label{tab:impulse_data}
-    \begin{tblr}[expand=\directlua]{
-        colspec = { Q[c,m] Q[c,m] X[c,m] X[c,m] },
-        hlines, vlines,
-        rows = {m, font=\small},
-        rowhead = 1,
-    }
-        Тип цепи & $\tau_\text{и}$, мкс & $U_0$ (вх.), В & $U_{Cm}$ / $U_{вых. max}$, В \\
-        Пассивная ДЦ & & & \\
-        Пассивная ИЦ & & & \\
-        Активная ДЦ  & & & \\
-        Активная ИЦ  & & & \\
-    \end{tblr}
-\end{table}
+    \vspace{0.2cm}
 
-\begin{table}[H]
-    \centering
-    \caption{Граничные частоты цепей}
-    \label{tab:f_gr}
-    \begin{tblr}[expand=\directlua]{
-        colspec = { X[c,m] X[c,m] X[c,m] X[c,m] },
-        hlines, vlines,
-    }
-        Цепь & Пасс. ДЦ & Пасс. ИЦ & Акт. ДЦ & Акт. ИЦ \\
-        $f_{гр}$ (эксп.), Гц & & & & \\
-    \end{tblr}
-\end{table}
+    \begin{subfigure}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/adc.jpg}
+        \caption{Активная ДЦ $0.1ms;\; 1V$.}
+        \label{fig:adc}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[c]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figs/aic.jpg}
+        \caption{Активная ИЦ $10\mu s;\; 0.5V$.}
+        \label{fig:aic}
+    \end{subfigure}
+
+    \caption{Осциллограмы}
+    \label{fig:posc}
+\end{figure}
+
+\textit{\textbf{Столбцы $U_{\text{вых. акт. ДЦ}}$ и $U_{\text{вых. акт. ИЦ}}$ в оригинальном протоколе перепутаны местами. Аналогично Акт. ДЦ и Акт. ИЦ.} Здесь все исправлено.}

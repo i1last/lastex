@@ -1,8 +1,4 @@
-%&etulab_fmt
-\ifdefined\Department
-\else
-    \documentclass{etulab}
-\fi
+\documentclass{etulab}
 % <- ПОДКЛЮЧЕНИЕ СТИЛЯ
 
 % === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
@@ -11,7 +7,7 @@
 \Discipline{аналоговая электроника}
 \WorkTitle{ИССЛЕДОВАНИЕ Дифференцирующих и интегрирующих цепей}
 \Group{4494}
-\Variant{---}
+\Variant{}
 \StudentName{\parbox[t]{4cm}{\raggedleft 
     Рахметов А. Р. \\
     Фролов А. А.
@@ -80,7 +76,11 @@
 \input{main.tex}
 % --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
 
-
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ ---
+\newpage
+\centeredsection{ОБРАБОТКА РЕЗУЛЬТАТОВ}
+\input{processing.tex}
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ ---
 
 % --- ЗАКЛЮЧЕНИЕ ---
 % \newpage
