@@ -87,7 +87,9 @@
     \begin{titlepage}
         \begin{center}
             МИНОБРНАУКИ РОССИИ \\
+            \rule[0.5ex]{0.6\textwidth}{1.2pt} \\
             СПбГЭТУ «ЛЭТИ» ИМ. В.И. УЛЬЯНОВА (ЛЕНИНА) \\
+            \rule[0.5ex]{0.6\textwidth}{1.2pt} \\
             Кафедра \@Department
         \end{center}
 
