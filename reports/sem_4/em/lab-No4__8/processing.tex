@@ -1,0 +1,238 @@
+\begin{python}
+    from scripts.calc import *
+\end{python}
+
+\subsection*{ \fbox{Задание 1.} }
+\begin{quote}
+    \textit{Рассчитать основную кривую намагничивания и статическую магнитную проницаемость.}
+\end{quote}
+
+Для каждого значения $X$ и $Y$ из протокола рассчитываются напряжения с учетом масштабов $m_x$ и $m_y$. Пример расчета для последней точки ($X = \pv[.2]{p['mc']['X'][-1]}$, $Y = \pv[.2]{p['mc']['Y'][-1]}$):
+\begin{equation}
+    U_X = m_x \cdot X = \pv[.3]{p['prms']['mx']} \cdot \pv[.2]{p['mc']['X'][-1]} = \pv[.3]{r['U_X'][-1]} \text{ В}
+\end{equation}
+\begin{equation}
+    U_Y = m_y \cdot Y = \pv[.3]{p['prms']['my']} \cdot \pv[.2]{p['mc']['Y'][-1]} = \pv[.3]{r['U_Y'][-1]} \text{ В}
+\end{equation}
+
+Рассчитаем напряженность магнитного поля $H_m$ и индукции $B_m$. Параметры, взятые из методических материалов: $R_T = \pv[.0]{r['R_T']}~Ом;\; r_{ср} = \pv[.3]{r['r_cp']}~м;\; w_1=\pv[.0]{r['w1']};\; w_2=\pv[.0]{r['w2']};\; C_и=\pv[.0e]{r['C_I']}~Ф;\; R_и = \pv[.0]{r['R_I']}~Ом;\; S = \pv[.0e]{r['S']}~м^{-2}$.
+\begin{equation}
+    H_m
+    = \frac{
+        U_X \cdot w_1
+    }{
+        2\pi r_{ср} R_T
+    } 
+    = \frac{
+        \pv[.3]{r['U_X'][-1]} \cdot \pv[.0]{r['w1']}
+    }{
+        2\pi \cdot \pv[.3]{r['r_cp']} \cdot \pv[.0]{r['R_T']}
+    }
+    = \pv[.1]{r['H_m'][-1]} \text{ А/м}
+\end{equation}
+\begin{equation}
+    B_m 
+    = \frac{
+        U_Y R_и C_и
+    }{
+        w_2 S
+    }
+    = \frac{
+        \pv[.3]{r['U_Y'][-1]} \cdot \pv[.0]{r['R_I']} \cdot \pv[.0e]{r['C_I']}
+    }{
+        \pv[.0]{r['w2']} \cdot \pv[.0e]{r['S']}
+    }
+    = \pv[.3]{r['B_m'][-1]} \text{ Тл}
+\end{equation}
+
+Статическая магнитная проницаемость $\mu_{ст}$:
+\begin{equation}
+    \mu_{ст} = \frac{B_m}{\mu_0 H_m} = \frac{\pv[.3]{r['B_m'][-1]}}{4\pi \cdot 10^{-7} \cdot \pv[.1]{r['H_m'][-1]}} = \pv[.0]{r['mu_st'][-1]}
+\end{equation}
+
+\begin{longtblr}[
+    caption = {Результаты расчета основной кривой намагничивания},
+    label = {tab:calc_mc},
+    expand = \expanded,
+]{
+    colspec = { *{7}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $X$, дел. & $U_X$, В & $H_m$, А/м & $Y$, дел. & $U_Y$, В & $B_m$, Тл & $\mu_{ст}$ \\
+    \expanded{\pt*[.2, .3, .1, .2, .3, .3, .0]{*r['tab1']}}
+\end{longtblr}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_mc.pgf}
+    \caption{Кривая намагничивания $B_m(H_m)$ и зависимость статической магнитной проницаемости $\mu_{ст}(H_m)$}
+    \label{fig:plot_mc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/osc_50.jpg}
+        \caption*{50 Гц}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/osc_200.jpg}
+        \caption*{200 Гц}
+    \end{minipage}
+
+    \vspace{1em}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/osc_400.jpg}
+        \caption*{400 Гц}
+    \end{minipage}\hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/osc_600.jpg}
+        \caption*{600 Гц}
+    \end{minipage}
+
+    \vspace{1em}
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figs/osc_800.jpg}
+        \caption*{800 Гц}
+    \end{minipage}
+    \caption{Осциллограммы петель гистерезиса при различных частотах}
+    \label{fig:oscillograms}
+\end{figure}
+
+\subsection*{ \fbox{Задание 2.} }
+\begin{quote}
+    \textit{Рассчитать магнитные потери, разделить их на потери на гистерезис и вихревые токи.}
+\end{quote}
+
+Коэффициенты пропорциональности для площади петли:
+\begin{equation}
+    h_1 = \frac{m_x w_1}{R_T 2\pi r_{cp}} = \frac{\pv[.3]{p['prms']['mx']} \cdot \pv[.0]{r['w1']}}{\pv[.0]{r['R_T']} \cdot 2\pi \cdot \pv[.3]{r['r_cp']}} = \pv[.2]{r['h1']} \text{ (А/м)/дел}
+\end{equation}
+\begin{equation}
+    b_1 = \frac{m_y C_и R_и}{w_2 S} = \frac{\pv[.3]{p['prms']['my']} \cdot \pv[.0e]{r['C_I']} \cdot \pv[.0]{r['R_I']}}{\pv[.0]{r['w2']} \cdot \pv[.0e]{r['S']}} = \pv[.4]{r['b1']} \text{ Тл/дел}
+\end{equation}
+
+Пример расчета полных потерь энергии для $f = \pv[.0]{r['f_loss'][0]}$ Гц ($S_П = \pv[.1]{r['S_P'][0]}$ мм$^2$), учитывая, что у нас нанокристаллический сплав ($d = \pv[.0]{p['prms']['d']} кг/м^2$):
+\begin{equation}
+    Э = \frac{S_П h_1 b_1}{100 d} = \frac{\pv[.1]{r['S_P'][0]} \cdot \pv[.2]{r['h1']} \cdot \pv[.4]{r['b1']}}{100 \cdot \pv[.0]{p['prms']['d']}} = \pv[-6.4]{r['E'][0]} \text{ мкДж/кг}
+\end{equation}
+
+Экстраполяция линейной зависимости $Э(f)$ к $f=0$ дает значение потерь на гистерезис: $Э_Г = \pv[-6.4]{r['E_G']}$ мкДж/кг.
+
+Пример расчета потерь на вихревые токи и мощностей для $f = \pv[.0]{r['f_loss'][0]}$ Гц:
+\begin{equation}
+    Э_{ВТ} = Э - Э_Г = \pv[-6.4]{r['E'][0]} - \pv[-6.4]{r['E_G']} = \pv[-6.4]{r['E_BT'][0]} \text{ мкДж/кг}
+\end{equation}
+\begin{equation}
+    P_Г = Э_Г f = \pv[-6.4]{r['E_G']} \cdot \pv[.0]{r['f_loss'][0]} = \pv[-6.2]{r['P_G'][0]} \text{ мкВт/кг}
+\end{equation}
+\begin{equation}
+    P_{ВТ} = Э_{ВТ} f = \pv[-6.4]{r['E_BT'][0]} \cdot \pv[.0]{r['f_loss'][0]} = \pv[-6.2]{r['P_BT'][0]} \text{ мкВт/кг}
+\end{equation}
+
+\begin{longtblr}[
+    caption = {Результаты расчета магнитных потерь},
+    label = {tab:calc_losses},
+    expand = \expanded,
+]{
+    colspec = { *{7}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $f$, Гц & $S_П$, мм$^2$ & $Э$, мкДж/кг & $Э_Г$, мкДж/кг & $Э_{ВТ}$, мкДж/кг & $P_Г$, мкВт/кг & $P_{ВТ}$, мкВт/кг \\
+    \expanded{\pt*[.0, .2, -6.4, -6.4, -6.4, -6.2, -6.2]{*r['tab3']}}
+\end{longtblr}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_losses.pgf}
+    \caption{Частотная зависимость потерь энергии $Э(f)$}
+    \label{fig:plot_losses}
+\end{figure}
+
+\subsection*{ \fbox{Задание 3.} }
+\begin{quote}
+    \textit{Рассчитать частотную зависимость эффективной магнитной проницаемости.}
+\end{quote}
+
+Пример расчета для частоты $f = \pv[.0]{p['me']['f'][0]}$ Гц. Действующее значение тока в первичной обмотке:
+\begin{equation}
+    I = \frac{U_R}{R_T} = \frac{\pv[.0e]{p['me']['U_R']}}{\pv[.0]{r['R_T']}} = \pv[.0e]{r['I']} \text{ А}
+\end{equation}
+
+Напряжение на катушке индуктивности $U_L$:
+\begin{equation}
+    U_L
+    = \sqrt{U_{вх}^2 - U_R^2}
+    = 
+        \sqrt{(\pv[.1e]{p['me']['Uin'][0]})^2 -
+        (\pv[.0e]{p['me']['U_R']})^2}
+    = \pv[.1e]{r['U_L'][0]} \text{ В}
+\end{equation}
+
+Индуктивность образца $L$ и эффективная магнитная проницаемость $\mu_{эф}$:
+\begin{equation}
+    L
+    = \frac{U_L}{2\pi f I} 
+    = \frac{
+        \pv[.1e]{r['U_L'][0]}
+    }{
+        2\pi \cdot \pv[.0]{p['me']['f'][0]} \cdot \pv[.1e]{r['I']}
+    } 
+    = \pv[-3.2]{r['L'][0]} \text{ мГн}
+\end{equation}
+\begin{equation}
+    \mu_{эф}
+    = \frac{
+        2\pi L r_{ср}
+    }{
+        \mu_0 w_1^2 S
+    } 
+    = \frac{
+        2\pi \cdot \pv[.5]{r['L'][0]} \cdot \pv[.3]{r['r_cp']}
+    }{
+        4\pi \cdot 10^{-7} \cdot \pv[.0]{r['w1']}^2 \cdot \pv[.0e]{r['S']}
+    }
+    = \pv[.0]{r['mu_ef'][0]}
+\end{equation}
+
+\begin{longtblr}[
+    caption = {Результаты расчета частотной зависимости $\mu_{эф}$},
+    label = {tab:calc_me},
+    expand = \expanded,
+]{
+    colspec = { *{6}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $f$, Гц & $U_{вх}$, мВ & $U_R$, мВ & $U_L$, мВ & $L$, мГн & $\mu_{эф}$ \\
+    \expanded{\pt*[.0, .0, .0, .2, -3.2, .0]{*r['tab2']}}
+\end{longtblr}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/plot_mu.pgf}
+    \caption{Частотная зависимость эффективной магнитной проницаемости $\mu_{эф}(f)$}
+    \label{fig:plot_mu}
+\end{figure}
+
+
+
+\section*{Выводы}
+
+В ходе выполнения работы были исследованы магнитные характеристики нанокристаллического сплава. На основании полученных результатов можно сделать следующие выводы:
+
+\begin{itemize}
+    \item \textit{Основная кривая намагничивания.} Экспериментально подтвержден нелинейный характер зависимости $B_m(H_m)$. Материал характеризуется быстрым ростом индукции в слабых полях и последующим выходом в область технического насыщения при $H_m > 150$ А/м.
+    \item \textit{Магнитная проницаемость.} Зависимость статической магнитной проницаемости $\mu_{ст}$ от напряженности поля имеет выраженный максимум ($\mu_{max} \approx 5684$) в области малых полей ($H_m \approx 30-70$ А/м).
+    \item \textit{Магнитные потери.} Анализ петель гистерезиса показал, что с увеличением частоты потери энергии линейно возрастают. Методом экстраполяции к нулевой частоте определены потери на гистерезис $Э_Г \approx 6.42$ мкДж/кг.
+    \item \textit{Частотные свойства.} Установлено, что эффективная магнитная проницаемость $\mu_{эф}$ существенно снижается с ростом частоты (с 2008 при 50 Гц до 620 при 800 Гц).
+\end{itemize}
+
+Исследуемый материал обладает довольно узкой петлей гистерезиса и высокой магнитной проницаемостью при малых частотах.

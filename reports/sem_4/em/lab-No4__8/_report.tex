@@ -1,9 +1,4 @@
-%&etulab_fmt
-\ifdefined\Department
-\else
-    \documentclass{etulab}
-\fi
-% <- ПОДКЛЮЧЕНИЕ СТИЛЯ
+\documentclass[]{etulab}
 
 % === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
 \Department{МНЭ}
@@ -54,8 +49,12 @@
 
 % --- ПРОТОКОЛ ---
 \newpage
-\centeredsection{ПРОТОКОЛ НАБЛЮДЕНИЙ}
-
+\makeatletter
+    \centeredsection{{
+        ПРОТОКОЛ НАБЛЮДЕНИЙ \\ 
+        По \@WorkType
+    }}
+\makeatother
 \input{protocol.tex}
 
 \vfill
@@ -71,6 +70,14 @@
 % --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
 \input{main.tex}
 % --- ОСНОВНОЕ СОДЕРЖАНИЕ ---
+
+
+
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ ---
+\newpage
+\centeredsection{ОБРАБОТКА РЕЗУЛЬТАТОВ}
+\input{processing.tex}
+% --- ОБРАБОТКА РЕЗУЛЬТАТОВ ---
 
 
 
