@@ -6,6 +6,12 @@
     listname=Список листингов
     placement=hbtp,
 }
+\newenvironment{codemultipage}{
+    \par\addvspace{\intextsep} % Отступ сверху
+    \captionsetup{hypcap=false} % Отключаем предупреждение hypcap
+}{
+    \par\addvspace{\intextsep} % Отступ снизу
+}
 
 \captionsetup[listing]{
     position=top,
