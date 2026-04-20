@@ -301,7 +301,7 @@
         "description": "Вставка листинга кода из файла."
     },
     "Clever Reference": {
-        "prefix": "cref",
+        "prefix": "rf",
         "body": [
             "\\cref{${1|fig,tab,lst,eq|}:${2:label}}"
         ],
