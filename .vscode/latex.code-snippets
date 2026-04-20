@@ -282,7 +282,7 @@
             "        % firstline      = 1,",
             "        % lastline       = 10,",
             "        % highlightlines = {1-10},",
-            "    ]{${2:text}}{code/${3:filename.txt}}",
+            "    ]{${2:text}}{scripts/${3:filename.txt}}",
             "\\end{listing}",
             "$0"
         ],
@@ -294,7 +294,7 @@
             "\\begin{codemultipage}",
             "    \\captionof{listing}{${1:caption}\\label{lst:${3:label}}}",
             "    \\nopagebreak",
-            "    \\inputminted{${2:matlab}}{code/${3:filename.m}}",
+            "    \\inputminted{${2:matlab}}{scripts/${3:filename.m}}",
             "\\end{codemultipage}",
             "$0"
         ],
