@@ -1,0 +1,50 @@
+\begin{longtblr}[
+    caption = {Измеренные значения напряжений и токов цепи},
+    label = {tab:experiment_full},
+]{
+    colspec = { *{10}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 1,
+}
+$U$, В & $U_1$, В & $U_2$, В & $U_3$, В & $U_4$, В & $I$, мА & $I_1$, мА & $I_2$, мА & $I_3$, мА & $I_4$, мА \\
+       &          &          &          &          &         &           &           &           &           \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Определение токов цепи методом наложения},
+    label = {tab:superposition},
+]{
+    colspec = { Q[c,m] *{4}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 1,
+}
+Включены источники & $I_1$, мА & $I_2$, мА & $I_3$, мА & $I_4$, мА \\
+$U$                &           &           &           &           \\
+$I$                &           &           &           &           \\
+$U, I$ (расчет)    &           &           &           &           \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Метод эквивалентного источника},
+    label = {tab:mei},
+]{
+    colspec = { *{3}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 1,
+}
+$U$, В & {$U_0$, В \\ Напряжение ХХ на зажимах A, B} & {$I_3$, В \\ Ток в ветви 3 при питании от ЭИ $U_0$} \\
+       &          &  \\
+\end{longtblr}
+
+
+\begin{longtblr}[
+    caption = {Принцип взаимности},
+    label = {tab:pv},
+]{
+    colspec = { *{3}{X[c,m]} },
+    hlines, vlines,
+    rowhead = 1,
+}
+$U$, В (из \cref{tab:mei}) & {$I_3$, В \\ Ток в ветви 3 при источнике $U$ в ветви 1} & {$I_1$, В \\ Ток в ветви 1 при источнике $U$ в ветви 3} \\
+       &          &  \\
+\end{longtblr}
