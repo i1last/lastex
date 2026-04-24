@@ -20,7 +20,7 @@ gamma_down = dU_down / UN * 100
 
 H = np.abs(Uoup - Uodown)
 
-Uavg = (Uoup + Uodown) / 2
+Uavg = np.maximum(Uoup, Uodown)
 dU_avg = (Ui - Uavg)
 delta_avg = dU_avg / Uavg * 100
 gamma_avg = dU_avg / UN * 100
