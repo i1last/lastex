@@ -1,0 +1,214 @@
+\section*{Цель}
+Получение практических навыков по тестированию клиентской части веб-приложения.
+
+\section*{Задачи}
+\begin{enumerate}
+    \item Провести тестирование совместимости веб-системы
+    \item Протестировать адаптивность веб-системы.
+    \item Проверить валидность верстки.
+    \item Протестировать структуру веб-приложения.
+    \item Провести технический аудит веб-системы
+\end{enumerate}
+
+\section*{Описание веб-приложения}
+Для выполнения работы был выбран сайт компании «КЗ Групп», доступный по адресу \url{https://kzgroup.ru/}.
+
+\textit{Предметная область.} Поставка промышленного оборудования и комплектующих для различных предприятий.
+
+\textit{Назначение веб-приложения.} Сайт является визитной карточкой компании и содержит каталог продукции. Он предназначен для того, чтобы пользователи могли:
+\begin{itemize}
+\item Посмотреть список доступного оборудования и его характеристики.
+\item Узнать о предоставляемых услугах.
+\item Найти контакты организации или оставить заявку на обратный звонок.
+\end{itemize}
+
+Сайт относится к многостраничным.
+
+\newpage
+\section{Тестирование совместимости}
+% % --- browserling.com.
+% % При тестировании следует провести попарное
+% % тестирование ОС+браузер, например ОС windows 10 и браузер Opera версии 104,
+% % затем изменить браузер на Edge версии 118. 
+% % Браузеры и версии браузеров выбираете самостоятельно. 
+% % Следует провести 2 теста и сделать 2 скриншота.
+
+% 1. BL: Version 147.0.7727.102 (Official Build) (64-bit) Chrome;  Windows 11 25H2 26200.8245
+% 2. MY: Windows 10, Firefox 140
+
+Для проведения кроссбраузерного тестирования использован специализированный онлайн-сервис \url{browserling.com}. Данный инструмент позволяет проверить \url{kzgroup.ru} на корректность отображения и функционирования веб-приложения в различных комбинациях операционных систем и браузеров.
+
+\subsection*{Тест №1}
+Операционная система \textit{Windows 10}, браузер \textit{Mozilla Firefox} версии 140. В ходе тестирования проверялась визуальная целостность интерфейса и доступность основных навигационных элементов. Результат зафиксирован на \cref{fig:bl1,fig:bl2}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/bl1.png}
+    \caption{Отображение веб-приложения в среде Windows 10, Firefox 140}
+    \label{fig:bl1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/bl2.png}
+    \caption{Отображение веб-приложения в среде Windows 10, Firefox 140}
+    \label{fig:bl2}
+\end{figure}
+
+\subsection*{Тест №2}
+Операционная система \textit{Windows 11}, браузер \textit{Google Chrome} версии 147. Результат представлен на \cref{fig:my1,fig:my2}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figs/my1.png}
+    \caption{Отображение веб-приложения в среде Windows 11, Chrome 147}
+    \label{fig:my1}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figs/my2.png}
+    \caption{Отображение веб-приложения в среде Windows 11, Chrome 147}
+    \label{fig:my2}
+\end{figure}
+
+\subsection*{Анализ}
+Тестирование на одинаковых размерах устройств показало, что сайт сохраняет структурную целостность и работоспособность в выбранных конфигурациях.
+Ошибок и багов верстки при смене браузерных движков и операционных систем не обнаружено.
+
+
+\newpage
+\section{Тестирование адаптивности}
+
+Тестирование адаптивности веб-приложения проведено с использованием DevTools. Проверка осуществлялась для трех наиболее востребованных разрешений экрана: $1920 \times 1080$, $1366 \times 768$ и $360 \times 800$. 
+
+Как видно на \cref{fig:1920+1080.png,fig:1366+768.png,fig:360+800.png}, элементы интерфейса корректно масштабируются в зависимости от размера окна просмотра. При переходе к разрешению $360 \times 800$ пропадает фоновое изображение кировского завода.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/1920+1080.png}
+    \caption{$1920 \times 1080$}
+    \label{fig:1920+1080.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/1366+768.png}
+    \caption{$1366 \times 768$}
+    \label{fig:1366+768.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/360+800.png}
+    \caption{$360 \times 800$}
+    \label{fig:360+800.png}
+\end{figure}
+
+\newpage
+\section{Тестирование верстки}
+
+Проверка валидности HTML-кода главной страницы выполнена с помощью сервиса W3 Markup Validation Service (\cref{fig:w3.png}). В ходе статического анализа выявлены предупреждения и ошибки. 
+
+Среди проблем зафиксирована, к примеру, отсутствие обязательных атрибутов у некоторых тегов. Тем не менее, критических сбоев, которые препятствуют отображению страницы современными браузерами, не зафиксировано.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/w3.pdf}
+    \caption{Тестирование верстки через \url{validator.w3.org}.}
+    \label{fig:w3.png}
+    \textit{Примечание: \cref{fig:w3.png} добавлен как pdf и может быть приближен для более детального рассмотрения.}
+\end{figure}
+
+\newpage
+\section{Тестирование структуры}
+
+Анализ структуры веб-приложения и проверка ссылочной целостности проведены с использованием онлайн-сервисов Siteliner и BuiltWith. 
+
+Отчет Siteliner (\cref{fig:siteliner.pdf}) демонстрирует отсутствие неработающих ссылок на просканированных страницах. Это свидетельствует о корректной настройке внутренней навигации.
+
+Инструментарий BuiltWith (\cref{fig:bw_analitics,fig:bw_cdn,fig:bw_cms,fig:bw_frameworks,fig:bw_js,fig:bw_ssl}) позволил детализировать внутреннюю структуру и подключенные модули. 
+
+Выявлено использование систем веб-аналитики (Яндекс.Метрика, Facebook Pixel), сети доставки контента (jQuery CDN), системы управления контентом (1C-Bitrix), а также ряда JavaScript-библиотек (core-js, GSAP). Для обеспечения безопасности данных используется SSL-сертификат от GlobalSign. 
+
+Суммарное число технология (\cref{fig:bw_techs}) равно 45.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/siteliner.pdf}
+    \caption{SiteLiner}
+    \label{fig:siteliner.pdf}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/bw_analitics.png}
+    \caption{BuiltWith Аналитика}
+    \label{fig:bw_analitics}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/bw_cdn.png}
+    \caption{BuiltWith CDN}
+    \label{fig:bw_cdn}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/bw_cms.png}
+    \caption{BuiltWith CMS}
+    \label{fig:bw_cms}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/bw_frameworks.png}
+    \caption{BuiltWith FrameWorks}
+    \label{fig:bw_frameworks}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/bw_js.png}
+    \caption{BuiltWith JavaScript}
+    \label{fig:bw_js}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/bw_ssl.png}
+    \caption{BuiltWith SSL}
+    \label{fig:bw_ssl}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/bw_techs.png}
+    \caption{BuiltWith Количество технология}
+    \label{fig:bw_techs}
+\end{figure}
+
+
+\newpage
+\section{Аудит веб-приложения}
+
+Технический аудит выполнен с помощью профильного сервиса W3Techs (\cref{fig:w3techs.pdf}). 
+
+Результаты сканирования подтверждают данные, полученные на предыдущем этапе: сайт работает на базе CMS Bitrix, в качестве серверного языка программирования применяется PHP 8.2.29, веб-сервером выступает Nginx и т. д.
+
+Дополнительно зафиксировано использование кодировки UTF-8 и языка разметки HTML5.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/w3techs.pdf}
+    \caption{W3Techs}
+    \label{fig:w3techs.pdf}
+    \textit{Примечание: \cref{fig:w3techs.pdf} добавлен как pdf и может быть приближен для более детального рассмотрения.}
+\end{figure}
+
+\newpage
+\section{Выводы}
+
+В ходе выполнения практической работы была достигнута поставленная цель: получены практические навыки тестирования клиентской части веб-приложения. 
+
+В процессе работы были приобретены следующие навыки:
+\begin{itemize}
+    \item Проведение кроссбраузерного тестирования с использованием специализированных платформ для выявления дефектов отображения в различных операционных системах и версиях браузеров.
+    \item Оценка адаптивности пользовательского интерфейса средствами DevTools при эмуляции различных разрешений экранов.
+    \item Валидация HTML-разметки на соответствие стандартам W3 для обеспечения кроссплатформенной совместимости.
+    \item Анализ целостности ссылок и проведение комплексного технического аудита стека технологий с применением Siteliner, BuiltWith и W3Techs.
+\end{itemize}
+
+В ходе тестирования возникла проблема, связанная с жестким ограничением времени сессии в 3 минуты на \url{browserling.com}. Данная проблема была решена путем предварительного планирования тестовых сценариев: конфигурации сред ОС + браузер были выбраны заранее, а создание скриншотов производилось немедленно после загрузки интерфейса. 
+
+Итоговый анализ показал, что протестированное веб-приложение обладает высоким уровнем кроссбраузерной совместимости, адаптивности и технической оптимизации, не имеет нарушений ссылочной целостности, однако требует корректировки HTML-кода для устранения некоторых ошибок.
