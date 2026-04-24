@@ -1,0 +1,39 @@
+\textit{Идентификация варианта:}
+\begin{itemize}
+    \item Номер варианта: \underline{\hspace{4cm}}
+    \item Схема нагружения: \underline{\hspace{4cm}}
+    \item Сечение для определения прогиба: \underline{\hspace{4cm}}
+\end{itemize}
+
+\begin{longtblr}[
+    caption = {Геометрические и физические параметры стержня},
+    label = {tab:params},
+]{
+    colspec = { X[l,m] X[l,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    \textit{Наименование параметра} & \textit{Значение (с указанием размерности)} \\
+    Длина стержня $l$ & \\
+    Ширина поперечного сечения $b$ & \\
+    Высота поперечного сечения $h$ & \\
+    Модуль нормальной упругости $E$ & \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Результаты измерений прогибов стержня при плоском поперечном изгибе},
+    label = {tab:measurements},
+]{
+    colspec = { Q[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead = 2,
+}
+    \SetCell[r=2]{c} \textit{Нагрузка $P$, Н} & \SetCell[c=3]{c} \textit{Показания индикатора, мкм} & & \\
+    & \textit{Опыт 1} & \textit{Опыт 2} & \textit{Опыт 3} \\
+    & & & \\
+    & & & \\
+    & & & \\
+    & & & \\
+    & & & \\
+    & & & \\
+\end{longtblr}
