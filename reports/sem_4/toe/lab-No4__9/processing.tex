@@ -1,0 +1,220 @@
+% processing.tex
+\begin{python}
+from scripts.calc import *
+\end{python}
+
+\section*{ \fbox{Задания 1, 2} }
+\begin{quote}
+    \textit{Вычислите индуктивные сопротивления, индуктивности, взаимную индуктивность и коэффициент связи.}
+\end{quote}
+
+Пример расчета параметров для первой катушки:
+\begin{equation}
+    x_1
+    = \frac{U_{\text{вх}1}}{I_{\text{вх}1}}
+    = \frac{\pv[.2]{p['prms']['c1']['Uin']}}{\pv[-3.2e]{p['prms']['c1']['Iin']}}
+    = \pv[.2]{r['prms']['x1']} \text{ Ом}
+\end{equation}
+\begin{equation}
+    L_1
+    = \frac{x_1}{2\pi f}
+    = \frac{\pv[.2]{r['prms']['x1']}}{2\pi \cdot \pv[3.0]{p['prms']['f']} \cdot 10^3}
+    = \pv[.4]{r['prms']['L1']} \text{ Гн}
+\end{equation}
+\begin{equation}
+    |x_{M1}|
+    = \frac{U_{\text{вых}1}}{I_{\text{вх}1}}
+    = \frac{\pv[.2]{p['prms']['c1']['Uout']}}{\pv[-3.2e]{p['prms']['c1']['Iin']}}
+    = \pv[.2]{r['prms']['xM1']} \text{ Ом}
+\end{equation}
+\begin{equation}
+    |M_1|
+    = \frac{|x_{M1}|}{2\pi f}
+    = \frac{\pv[.2]{r['prms']['xM1']}}{2\pi \cdot \pv[3.0]{p['prms']['f']} \cdot 10^3}
+    = \pv[.4]{r['prms']['M1']} \text{ Гн}
+\end{equation}
+
+Среднее значение взаимной индуктивности и коэффициент связи:
+\begin{equation}
+    |M|_{\text{ср}}
+    = \frac{|M_1| + |M_2|}{2}
+    = \frac{\pv[.4]{r['prms']['M1']} + \pv[.4]{r['prms']['M2']}}{2}
+    = \pv[.4]{r['prms']['M_avg']} \text{ Гн}
+\end{equation}
+\begin{equation}
+    k
+    = \frac{|M|_{\text{ср}}}{\sqrt{L_1 L_2}}
+    = \frac{\pv[.4]{r['prms']['M_avg']}}{\sqrt{\pv[.4]{r['prms']['L1']} \cdot \pv[.4]{r['prms']['L2']}}}
+    = \pv[.3]{r['prms']['k']}
+\end{equation}
+
+\begin{longtblr}[
+    caption
+    = {Расчетные параметры катушек},
+    label
+    = {tab:calc_params},
+]{
+    colspec
+    = { Q[c,m] X[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead
+    = 1,
+}
+    Катушка & $x$, Ом & $L$, Гн & $|x_M|$, Ом & $|M|$, Гн \\
+    1 & \pv*[.2]{r['prms']['x1']} & \pv*[.4]{r['prms']['L1']} & \pv*[.2]{r['prms']['xM1']} & \pv*[.4]{r['prms']['M1']} \\
+    2 & \pv*[.2]{r['prms']['x2']} & \pv*[.4]{r['prms']['L2']} & \pv*[.2]{r['prms']['xM2']} & \pv*[.4]{r['prms']['M2']} \\
+\end{longtblr}
+
+\section*{ \fbox{Задание 3} }
+\begin{quote}
+    \textit{Рассчитайте экспериментальные и теоретические значения эквивалентной индуктивности для согласного и встречного последовательного включений.}
+\end{quote}
+
+Пример расчета для согласного включения:
+\begin{equation}
+    L_{\text{э,эксп}}
+    = \frac{U}{\omega I}
+    = \frac{\pv[.2]{p['sc']['Ugen']}}{2\pi \cdot \pv[3.0]{p['sc']['f']} \cdot 10^3 \cdot \pv[-3.2e]{p['sc']['sogl']['Igen']}}
+    = \pv[.4]{r['sc']['exp_sogl']} \text{ Гн}
+\end{equation}
+\begin{equation}
+    L_{\text{э,теор}}
+    = L_1 + L_2 + 2|M|_{\text{ср}}
+    = \pv[.4]{r['prms']['L1']} + \pv[.4]{r['prms']['L2']} + 2 \cdot \pv[.4]{r['prms']['M_avg']}
+    = \pv[.4]{r['sc']['th_sogl']} \text{ Гн}
+\end{equation}
+
+\begin{longtblr}[
+    caption
+    = {Эквивалентная индуктивность при последовательном соединении},
+    label
+    = {tab:calc_sc},
+]{
+    colspec
+    = { Q[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead
+    = 1,
+}
+    Включение & $L_{\text{э,эксп}}$, Гн & $L_{\text{э,теор}}$, Гн \\
+    Согласное & \pv*[.4]{r['sc']['exp_sogl']} & \pv*[.4]{r['sc']['th_sogl']} \\
+    Встречное & \pv*[.4]{r['sc']['exp_vstr']} & \pv*[.4]{r['sc']['th_vstr']} \\
+\end{longtblr}
+
+\section*{ \fbox{Задание 4} }
+\begin{quote}
+    \textit{Рассчитайте экспериментальные и теоретические значения эквивалентной индуктивности для параллельного соединения.}
+\end{quote}
+
+Пример расчета для согласного включения:
+\begin{equation}
+    L_{\text{э,эксп}}
+    = \frac{U}{\omega I}
+    = \frac{\pv[.2]{p['pc']['U']}}{2\pi \cdot \pv[3.0]{p['pc']['f']} \cdot 10^3 \cdot \pv[-3.2e]{p['pc']['sogl']['Igen']}}
+    = \pv[.4]{r['pc']['exp_sogl']} \text{ Гн}
+\end{equation}
+\begin{equation}
+    L_{\text{э,теор}}
+    = \frac{L_1 L_2 - |M|_{\text{ср}}^2}{L_1 + L_2 - 2|M|_{\text{ср}}}
+    = \pv[.4]{r['pc']['th_sogl']} \text{ Гн}
+\end{equation}
+
+\begin{longtblr}[
+    caption
+    = {Эквивалентная индуктивность при параллельном соединении},
+    label
+    = {tab:calc_pc},
+]{
+    colspec
+    = { Q[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+    rowhead
+    = 1,
+}
+    Включение & $L_{\text{э,эксп}}$, Гн & $L_{\text{э,теор}}$, Гн \\
+    Согласное & \pv*[.4]{r['pc']['exp_sogl']} & \pv*[.4]{r['pc']['th_sogl']} \\
+    Встречное & \pv*[.4]{r['pc']['exp_vstr']} & \pv*[.4]{r['pc']['th_vstr']} \\
+\end{longtblr}
+
+\section*{ \fbox{Задания 5--7} }
+\begin{quote}
+    \textit{Рассчитайте экспериментальные и теоретические значения модуля коэффициента передачи. Постройте графики зависимостей.}
+\end{quote}
+
+Пример расчета для $f
+    = \pv[3.1]{p['afc']['f'][0]}~\text{кГц}$ и $R_{\text{н}}
+    = \pv[.0]{p['afc']['R1']['R']}~\text{Ом}$:
+\begin{equation}
+    |H_U(j\omega)|_{\text{эксп}}
+    = \frac{U_2}{U_1}
+    = \frac{\pv[.3]{p['afc']['R1']['U2'][0]}}{\pv[.1]{p['afc']['U1']}}
+    = \pv[.3]{r['afc']['H_exp_R1'][0]}
+\end{equation}
+\begin{equation}
+    \begin{aligned}
+        |H_U(j\omega)|_{\text{теор}}
+        &= \frac{|M| R_{\text{н}}}{\sqrt{\omega^2(L_1 L_2 - M^2)^2 + (L_1 R_{\text{н}})^2}} \\
+        &= \frac{
+            \pv[.4]{M_avg} \cdot \pv[.0]{p['afc']['R1']['R']}
+        }{
+            \sqrt{
+                \pv[.1]{omega_afc[0]}^2(
+                    \pv[.4]{L1} \cdot \pv[.4]{L2} - \pv[.4]{M_avg}^2
+                )^2 + (
+                    \pv[.4]{L1} \cdot \pv[.0]{p['afc']['R1']['R']}
+                )^2
+            }
+        } \\
+        &= \pv[.3]{r['afc']['H_th_R1'][0]}
+    \end{aligned}
+\end{equation}
+
+\begin{longtblr}[
+    caption
+    = {АЧХ функции передачи напряжения трансформатора},
+    label
+    = {tab:calc_afc},
+    expand
+    = \expanded,
+]{
+    colspec
+    = { Q[c,m] *{4}{X[c,m]} },
+    hlines, vlines,
+    rowhead
+    = 2,
+}
+    \SetCell[r=2]{c} $f$, кГц & \SetCell[c=2]{c} $R_{\text{н}1}
+    = \pv[.0]{p['afc']['R1']['R']}~\text{Ом}$ & & \SetCell[c=2]{c} $R_{\text{н}2}
+    = \pv[.0]{p['afc']['R2']['R']}~\text{Ом}$ & \\
+    & $|H_U|_{\text{эксп}}$ & $|H_U|_{\text{теор}}$ & $|H_U|_{\text{эксп}}$ & $|H_U|_{\text{теор}}$ \\
+    \expanded{\pt*[3.1, .3, .3, .3, .3]{
+        r['afc']['f'],
+        r['afc']['H_exp_R1'],
+        r['afc']['H_th_R1'],
+        r['afc']['H_exp_R2'],
+        r['afc']['H_th_R2']
+    }}
+\end{longtblr}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/afc_rh1.pgf}
+    \caption{АЧХ трансформатора при $R_{\text{н}}
+    = \pv[.0]{p['afc']['R1']['R']}~\text{Ом}$}
+    \label{fig:afc_rh1}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/afc_rh2.pgf}
+    \caption{АЧХ трансформатора при $R_{\text{н}}
+    = \pv[.0]{p['afc']['R2']['R']}~\text{Ом}$}
+    \label{fig:afc_rh2}
+\end{figure}
+
+\section*{Выводы}
+В ходе лабораторной работы определены параметры двух индуктивно связанных катушек: собственные индуктивности ($L_1 \approx \pv[-3.1]{r['prms']['L1']}~\text{мГн}$, $L_2 \approx \pv[-3.1]{r['prms']['L2']}~\text{мГн}$), взаимная индуктивность ($M \approx \pv[-3.1]{r['prms']['M_avg']}~\text{мГн}$) и коэффициент связи ($k \approx \pv[.2]{r['prms']['k']}$).
+
+Проверены соотношения для эквивалентной индуктивности при последовательном и параллельном соединениях. При последовательном соединении экспериментальные данные хорошо согласуются с теоретическими. При параллельном встречном соединении наблюдается расхождение опытного ($\pv[-3.1]{r['pc']['exp_vstr']}~\text{мГн}$) и расчетного ($\pv[-3.1]{r['pc']['th_vstr']}~\text{мГн}$) значений. Данное отклонение обусловлено принятым при расчетах допущением о равенстве нулю активных сопротивлений обмоток ($R_1 = R_2 = 0$), влияние которых становится значительным при малых значениях реактивных сопротивлениях.
+
+Исследована АЧХ трансформатора при активных нагрузках $\pv[.0]{p['afc']['R1']['R']}~\text{Ом}$ и $\pv[.0]{p['afc']['R2']['R']}~\text{Ом}$. Установлено, что коэффициент передачи напряжения максимален в области низких частот и монотонно убывает с ростом частоты. При увеличении сопротивления нагрузки коэффициент передачи возрастает.

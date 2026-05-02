@@ -1,6 +1,10 @@
+\begin{python}
+    from scripts.protocol import *
+\end{python}
+
 \begin{table}[H]
     \centering
-    \caption{Определение параметров катушек ($f = 1~\text{кГц}$)}
+    \caption{Определение параметров катушек ($f = \pv[3.0]{p['prms']['f']}~\text{кГц}$)}
     \label{tab:params}
     \begin{tblr}{
         colspec = { Q[c,m,l] X[c,m] X[c,m] X[c,m] },
@@ -8,14 +12,14 @@
     }
         Подключена к ГС & $U_\text{вх}$, В & $I_\text{вх}$, мА & $U_\text{вых}$, В \\
         \midrule
-        Катушка 1 ($1-1'$) & & & \\
-        Катушка 2 ($2-2'$) & & & \\
+        Катушка 1 ($1-1'$) & \pv*[.2]{p['prms']['c1']['Uin']} & \pv*[-3.2]{p['prms']['c1']['Iin']} & \pv*[.2]{p['prms']['c1']['Uout']} \\
+        Катушка 2 ($2-2'$) & \pv*[.2]{p['prms']['c2']['Uin']} & \pv*[-3.2]{p['prms']['c2']['Iin']} & \pv*[.2]{p['prms']['c2']['Uout']} \\
     \end{tblr}
 \end{table}
 
 \begin{table}[H]
     \centering
-    \caption{Исследование последовательного соединения ($f = 1~\text{кГц}$, $U_\text{общ} = 2~\text{В}$)}
+    \caption{Исследование последовательного соединения ($f = \pv[3.0]{p['sc']['f']}~\text{кГц}$, $U_\text{общ} = \pv[.0]{p['sc']['Ugen']}~\text{В}$)}
     \label{tab:series_conn}
     \begin{tblr}{
         colspec = { Q[c,m,l] X[c,m] X[c,m] X[c,m] },
@@ -23,14 +27,14 @@
     }
         Включение & $I_\text{общ}$, мА & $U_1$, В & $U_2$, В \\
         \midrule
-        Согласное & & & \\
-        Встречное & & & \\
+        Согласное & \pv*[-3.2]{p['sc']['sogl']['Igen']} & \pv*[.3]{p['sc']['sogl']['U1']} & \pv*[.3]{p['sc']['sogl']['U2']} \\
+        Встречное & \pv*[-3.2]{p['sc']['vstr']['Igen']} & \pv*[.3]{p['sc']['vstr']['U1']} & \pv*[.3]{p['sc']['vstr']['U2']} \\
     \end{tblr}
 \end{table}
 
 \begin{table}[H]
     \centering
-    \caption{Исследование параллельного соединения ($f = 1~\text{кГц}$, $U = 1~\text{В}$)}
+    \caption{Исследование параллельного соединения ($f = \pv[3.0]{p['pc']['f']}~\text{кГц}$, $U = \pv[.0]{p['pc']['U']}~\text{В}$)}
     \label{tab:parallel_conn}
     \begin{tblr}{
         colspec = { Q[c,m,l] X[c,m] },
@@ -38,30 +42,28 @@
     }
         Включение & $I_\text{общ}$, мА \\
         \midrule
-        Согласное & \\
-        Встречное & \\
+        Согласное & \pv*[-3.2]{p['pc']['sogl']['Igen']}\\
+        Встречное & \pv*[-3.2]{p['pc']['vstr']['Igen']}\\
     \end{tblr}
 \end{table}
 \newpage
 \begin{table}[H]
     \centering
-    \caption{Исследование АЧХ трансформатора ($U_1 = 1~\text{В}$)}
+    \caption{Исследование АЧХ трансформатора ($U_1 = \pv[.0]{p['afc']['U1']}~\text{В}$)}
     \label{tab:afc}
     \begin{tblr}{
         colspec = { Q[c,m] *{2}{X[c,m]} },
         hlines, vlines,
     }
-        & \SetCell[c=2]{c} Нагрузка \\
+        \SetCell[r=3]{c} $f$, кГц & \SetCell[c=2]{c} Нагрузка \\
         \cmidrule{2-3}
-        $f$, кГц & {$R_{\text{н}1} = 100~\text{Ом}$} & {$R_{\text{н}2} = 1000~\text{Ом}$} \\
+        & {$R_{\text{н}1} = \pv[.0]{p['afc']['R1']['R']}~\text{Ом}$} & {$R_{\text{н}2} = \pv[.0]{p['afc']['R2']['R']}~\text{Ом}$} \\
         & {$U_2$, В} & {$U_2$, В} \\
         \midrule
-        0.1 & & \\
-        0.2 & & \\
-        0.5 & & \\
-        1.0 & & \\
-        2.0 & & \\
-        5.0 & & \\
-        10.0 & & \\
+        \expanded{\pt*[3.1, .3, .3]{
+            p['afc']['f'],
+            p['afc']['R1']['U2'],
+            p['afc']['R2']['U2']
+        }}
     \end{tblr}
 \end{table}
