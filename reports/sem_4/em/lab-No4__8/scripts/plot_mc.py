@@ -16,4 +16,8 @@ lines = line1 + line2
 labels = [l.get_label() for l in lines]
 ax1.legend(lines, labels, ncol=2)
 
+ax1.set_xlim(left=0)
+ax1.set_ylim(bottom=0)
+ax2.set_ylim(bottom=0)
+
 plt.savefig('plot_mc.pgf')
