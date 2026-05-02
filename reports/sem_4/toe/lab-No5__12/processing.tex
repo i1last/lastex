@@ -1,0 +1,155 @@
+% processing.tex
+\begin{python}
+from scripts.protocol import p
+from scripts.calc import r
+\end{python}
+
+\subsection*{ \fbox{Задание 1.} }
+\begin{quote}
+    \textit{Вычислить постоянную времени цепи и собственную частоту. Изобразить диаграмму расположения собственных частот. Объяснить искажения.}
+\end{quote}
+
+Вычислим постоянную времени $\tau$ и корень характеристического уравнения $p_1$:
+\begin{equation}
+    \tau = R C = \pv[3.0e]{r['part1']['R']} \cdot \pv[-12.0e]{r['part1']['C']} = \pv[-6.2]{r['part1']['tau']} \text{ мкс}
+\end{equation}
+\begin{equation}
+    p_1 = -\frac{1}{\tau} = -\frac{1}{\pv[-6.2e]{r['part1']['tau']}} = \pv[6.2e]{r['part1']['p1']} \text{ с}^{-1}
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/poles1.pgf}
+    \caption{Диаграмма расположения собственной частоты цепи первого порядка}
+    \label{fig:poles1}
+\end{figure}
+
+Теоретический график переходного процесса при подаче прямоугольных импульсов представлен на \cref{fig:transient1}.
+\begin{figure}[H]
+    \centering
+    \input{figs/transient1.pgf}
+    \caption{Теоретические графики выходного напряжения в цепи первого порядка}
+    \label{fig:transient1}
+\end{figure}
+
+Искажения объясняются инерционностью цепи. Для импульса $t_{\text{и}} = 2 \text{ мкс}$ длительность переходного процесса превышает длительность импульса, поэтому напряжение не успевает достичь установившегося значения. Для импульса $t_{\text{и}} = 10 \text{ мкс}$ условие $t_{\text{и}} \ge 3\tau_{\text{ц}}$ выполняется, импульс достигает плоской вершины, сглаживаются лишь фронты. 
+
+\subsection*{ \fbox{Задание 2.} }
+\begin{quote}
+    \textit{Вычислить собственные частоты цепи второго порядка для различных сопротивлений. Записать выражения для переходной характеристики. Изобразить диаграмму собственных частот.}
+\end{quote}
+
+Собственные частоты определяются выражением:
+\begin{equation}
+    p_{1,2} = -\frac{1}{2RC} \pm \sqrt{\left(\frac{1}{2RC}\right)^2 - \frac{1}{LC}} = -\alpha \pm \sqrt{\alpha^2 - \omega_0^2}
+\end{equation}
+
+При $R = \pv[3.0]{r['part2']['R'][0]} \text{ кОм}$ корни комплексно-сопряженные, режим выраженно колебательный:
+\begin{equation}
+    p_{1,2} = \pv[6.2e]{r['part2']['p1_real'][0]} \pm \pv[6.2e]{r['part2']['p1_imag'][0]}j \text{ с}^{-1}
+\end{equation}
+
+Переходная характеристика:
+\begin{equation*}
+    h(t) = e^{-\alpha t} (A_1 \cos(\omega_{\text{св}} t) + A_2 \sin(\omega_{\text{св}} t))
+\end{equation*}
+
+При $R = \pv[3.2]{r['part2']['R'][1]} \text{ кОм}$:
+\begin{equation}
+    \alpha = \frac{1}{2RC} = \pv[6.2e]{r['part2']['alpha'][1]} \text{ с}^{-1}
+\end{equation}
+Так как $\alpha \approx \omega_0$, процесс близок к критическому (фактические корни $p_{1} = \pv[6.2e]{r['part2']['p1_real'][1]} \text{ с}^{-1}$, $p_{2} = \pv[6.2e]{r['part2']['p2_real'][1]} \text{ с}^{-1}$). Переходная характеристика для строго критического режима имеет вид:
+\begin{equation*}
+    h(t) = (A_1 + A_2 t) e^{-\alpha t}
+\end{equation*}
+
+При $R = \pv[3.1]{r['part2']['R'][2]} \text{ кОм}$ корни вещественные и различные, апериодический режим:
+\begin{equation}
+    p_{1,2} = \pv[6.2e]{r['part2']['p1_real'][2]}, \quad \pv[6.2e]{r['part2']['p2_real'][2]} \text{ с}^{-1}
+\end{equation}
+
+Переходная характеристика имеет вид:
+\begin{equation*}
+    h(t) = A_1 e^{p_1 t} + A_2 e^{p_2 t}
+\end{equation*}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/poles2.pgf}
+    \caption{Диаграмма расположения собственных частот цепи второго порядка}
+    \label{fig:poles2}
+\end{figure}
+
+Различия искажений на осциллограммах объясняются изменением характера переходного процесса. В данной схеме при малом сопротивлении наблюдается сильное затягивание фронтов. При увеличении сопротивления процесс ускоряется  возникает колебательный режим, что отражено на осциллограммах.
+
+\subsection*{ \fbox{Задание 3.} }
+\begin{quote}
+    \textit{Определить полосу пропускания цепи и ширину спектра сигналов. Сопоставить их и оценить искажения.}
+\end{quote}
+
+Определим граничную частоту $f_{\text{ср}}$, на которой коэффициент передачи падает в $\sqrt{2}$ раз относительно максимума:
+\begin{equation}
+    |H_U(j\omega_{\text{ср}})| = \frac{H_{U\max}}{\sqrt{2}} = \frac{\pv[.2]{r['part3']['H_max']}}{\sqrt{2}} = \pv[.2]{r['part3']['H_level']}
+\end{equation}
+
+По экспериментальным данным полоса пропускания цепи составляет:
+\begin{equation}
+    \Delta f_{\text{пр}} = f_{\text{ср}} = \pv[3.2]{r['part3']['f_cp']} \text{ кГц}
+\end{equation}
+
+Амплитудный спектр прямоугольного импульса описывается выражением:
+\begin{equation}
+    |U_{\text{вх}}(j\omega)| = \frac{2|\sin(0.5\omega t_{\text{и}})|}{\omega}
+\end{equation}
+
+Ширина спектра (по первому нулю) для импульса $t_{\text{и}} = 2 \text{ мкс}$:
+\begin{equation}
+    \Delta f_{\text{сп1}} = \frac{1}{t_{\text{и1}}} = \frac{1}{\pv[-6.0e]{r['part3']['t_u'][0]}} = \pv[3.0]{r['part3']['df_sp'][0]} \text{ кГц}
+\end{equation}
+Вычислим значения модуля спектральной плотности при $\omega = 0$ и $\omega = \pi/t_{\text{и1}}$:
+\begin{equation*}
+    |U_{\text{вх1}}(j0)| = t_{\text{и1}} = \pv[-6.0]{r['part3']['U0_2']} \text{ мкВ}\cdot\text{с},
+    \quad
+    \left|U_{\text{вх1}}\left(j\frac{\pi}{t_{\text{и1}}}\right)\right| = \frac{2t_{\text{и1}}}{\pi} = \pv[-6.2]{r['part3']['Upi_2']} \text{ мкВ}\cdot\text{с}
+\end{equation*}
+
+Ширина спектра для импульса $t_{\text{и}} = 10 \text{ мкс}$:
+\begin{equation}
+    \Delta f_{\text{сп2}} = \frac{1}{t_{\text{и2}}} = \frac{1}{\pv[-6.0e]{r['part3']['t_u'][1]}} = \pv[3.0]{r['part3']['df_sp'][1]} \text{ кГц}
+\end{equation}
+Значения модуля спектральной плотности при $\omega = 0$ и $\omega = \pi/t_{\text{и2}}$:
+\begin{equation*}
+    |U_{\text{вх2}}(j0)| = t_{\text{и2}} = \pv[-6.0]{r['part3']['U0_10']} \text{ мкВ}\cdot\text{с}, 
+    \quad 
+    \left|U_{\text{вх2}}\left(j\frac{\pi}{t_{\text{и2}}}\right)\right| = \frac{2t_{\text{и2}}}{\pi} = \pv[-6.2]{r['part3']['Upi_10']} \text{ мкВ}\cdot\text{с}
+\end{equation*}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/afc_spectra.pgf}
+    \caption{Совмещенные диаграммы АЧХ и амплитудных спектров входных сигналов}
+    \label{fig:afc_spectra}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/afc.pgf}
+    \caption{Амплитудно-частотная характеристика цепи высокого порядка}
+    \label{fig:afc}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \input{figs/spectra.pgf}
+    \caption{Амплитудные спектры входных сигналов}
+    \label{fig:spectra}
+\end{figure}
+
+Согласно \cref{fig:afc} и \cref{fig:spectra}, для обоих сигналов условие $\Delta f_{\text{сп}} < \Delta f_{\text{пр}}$ не выполняется. 
+
+Для импульса $10~\text{мкс}$ ширина спектра $\Delta f_{\text{сп}} = \pv[3.0]{r['part3']['df_sp'][1]}~\text{кГц}$ превышает полосу пропускания цепи $\Delta f_{\text{пр}} = \pv[3.2]{r['part3']['f_cp']}~\text{кГц}$. Фильтр срезает часть высокочастотных составляющих основного лепестка спектра, что приводит к заметному искажению.
+
+Для импульса $2~\text{мкс}$ ширина спектра $\Delta f_{\text{сп}} = \pv[3.0]{r['part3']['df_sp'][0]}~\text{кГц}$ многократно превышает полосу пропускания ($\pv[3.0]{r['part3']['df_sp'][0]}~\text{кГц} \gg \pv[3.2]{r['part3']['f_cp']}~\text{кГц}$). Цепь подавляет подавляющую часть спектра сигнала, пропуская только узкую низкочастотную полосу, что вызывает сильное искажение.
+
+\section*{Выводы}
+В ходе лабораторной работы исследованы искажения прямоугольных импульсов в линейных цепях. Установлено, что во временной области искажения определяются соотношением длительности импульса и длительности переходного процесса, зависящей от корней характеристического уравнения. При малом сопротивлении в исследуемой схеме преобладает апериодический процесс с затягиванием фронтов, при большом — возникает колебательный режим.

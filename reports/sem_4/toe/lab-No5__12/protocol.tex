@@ -1,3 +1,8 @@
+\begin{python}
+    from scripts.protocol import *
+\end{python}
+
+\section*{1. Исследование искажений в цепи первого порядка}
 \begin{longtblr}[
     caption = {Параметры сигналов в цепи первого порядка},
     label = {tab:first_order_data},
@@ -7,28 +12,31 @@
     rowhead = 1,
 }
     $t_{\text{и}}$, мкс & $U_{\text{вх max}}$, В & $U_{\text{вых max}}$, В & Визуальная оценка искажений (фронты, спад) \\
-    $2$ & & & \\
-    $10$ & & & \\
+    \pv*[-6.0]{p['fod']['ti'][0]} & \pv*[.0]{p['fod']['Uin'][0]} & \pv*[.2]{p['fod']['Uoutmax'][0]} & Сильное сглаживание: импульс не успевает достичь максимума, вершина острая.\\
+    \pv*[-6.0]{p['fod']['ti'][1]} & \pv*[.0]{p['fod']['Uin'][1]} & \pv*[.2]{p['fod']['Uoutmax'][1]} & Искажения в виде сглаженных углов. Импульс успевает достицчь установившегося значения, вершина плоская.\\
 \end{longtblr}
 
-\vspace{1cm}
+\section*{2. Исследование искажений в цепи второго порядка}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figs/4000Om.jpg}
+    \caption{4000 Ом}
+    \label{fig:4000Om.jpg}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figs/670Om.jpg}
+    \caption{670 Ом}
+    \label{fig:670Om.jpg}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figs/100Om.jpg}
+    \caption{100 Ом}
+    \label{fig:100Om.jpg}
+\end{figure}
 
-\begin{longtblr}[
-    caption = {Наблюдение переходных процессов в цепи второго порядка ($t_{\text{и}} = 10~\text{мкс}$)},
-    label = {tab:second_order_data},
-]{
-    colspec = { Q[c,m] X[c,m] X[c,m] },
-    hlines, vlines,
-    rowhead = 1,
-}
-    $R$, кОм & Характер процесса (апериодический/колебательный) & Наличие и амплитуда выбросов \\
-    $4.0$ & & \\
-    $0.67$ & & \\
-    $0.1$ & & \\
-\end{longtblr}
-
-\vspace{1cm}
-
+\section*{3. Исследование искажений в цепи высокого порядка}
 \begin{longtblr}[
     caption = {Амплитудно-частотная характеристика цепи высокого порядка},
     label = {tab:bode_data},
@@ -38,14 +46,15 @@
     rowhead = 1,
 }
     $f$, кГц & $|H_U(j\omega)|$ \\
-    $20$ & \\
-    & \\
-    & \\
-    & \\
-    & \\
-    & \\
-    & \\
-    & \\
-    & \\
-    $500$ & \\
+    \expanded{\pt*[3.0, .2]{
+        p['bd']['f'],
+        p['bd']['Hu']
+    }}
 \end{longtblr}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figs/high_order.jpg}
+    \caption{Высоких порядоков}
+    \label{fig:high_order.jpg}
+\end{figure}
