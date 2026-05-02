@@ -1,0 +1,81 @@
+\begin{python}
+    from scripts.protocol import *
+\end{python}
+
+\begin{longtblr}[
+    caption = {Напряжения},
+    label = {p:v},
+    expand = \expanded,
+]{
+    colspec = { X[l,m] Q[c,m,wd=4cm] },
+    vlines, hlines,
+}
+    Выходное напряжение, $U_{вых}^{ОУ}$, В & \pv*[+.2]{p['v']['Uout']} \\
+    Напряжение смещения, $U_{см}$, В       & \pv*[+.2]{p['v']['Ucm']} \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Резисторы},
+    label = {p:r},
+    expand = \expanded,
+]{
+    colspec = { | X[c,m] | X[c,m] | X[c,m] | X[c,m] | X[c,h] | },
+    hlines, vlines,
+    rowhead = 1,
+}
+    $R_1$ & $R_2$ & $R_3$ & $R_{12}$ & $R_{13}$ \\
+    \pv*[.0]{p['r']['R1']} & \pv*[.0]{p['r']['R2']} & \pv*[.0]{p['r']['R3']} & \pv*[.0]{p['r']['R12']} & \pv*[.0]{p['r']['R13']} \\
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Данные для построения передаточной характеристики},
+    label = {p:tc},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] X[c,m] X[c,m] },
+    vlines, hlines,
+    rowhead = 1,
+}
+    $U_{\text{вх}}$, В & $U_{\text{вых}}$ (при $R_H=R_{14}$), В & $U_{\text{вых}}$ (при $R_H=R_{15}$), В \\
+    \expanded{\pt*[+.1, +.2, +.2]{
+        p['tc']['Uin'],
+        p['tc']['UforR14'],
+        p['tc']['UforR15']
+    }}
+\end{longtblr}
+ 
+\begin{longtblr}[
+    caption = {Данные для построения АЧХ ($U_{\text{вх}} = \pv[-3.0]{p['afcd']['Uin']}~\text{мВ}$)},
+    label = {p:afcd},
+    expand = \expanded,
+]{
+    colspec = { Q[c,m] X[c,m] },
+    vlines, hlines,
+    rowhead = 1,
+}
+    Частота $f$, кГц & $U_{\text{вых}}$, В \\
+    \expanded{\pt*[3.0, .3]{
+        p['afcd']['f'],
+        p['afcd']['Uout']
+    }}
+\end{longtblr}
+
+\begin{longtblr}[
+    caption = {Характеристические частоты ОУ},
+    label = {p:cf},
+    expand = \expanded,
+]{
+    colspec = { X[l,m] Q[c,m,wd=4cm] },
+    vlines, hlines,
+}
+Частота усиления макс. мощности, $f_{\text{УММ}}$, кГц     & \pv*[3.0]{p['cf']['fumm']} \\
+    Частота единичного усиления, $f_{\text{ЕУ}}$, кГц      & \pv*[3.0]{p['cf']['feu']} \\
+    Напряжение, $U$, В                                     & \pv*[.0]{p['cf']['U']} \\
+\end{longtblr}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figs/osc.jpg}
+    \caption{Осциллограмма. $5 V/d;\; 2\mu s/d$}
+    \label{fig:osc.jpg}
+\end{figure}
