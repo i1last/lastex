@@ -10,8 +10,8 @@ tu2 = n['ti2']
 # Принимаем период равным длительности полного импульса
 ex10['tu1'] = tu1
 ex10['tu2'] = tu2
-ex10['T1'] = tu1
-ex10['T2'] = tu2
+ex10['T1'] = 2*tu1
+ex10['T2'] = 2*tu2
 ex10['w1_1'] = 2 * np.pi / ex10['T1']
 ex10['w1_2'] = 2 * np.pi / ex10['T2']
 
@@ -26,11 +26,11 @@ def calc_spectra(tu, T, w1):
     
     def A_cont(w):
         w_safe = np.where(w == 0, 1e-10, w)
-        val = (2 / T) * np.abs(4 * Im / w_safe * np.sin(w_safe * tu / 4)**2)
+        val = (2 / T) * np.abs(4 * Im / w_safe * np.sin(w_safe * T / 4)**2)
         return np.where(w == 0, 0.0, val)
         
     def Phi_cont(w):
-        phi_deg = np.degrees(np.pi / 2 - w * tu / 2)
+        phi_deg = np.degrees(np.pi / 2 - w * T / 2)
         return np.where(phi_deg > 0, phi_deg % 360, phi_deg % -360)
     
     for i in range(len(k_arr)):

@@ -53,8 +53,8 @@ def plot_approx(tu, T, w1, A_k, Phi_k, prefix):
     # Формирование идеального меандра
     t_mod = t % T
     y_input = np.piecewise(t_mod,[
-            (t_mod < tu / 2),
-            (t_mod >= tu / 2)
+            (t_mod < T / 2),
+            (t_mod >= T / 2)
         ],[Im, -Im]
     )
     

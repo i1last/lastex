@@ -27,14 +27,14 @@ from scripts.calc_10 import *
     A_{\text{вх1}}(k)
     = \frac{2}{T_1} \left|
         \frac{4I_m}{\omega} \sin^2\left(
-            \frac{\omega t_\text{и1}}{4}
+            \frac{\omega T_1}{4}
         \right)
     \right|_{\omega=k\omega_{1(1)}}
 \end{equation}
 \begin{equation}
     \Phi_{\text{вх1}}(k)
     = \left(
-        90^\circ - \frac{\omega t_\text{и1}}{2}
+        90^\circ - \frac{\omega T_1}{2}
     \right)\Bigg|_{\omega=k\omega_{1(1)}}
 \end{equation}
 
@@ -62,10 +62,10 @@ from scripts.calc_10 import *
     \omega_{1(2)} = \frac{2\pi}{T_2} = \pv[.3]{ex10['w1_2']}
 \end{equation}
 \begin{equation}
-    A_{\text{вх2}}(k) = \frac{2}{T_2} \left| \frac{4I_m}{\omega} \sin^2\left(\frac{\omega t_\text{и2}}{4}\right) \right|_{\omega=k\omega_{1(2)}}
+    A_{\text{вх2}}(k) = \frac{2}{T_2} \left| \frac{4I_m}{\omega} \sin^2\left(\frac{\omega T_2}{4}\right) \right|_{\omega=k\omega_{1(2)}}
 \end{equation}
 \begin{equation}
-    \Phi_{\text{вх2}}(k) = \left( 90^\circ - \frac{\omega t_\text{и2}}{2} \right)\Bigg|_{\omega=k\omega_{1(2)}}
+    \Phi_{\text{вх2}}(k) = \left( 90^\circ - \frac{\omega T_2}{2} \right)\Bigg|_{\omega=k\omega_{1(2)}}
 \end{equation}
 
 Амплитудный и фазовый спектры второго сигнала приведены на \cref{fig:plot_disc_spec_A_2,fig:plot_disc_spec_Phi_2}.

@@ -12,15 +12,15 @@ ex7['w_c'] = freq['w_c']
 def calc_spectrum_params(ti):
     res = {}
     res['A1_0'] = 0
-    res['w_y1'] = 4 * np.pi / ti
+    res['w_y1'] = 4 * np.pi / (2*ti)
     
     # Теоретическая ширина по огибающей
-    res['w_sp_env'] = 20.0 / ti
+    res['w_sp_env'] = 20.0 / (2*ti)
     
     # Практическая ширина (поиск пика лепестка, ближайшего к 10% уровню)
     w_max = 5 * res['w_y1']
     w = np.linspace(1e-5, w_max, 5000)
-    A1 = np.abs((4 * Im / w) * np.sin(w * ti / 4)**2)
+    A1 = np.abs((4 * Im / w) * np.sin(w * 2*ti / 4)**2)
     
     target = 0.1 * res['A1_0']
     peaks, _ = find_peaks(A1)

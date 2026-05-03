@@ -11,7 +11,7 @@ tu2 = n['ti2']
 
 def get_approx_reaction(tu, t_arr):
     # Расчет спектра реакции на меандр
-    w_max = 100.0 / tu
+    w_max = 100.0 / (2*tu)
     N_w = 5000
     w_arr = np.linspace(0, w_max, N_w)
     
@@ -32,7 +32,7 @@ def get_approx_reaction(tu, t_arr):
     return i2_approx
 
 def plot_comparison(tu, suffix):
-    t_max = 2 * tu
+    t_max = 1.5 * 2*tu
     t_arr = np.linspace(-0.05, t_max, 500)
     
     i2_approx = get_approx_reaction(tu, t_arr)

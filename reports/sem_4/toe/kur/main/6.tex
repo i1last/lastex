@@ -10,8 +10,8 @@ from scripts.calc_6 import n
 \begin{equation}
     i_1(t) = I_m \left[
         \delta_1(t) -
-        2\delta_1(t - \frac12 t_{\text{и}}) + 
-        \delta_1(t - t_{\text{и}})
+        2\delta_1(t - \frac12 T) + 
+        \delta_1(t - T)
     \right]
 \end{equation}
 
@@ -19,10 +19,10 @@ from scripts.calc_6 import n
 \begin{equation}
     I_1(s)
         = \frac{I_m}{s} \left(
-            1 - 2e^{-s \frac12 t_{\text{и}}} + e^{-s t_{\text{и}}}
+            1 - 2e^{-s \frac12 T} + e^{-s T}
         \right)
         = \frac{\pv[.2]{ex6['Im']}}{s} \left(
-            1 - 2e^{-s \frac12 t_{\text{и}}} + e^{-s t_{\text{и}}}
+            1 - 2e^{-s \frac12 T} + e^{-s T}
         \right)
 \end{equation}
 
@@ -31,12 +31,12 @@ from scripts.calc_6 import n
     I_{2}(s) 
         &= H(s) \cdot I_1(s) \\
         &= H(s) \cdot \frac{I_m}{s} \left(
-            1 - 2e^{-s \frac12 t_{\text{и}}} + e^{-s t_{\text{и}}}
+            1 - 2e^{-s \frac12 T} + e^{-s T}
         \right) \\
         &=  
             I_{21}(s) -
-            I_{21}(s) \cdot 2e^{-s \frac12 t_{\text{и}}} +
-            I_{21}(s) \cdot e^{-s t_{\text{и}}},
+            I_{21}(s) \cdot 2e^{-s \frac12 T} +
+            I_{21}(s) \cdot e^{-s T},
 \end{align}
 где $I_{21}(s)$ — изображение реакции цепи на первое слагаемое входного воздействия:
 \begin{equation}
@@ -48,8 +48,8 @@ from scripts.calc_6 import n
     i_2(t)
         = 
             i_{21}(t)\delta_1(t) -
-            i_{21}(t - \frac12 t_{\text{и}})\cdot 2\delta_1(t - \frac12 t_{\text{и}}) +
-            i_{21}(t - t_{\text{и}})\delta_1(t - t_{\text{и}}),
+            i_{21}(t - \frac12 T)\cdot 2\delta_1(t - \frac12 T) +
+            i_{21}(t - T)\delta_1(t - T),
     \label{form:i2torig}
 \end{equation}
 
