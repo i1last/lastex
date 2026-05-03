@@ -9,15 +9,83 @@ from scripts.calc_8 import *
     {I}_2(j\omega) = {I}_1(j\omega) \cdot {H}(j\omega).
     \label{form:I2spectr}
 \end{equation}
+\begin{equation}
+    \begin{aligned}
+        {I}_2(j\omega) = 
+        &\left[
+            \frac{4I_m}{\omega} \sin^2(\omega t_\text{и} / 4) 
+            \cdot 
+            e^{j(90^\circ - \omega t_\text{и}/2)}
+        \right]
+        \times \\ \times
+        &\left[
+            \frac{
+                (j\omega - j\pv[.2]{tf['z1_im']})
+                (j\omega + j\pv[.2]{tf['z1_im']})
+            }{
+                (j\omega + \pv[.2]{fact['alpha1']})
+                (j\omega + \pv[.2]{fact['alpha2']} - j\pv[.2]{fact['beta2']})
+                (j\omega + \pv[.2]{fact['alpha2']} + j\pv[.2]{fact['beta2']})
+            }
+        \right]
+    \end{aligned}
+\end{equation}
 
 Из соотношения выше следует, что амплитудный спектр реакции $A_2(\omega)$ равен произведению амплитудного спектра входного сигнала $A_1(\omega)$ и АЧХ цепи $A(\omega)$:
 \begin{equation}
     A_2(\omega) = A_1(\omega) \cdot A(\omega).
 \end{equation}
+\begin{equation}
+    \begin{aligned}
+        A_2(\omega) &= 
+        \left|
+            \frac{4I_m}{\omega} \sin^2\left(
+                \frac{\omega t_{\text{и}}}{4
+            }\right)
+        \right|
+        \times \\ &\times
+        \left[
+            \frac{
+                \omega^2 + \pv[.2]{tf['z1_im']}^2
+            }{
+                \sqrt{
+                    \omega^2 + 
+                    \pv[.2]{fact['alpha1']}^2
+                }
+                \sqrt{
+                    (\omega - \pv[.2]{fact['beta2']})^2 + 
+                    \pv[.2]{fact['alpha2']}^2
+                }
+                \sqrt{
+                    (\omega + \pv[.2]{fact['beta2']})^2 + 
+                    \pv[.2]{fact['alpha2']}^2
+                }
+            }
+        \right]
+    \end{aligned}
+    \label{form:A2w}
+\end{equation}
 
 Фазовый же спектр реакции $\Phi_2(\omega)$ определяется как алгебраическая сумма фазового спектра воздействия $\Phi_1(\omega)$ и ФЧХ цепи $\Phi(\omega)$:
 \begin{equation}
     \Phi_2(\omega) = \Phi_1(\omega) + \Phi(\omega).
+\end{equation}
+\begin{equation}
+    \begin{aligned}
+        \Phi_2(\omega)
+        &=  \left[
+            90^\circ - \frac{\omega t_\text{и}}{2}
+        \right] + \\
+        &+ \left[
+            \arctan{( \omega - \pv[.2]{tf['z1_im']} )} +
+            \arctan{( \omega + \pv[.2]{tf['z1_im']} )} -
+            \arctan{ \frac{ \omega }{ \pv[.2]{fact['alpha1']} } } - \right. \\
+        &- \left. 
+            \arctan{ \frac{ \omega + \pv[.2]{fact['beta2']} }{ \pv[.2]{fact['alpha2']} } } -
+            \arctan{ \frac{ \omega - \pv[.2]{fact['beta2']} }{ \pv[.2]{fact['alpha2']} } }
+        \right]
+    \end{aligned}
+    \label{form:Phi2w}
 \end{equation}
  
 Для контроля правильности расчетов вычислим значения амплитудного спектра реакции на нулевой частоте для двух заданных длительностей импульса. Используем полученные в предыдущих разделах значения $A_1(0)$ и $A(0) = \pv[.3]{freq['A0']}$:

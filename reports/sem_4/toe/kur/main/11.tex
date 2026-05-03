@@ -9,7 +9,46 @@ from scripts.calc_11 import *
     A_{\text{вых}}(k) = A_{\text{вх}}(k) \cdot A(k\omega_1);
 \end{equation}
 \begin{equation}
-    \Phi_{\text{вых}}(k) = \Phi_{\text{вх}}(k) + \Phi(k\omega_1),
+    \begin{aligned}
+        A_{\text{вых}}(k) 
+        &= 
+        \frac{2}{T} \left|
+            \frac{4I_m}{\omega} \sin^2\left(
+                \frac{\omega t_\text{и1}}{4}
+            \right)
+        \right|_{\omega=k\omega_{1}} \times \\
+        &\times
+        \left.
+            \frac{
+                \omega^2 + \pv[.2]{tf['z1_im']}^2
+            }{
+                \sqrt{\omega^2 + \pv[.2]{fact['alpha1']}^2}
+                \sqrt{(\omega - \pv[.2]{fact['beta2']})^2 + \pv[.2]{fact['alpha2']}^2}
+                \sqrt{(\omega + \pv[.2]{fact['beta2']})^2 + \pv[.2]{fact['alpha2']}^2}
+            }
+        \right|_{\omega=k\omega_{1}};
+    \end{aligned}
+\end{equation}
+
+\begin{equation}
+    \Phi_{\text{вых}}(k) = \Phi_{\text{вх}}(k) + \Phi(k\omega_1);
+\end{equation}
+\begin{equation}
+    \begin{aligned}
+        \Phi_{\text{вых}}(k)
+        &= 
+        \left.\left(
+            90^\circ - \frac{\omega t_\text{и1}}{2}
+        \right)\right|_{\omega=k\omega_{1}} + \\
+        &+ \left[
+            \arctan{( \omega - \pv[.2]{tf['z1_im']} )} +
+            \arctan{( \omega + \pv[.2]{tf['z1_im']} )} -
+            \arctan{ \frac{ \omega }{ \pv[.2]{fact['alpha1']} } } - \right. \\
+        &- \left. 
+            \arctan{ \frac{ \omega + \pv[.2]{fact['beta2']} }{ \pv[.2]{fact['alpha2']} } } -
+            \arctan{ \frac{ \omega - \pv[.2]{fact['beta2']} }{ \pv[.2]{fact['alpha2']} } }
+        \right]_{\omega=k\omega_{1}},
+    \end{aligned}
 \end{equation}
 где $\omega_1$ — основная частота.
 
@@ -89,10 +128,12 @@ from scripts.calc_11 import *
 \end{longtblr}
 
 Таким образом, выходные сигналы в виде отрезка ряда Фурье имеют следующий вид:
-\begin{enumerate}
-    \item Первый: $i_{\text{н1}}(t) = \pv{ex11['fs_1']}$
-    \item Второй: $i_{\text{н2}}(t) = \pv{ex11['fs_2']}$
-\end{enumerate}
+{\sloppy
+    \begin{enumerate}
+        \item Первый: $i_{\text{н1}}(t) = \pv{ex11['fs_1']}$
+        \item Второй: $i_{\text{н2}}(t) = \pv{ex11['fs_2']}$
+    \end{enumerate}
+\par}
 
 На \cref{fig:plot_fourier_approx_out_1,fig:plot_fourier_approx_out_2} приведены графики ряда Фурье реакции, а также отдельные гармоники.
 
