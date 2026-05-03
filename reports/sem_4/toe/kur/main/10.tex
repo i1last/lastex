@@ -22,7 +22,7 @@ from scripts.calc_10 import *
     \omega_{1(1)} = \frac{2\pi}{T_1} = \pv[.3]{ex10['w1_1']}.
 \end{equation}
 
-Амплитудный и фазовый спектры определяются подстановкой дискретных частот в аналитические выражения:
+Амплитудный и фазовый спектры определяются подстановкой частот:
 \begin{equation}
     A_{\text{вх1}}(k)
     = \frac{2}{T_1} \left|
@@ -116,11 +116,13 @@ from scripts.calc_10 import *
 \end{longtblr}
 
 Таким образом, входные сигналы в виде отрезка ряда Фурье имеют следующий вид:
+{\sloppy
 \begin{itemize}
     \item Первый: $i_{01}(t) = \pv{ex10['fs_1']}$
     \item Второй: $i_{02}(t) = \pv{ex10['fs_2']}$
 \end{itemize}
- 
+\par}
+
 На \cref{fig:plot_fourier_approx_1,fig:plot_fourier_approx_2} приведены графики аппроксимации рядом Фурье, а также отдельные гармоники пунктирной линией.
 
 \begin{figure}[H]
@@ -136,3 +138,5 @@ from scripts.calc_10 import *
     \caption{Аппроксимация рядом Фурье второго периодического сигнала}
     \label{fig:plot_fourier_approx_2}
 \end{figure}
+
+Из графиков видно, что аппроксимация стремится к исходному сигналу.

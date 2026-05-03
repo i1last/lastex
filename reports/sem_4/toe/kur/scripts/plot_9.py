@@ -32,7 +32,7 @@ def get_approx_reaction(tu, t_arr):
     return i2_approx
 
 def plot_comparison(tu, suffix):
-    t_max = 3 * tu
+    t_max = 2 * tu
     t_arr = np.linspace(-0.05, t_max, 500)
     
     i2_approx = get_approx_reaction(tu, t_arr)
@@ -44,6 +44,7 @@ def plot_comparison(tu, suffix):
     plt.xlabel(r'$t$')
     plt.ylabel(r'$i_2(t)$')
     plt.legend(ncol=2)
+    plt.xlim(left=0)
     plt.savefig(f'plot_approx_reaction_{suffix}.pgf')
 
 # Генерация двух графиков

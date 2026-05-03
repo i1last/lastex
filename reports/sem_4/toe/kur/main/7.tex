@@ -94,9 +94,10 @@ from scripts.calc_6 import ex6
 
 Контроль: значение амплитудного спектра на нулевой частоте равно площади входного импульса тока.
 \begin{itemize}
-    \item Для $t_{\text{и1}}$: $A_1(0) = 0$
-    \item Для $t_{\text{и2}}$: $A_1(0) = 0$
+    \item Для $t_{\text{и1}}$: $A_1(0) = 0$;
+    \item Для $t_{\text{и2}}$: $A_1(0) = 0$.
 \end{itemize}
+Площадь входного импульса равна нулю, поскольку это меандр, а значит проверка пройдена.
 
 Графики АС и ФС воздействия для $t_{\text{и1}}$ и $t_{\text{и2}}$ показаны на \cref{fig:plot_spec_A_ti1,fig:plot_spec_A_ti2,fig:plot_spec_Phi_ti1,fig:plot_spec_Phi_ti2}.
  
@@ -128,7 +129,7 @@ from scripts.calc_6 import ex6
     \label{fig:plot_spec_Phi_ti2}
 \end{figure}
 
-Ширина спектра импульсного входного сигнала определяется по 10\%-му амплитудному критерию. Из \cref{fig:plot_spec_A_ti1,fig:plot_spec_A_ti2} видно, что
+Ширина спектра определяется по 10\%-му амплитудному критерию. Из \cref{fig:plot_spec_A_ti1,fig:plot_spec_A_ti2} видно, что
 \begin{equation}
     \Delta\omega_{\text{сп1}} \approx \pv[.2]{ex7['ti1']['w_sp']} \text{ при } t_\text{и} = \pv[.1]{n['ti1']},
 \end{equation}
@@ -138,6 +139,17 @@ from scripts.calc_6 import ex6
 
 Сравнение ширины спектра воздействия и полосы пропускания цепи $\omega_{\text{ср}} \approx \pv[.2]{ex7['w_c']}$ (см. \cref{form:omega_propuskaniya}) показывает:
 \begin{itemize}
-    \item Для $t_{\text{и1}}$: $\Delta\omega_{\text{сп1}}$ и $\omega_{\text{с}}$ соотносятся как WIP.
-    \item Для $t_{\text{и2}}$: $\Delta\omega_{\text{сп2}}$ и $\omega_{\text{с}}$ соотносятся как WIP.
+    \item Для $t_{\text{и1}}$: $\Delta\omega_{\text{сп1}} \approx \omega_{\text{ср}}$.
+        Таким образом $\Delta\omega_{\text{сп1}} \in (0;\,\pv[.2]{ex7['ti1']['w_sp']})$, а $\omega_{\text{ср}} \in (0;\,\pv[.2]{ex7['w_c']})$.
+
+        Большая часть спектра укладывается в полосу пропускания цепи, следовательно, искажения выходного сигнала будут минимальны.
+
+    \item Для $t_{\text{и2}}$: $\Delta\omega_{\text{сп2}} > \omega_{\text{ср}}$.
+        Таким образом $\Delta\omega_{\text{сп2}} \in (0;\,\pv[.2]{ex7['ti2']['w_sp']})$, а $\omega_{\text{ср}} \in (0;\,\pv[.2]{ex7['w_c']})$.
+
+        Большая часть спектра не укладывается в полосу пропускания цепи, попадая в полосу задерживания вида интегрирования, следовательно, искажения выходного сигнала будут большие.
 \end{itemize}
+
+Значение АС $A_1(0) = 0 \implies$ площадь входного сигнала равна $0$.
+АЧХ $A(0)=0.5 \implies$ площадь выходного сигнала уменьшится в $2$ раза.
+$A(\infty)=0 \implies$ скачок входного сигнала на выход не пройдёт.

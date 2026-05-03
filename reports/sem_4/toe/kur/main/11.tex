@@ -4,7 +4,7 @@ from scripts.calc_11 import *
 
 \section{Расчёт реакции при периодическом воздействии}
 
-Расчёт реакции в общем виде осуществляется на основе спектра входного воздействия и АФХ цепи $H(j\omega)$ (см. \cref{form:Ainp,form:Phiinp} для спектров; \cref{form:AChH,form:FChH} для частотных характеристик): 
+Расчёт реакции в общем виде осуществляется на основе спектра воздействия и АФХ цепи $H(j\omega)$ (см. \cref{form:Ainp,form:Phiinp} для спектров; \cref{form:AChH,form:FChH} для частотных характеристик): 
 \begin{equation}
     A_{\text{вых}}(k) = A_{\text{вх}}(k) \cdot A(k\omega_1);
 \end{equation}
@@ -50,10 +50,9 @@ from scripts.calc_11 import *
         \right]_{\omega=k\omega_{1}},
     \end{aligned}
 \end{equation}
-где $\omega_1$ — основная частота.
+где $\omega_1=2\pi/T$ — основная частота.
 
 \subsection{Первый сигнал}
-
 \begin{equation}
     \omega = \omega_1 k; \quad \omega_{1(1)} = \pv[.3]{ex10['w1_1']}
 \end{equation}
