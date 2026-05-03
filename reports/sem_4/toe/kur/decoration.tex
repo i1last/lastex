@@ -1,0 +1,96 @@
+\makeatletter
+
+\newcommand{\InitialData}[1]{\def\@InitialData{#1}}
+\newcommand{\ReportContents}[1]{\def\@ReportContents{#1}}
+\newcommand{\ExpectedPages}[1]{\def\@ExpectedPages{#1}}
+
+% ==> Переоформление титульного листа
+\renewcommand{\maketitle}{
+    \begin{titlepage}
+        \begin{center}
+            МИНОБРНАУКИ РОССИИ \\
+            \rule[0.5ex]{0.6\textwidth}{1.2pt} \\
+            СПбГЭТУ «ЛЭТИ» ИМ. В.И. УЛЬЯНОВА (ЛЕНИНА) \\
+            \rule[0.5ex]{0.6\textwidth}{1.2pt} \\
+            Кафедра \@Department
+        \end{center}
+
+        \vfill
+
+        \begin{center}
+            \textbf{
+                \MakeUppercase{Курсовая работа} \\
+                По дисциплине «\@Discipline» \\
+                Тема: \MakeUppercase{\@WorkTitle} \\
+            }
+        \end{center}
+
+        \vfill
+
+        \noindent
+        \begin{tabularx}{\textwidth}{l X r}
+            Студент гр. \@Group \ifdefempty{\@Variant}{}{, вар. \@Variant}& \hrulefill & \@StudentName \\\\
+            Преподаватель    & \hrulefill & \@TeacherName
+        \end{tabularx}
+
+        \vfill
+
+        \begin{center}
+            Санкт-Петербург \\
+            \@Year \\
+        \end{center}
+        \thispagestyle{empty}
+    \end{titlepage}
+    \newpage
+    \setcounter{page}{2}
+}
+% <==
+
+% ==> Оформление страницы задания
+\newcommand{\makeassignment}{
+    \begin{center}
+        \textbf{ЗАДАНИЕ \\ НА КУРСОВУЮ РАБОТУ}
+    \end{center}
+
+    % \vspace{1em}
+
+    \noindent Студент \@StudentName \\
+    
+    \noindent Группа \@Group \\
+    
+    \noindent Тема работы: \@WorkTitle \\
+
+    % \vspace{1em}
+
+    \noindent Исходные данные: \\
+    \@InitialData \\
+
+    % \vspace{1em}
+
+    \noindent Содержание пояснительной записки: \\
+    \@ReportContents \\
+
+    % \vfill
+
+    \noindent Предполагаемый объем пояснительной записки: \\
+    Не менее 20~страниц. \\
+
+    \noindent \makebox[5cm][l]{Дата выдачи задания:}  \rule{5cm}{0.4pt} \\
+    \noindent \makebox[5cm][l]{Дата сдачи реферата:}  \rule{5cm}{0.4pt} \\
+    \noindent \makebox[5cm][l]{Дата защиты реферата:} \rule{5cm}{0.4pt}
+
+    % \vspace{2em}
+    \vfill
+
+    \noindent
+    \begin{tabularx}{\textwidth}{l X r}
+        Студент    & \hrulefill & \@StudentName \\\\
+        Преподаватель  & \hrulefill & \@TeacherName
+    \end{tabularx}
+
+    \thispagestyle{plain} % или empty, если не нужна нумерация на этой странице
+    \newpage
+}
+% <==
+
+\makeatother

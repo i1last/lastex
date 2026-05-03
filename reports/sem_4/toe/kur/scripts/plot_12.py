@@ -35,7 +35,7 @@ def plot_comparison(tu, T, w1, prefix):
     plt.plot(t, y_fourier, marker='', label='Ряд Фурье (п. 11)')
     plt.plot(t, y_exact, marker='', label='Точный расчет (п. 6)')
     
-    plt.xlim(left=min(t))
+    plt.xlim(left=0)
     plt.xlabel(r'$t$')
     plt.ylabel(r'$i_{\mathrm{н}}(t)$')
     plt.legend(ncol=2)

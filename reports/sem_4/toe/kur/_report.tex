@@ -5,7 +5,7 @@
 % - справа на строках, которые не умещаются):
 % \documentclass[draft]{etulab}
 \documentclass{etulab}
-
+\input{decoration.tex}
 
 
 % === КОНФИГУРАЦИЯ ДАННЫХ ДЛЯ ТИТУЛЬНОГО ЛИСТА ===
@@ -18,6 +18,30 @@
 \StudentName{Рахметов А. Р.}
 \TeacherName{Соклакова М. В.}
 \Year{2026}
+
+% Данные для страницы задания:
+\begin{python}
+    from scripts.source import s
+\end{python}
+\InitialData{%
+\begin{tblr}{
+    colspec = { X[c,m] X[c,m] X[c,m] X[c,m] },
+    hlines, vlines,
+}
+    Вариант & Схема                      & Импульс & Реакция  \\
+    \pv{10} & См. \cref{fig:scheme_orig} & Меандр  & $i_{R2}$ \\
+\end{tblr} \\ \vspace{0.05em} \\
+\begin{tblr}{
+    colspec = { Q[c,m] Q[c,m] Q[c,m] Q[c,m] X[c,m] Q[c,m] Q[c,m] Q[c,m] },
+    hlines, vlines,
+}
+    $I_m$, А     & $T$    & $t_{и1}$, мкс      & $t_{и2}$, мкс      & $R_1=R_2$, кОм   & $L_1$, мГн        & $L_2$, мГн        & $C_1$, пФ          \\
+    \pv{s['Im']} & $2t_и$ & \pv[-6.]{s['ti1']} & \pv[-6.]{s['ti2']} & \pv[3.]{s['R1']} & \pv[-3.]{s['L1']} & \pv[-3.0]{s['L2']} & \pv[-12.0]{s['C1']} \\
+\end{tblr}
+}
+\ReportContents{%
+    Содержание, Введение, Основная часть, Заключение, Список использованных источников.
+}
 
 % Включение библиографии
 % bibtex автоматически будет включен в процесс сборки документа
@@ -38,14 +62,20 @@
 \maketitle
 
 
-% --- ТЕХНИЧЕСКОЕ ЗАДАНИЕ
-\input{terms.tex}
+
+% --- ЗАДАНИЕ НА КУРСОВУЮ РАБОТУ
+\makeassignment
+
+
+
+% --- АННОТАЦИЯ
+\input{summary.tex}
 \newpage
 
 
 % --- ОГЛАВЛЕНИЕ ---
 \tableofcontents
-\thispagestyle{empty}
+% \thispagestyle{empty}
 \newpage
 
 
