@@ -21,6 +21,7 @@ from scripts.calc_8 import *
         \times \\ \times
         &\left[
             \frac{
+                \pv[.2]{tf['K']}
                 (j\omega - j\pv[.2]{tf['z1_im']})
                 (j\omega + j\pv[.2]{tf['z1_im']})
             }{
@@ -47,7 +48,8 @@ from scripts.calc_8 import *
         \times \\ &\times
         \left[
             \frac{
-                \omega^2 + \pv[.2]{tf['z1_im']}^2
+                \pv[.2]{tf['K']}
+                \left|\omega^2 - \pv[.2]{tf['z1_im']}^2\right|
             }{
                 \sqrt{
                     \omega^2 + 
@@ -78,8 +80,7 @@ from scripts.calc_8 import *
             90^\circ - \frac{\omega t_\text{и}}{2}
         \right] + \\
         &+ \left[
-            \arctan{( \omega - \pv[.2]{tf['z1_im']} )} +
-            \arctan{( \omega + \pv[.2]{tf['z1_im']} )} -
+            \arg{( \pv[.2]{tf['z1_im']}^2 - \omega^2 )} -
             \arctan{ \frac{ \omega }{ \pv[.2]{fact['alpha1']} } } - \right. \\
         &- \left. 
             \arctan{ \frac{ \omega + \pv[.2]{fact['beta2']} }{ \pv[.2]{fact['alpha2']} } } -

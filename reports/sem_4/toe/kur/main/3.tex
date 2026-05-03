@@ -7,13 +7,14 @@ import numpy as np
 
 Амплитудно-фазовая характеристика (АФХ) цепи получается путем замены оператора $s$ на $j\omega$ в выражении передаточной функции $H(s)$ (см. \cref{form:hs}). Однако прежде, зная нули и полюсы (см. \cref{form:zeros,form:poles}), разложим ее на множители:
 \begin{equation}
-    H(s) = \frac{(s - j\pv[.2]{tf['z1_im']})(s + j\pv[.2]{tf['z1_im']})}{(s + \pv[.2]{fact['alpha1']})(s + \pv[.2]{fact['alpha2']} - j\pv[.2]{fact['beta2']})(s + \pv[.2]{fact['alpha2']} + j\pv[.2]{fact['beta2']})}
+    H(s) = \frac{\pv[.2]{tf['K']}(s - j\pv[.2]{tf['z1_im']})(s + j\pv[.2]{tf['z1_im']})}{(s + \pv[.2]{fact['alpha1']})(s + \pv[.2]{fact['alpha2']} - j\pv[.2]{fact['beta2']})(s + \pv[.2]{fact['alpha2']} + j\pv[.2]{fact['beta2']})}
     \label{form:hs_simply}
 \end{equation}
 
 Подставим $s = j\omega$:
 \begin{equation}
     H(j\omega) = \frac{
+        \pv[.2]{tf['K']}
         (j\omega - j\pv[.2]{tf['z1_im']})
         (j\omega + j\pv[.2]{tf['z1_im']})
     }{
@@ -36,7 +37,8 @@ import numpy as np
 \begin{equation}
     A(\omega) = |H(j\omega)| = 
     \frac{
-        \omega^2 + \pv[.2]{tf['z1_im']}^2
+        \pv[.2]{tf['K']}
+        \left|\omega^2 - \pv[.2]{tf['z1_im']}^2\right|
     }{
         \sqrt{\omega^2 + \pv[.2]{fact['alpha1']}^2}
         \sqrt{(\omega - \pv[.2]{fact['beta2']})^2 + \pv[.2]{fact['alpha2']}^2}
@@ -49,14 +51,14 @@ import numpy as np
 \begin{equation}
     \begin{multlined}
         \Phi(\omega) = \arg\left[H(j\omega)\right] =
-          \arctan{( \omega - \pv[.2]{tf['z1_im']} )}
-        + \arctan{( \omega + \pv[.2]{tf['z1_im']} )} - \\
-        - \arctan{ \frac{ \omega }{ \pv[.2]{fact['alpha1']} } }
+          \arg{( \pv[.2]{tf['z1_im']}^2 - \omega^2 )}
+        - \arctan{ \frac{ \omega }{ \pv[.2]{fact['alpha1']} } } - \\
         - \arctan{ \frac{ \omega + \pv[.2]{fact['beta2']} }{ \pv[.2]{fact['alpha2']} } }
-        - \arctan{ \frac{ \omega - \pv[.2]{fact['beta2']} }{ \pv[.2]{fact['alpha2']} } }
+        - \arctan{ \frac{ \omega - \pv[.2]{fact['beta2']} }{ \pv[.2]{fact['alpha2']} } },
     \end{multlined}
     \label{form:FChH}
 \end{equation}
+где $\arg{( \pv[.2]{tf['z1_im']}^2 - \omega^2 )} = \begin{cases} 0^\circ, & \omega \le \pv[.2]{tf['z1_im']} \\ -180^\circ, & \omega > \pv[.2]{tf['z1_im']} \end{cases}$.
 
 \begin{figure}[H]
     \centering
