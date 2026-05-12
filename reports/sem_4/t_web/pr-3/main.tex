@@ -1,0 +1,106 @@
+\section*{Цель}
+Получение практических навыков по тестированию веб-элементов на основе CSS-селекторов. 
+
+\section*{Задачи}
+\begin{enumerate}
+    \item Определить атрибуты веб-элемента средствами DevTools.
+    \item Провести тестирование на основе тегов и CSS-селекторов средствами DevTools.
+    \item Зафиксировать результат обучения в отчете.
+\end{enumerate}
+
+\section{Просмотр программного кода веб-элемента}
+Для анализа структуры веб-страницы использовался инструмент \textit{Elements} в составе Google Chrome DevTools. С помощью функции инспектора был выбран элемент «Сапфир». В ходе анализа установлено, что изображение описывается тегом \mintinline{html}§<img>§, вложенным в блок \mintinline{html}§<div>§.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/3.1.png}
+    \caption{Программный код элемента с изображением сапфира}
+    \label{fig:code_inspect}
+\end{figure}
+
+Атрибуты элемента содержат уникальный идентификатор \textit{id}, имя \textit{name}, класс \textit{class} и пользовательский атрибут \textit{data-type}.
+
+\begin{listing}[H]
+    \caption{Фрагмент HTML-кода для элемента «Сапфир»}
+    \label{lst:saphire}
+    \inputminted{html}{scripts/1.html}
+\end{listing}
+
+\section{Нахождение селектора из контекстного меню}
+Средства DevTools позволяют автоматически генерировать путь к элементу. Через контекстное меню был получен абсолютный CSS-путь элемента.
+
+\begin{listing}[H]
+    \caption{Селектор, полученный через контекстное меню}
+    \label{lst:selector}
+    \inputminted{text}{scripts/2.html}
+\end{listing}
+
+\section{Определение селектора}
+Получено значение уникального атрибута \textit{id} для данной картинки.
+
+\begin{listing}[H]
+    \caption{Оптимизированный селектор по идентификатору}
+    \label{lst:defselector}
+    \inputminted{css}{scripts/3.html}
+\end{listing}
+
+\section{Поиск элемента по селектору}
+Проверка работоспособности селектора осуществлялась через панель поиска в DevTools. При вводе \mintinline{css}§#saphire§ инструмент подтвердил наличие одного совпадения и подсветил целевой элемент.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/3.4.png}
+    \caption{Верификация селектора в панели DevTools}
+    \label{fig:search_selector}
+\end{figure}
+
+\section{Поиск элемента по тегу}
+Поиск по тегу \mintinline{html}§<div>§ (\cref{fig:3.5div.png}) выявил 12 элементов, что делает данный тип локатора непригодным для точного поиска. Поиск по тегу \mintinline{html}§<img>§ (\cref{fig:3.5img.png}) показал 7 элементов, включая логотип тренажера.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/3.5div.png}
+    \caption{Результаты поиска по тегу div}
+    \label{fig:3.5div.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/3.5img.png}
+    \caption{Результаты поиска по тегу img}
+    \label{fig:3.5img.png}
+\end{figure}
+
+\section{Поиск элемента по значению атрибута}
+Использование синтаксиса \textit{[attribute="value"]} позволяет находить элементы по любым заданным свойствам. В \cref{fig:3.6.png} показан успешный поиск по значению \textit{id}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/3.6.png}
+    \caption{Поиск по атрибуту [id="saphire"]}
+    \label{fig:3.6.png}
+\end{figure}
+
+\section{Поиск элементов по классу}
+Тестирование поиска по классу проводилось двумя способами: полным совпадением строки атрибута и использованием сокращенной нотации через точку.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/3.7s.png}
+    \caption{Поиск по полному совпадению класса}
+    \label{fig:3.7s.png}
+\end{figure}
+
+Установлено, что использование селектора \mintinline{css}§.box-shadow§ (\cref{fig:3.7d.png}) позволяет выбрать все карточки товаров на странице, обладающие данным стилем оформления.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figs/3.7d.png}
+    \caption{Поиск по сокращенному имени класса}
+    \label{fig:3.7d.png}
+\end{figure}
+
+\section*{Вывод}
+В ходе выполнения практической работы были изучены методы идентификации веб-элементов на основе их атрибутов в html документе. Цель работы достигнута: получены навыки работы с панелью \textit{Elements} инструментов разработчика и синтаксисом CSS-селекторов.
+
+В процессе тестирования была выявлена проблема избыточности селекторов при автоматическом копировании пути из DevTools. Решением стало использование уникальных идентификаторов (\textit{id}) и комбинированных атрибутов. Полученные знания позволяют эффективно осуществлять поиск элементов методом «белого ящика», понимая структуру HTML-документа и принципы наследования стилей.
