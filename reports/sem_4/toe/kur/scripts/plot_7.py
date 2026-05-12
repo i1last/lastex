@@ -24,11 +24,11 @@ def compute_spectra(ti, w):
     w_safe = np.where(w == 0, 1e-20, w)
     
     # Амплитудный спектр по формуле (7.2)
-    A1 = np.abs(4 * Im / w_safe * np.sin(w_safe * 2*ti / 4)**2)
+    A1 = np.abs(4 * Im / w_safe * np.sin(w_safe * 2*ti / 8)**2)
     A1[w == 0] = 0  # В нуле амплитуда 0, так как площадь меандра = 0
     
     # Фазовый спектр по формуле (7.3)
-    phi_raw = 90 - np.degrees(w * 2*ti / 2)
+    phi_raw = 90 - np.degrees(w * 2*ti / 4)
     Phi1 = np.where(phi_raw > 0, phi_raw % 360, phi_raw % -360)
             
     return A1, Phi1

@@ -12,28 +12,28 @@ from scripts.calc_6 import ex6
         I_1(j\omega)
             &= I_1(s) \Big|_{s=j\omega} \\
             &= \frac{I_m}{j\omega} \left(
-                1 - 2e^{-j\omega \frac12 T} + e^{-j\omega T}
+                1 - 2e^{-j\omega \frac14 T} + e^{-j\omega \frac12 T}
             \right) = \\
             &=
                 \frac{I_m}{j\omega} \left(
-                    1 - e^{-j\omega\frac{T}2}
+                    1 - e^{-j\omega\frac{T}4}
                 \right)^2 = \\
             &=
                 \frac{I_m}{j\omega} \left[
-                    e^{-j\omega\frac{T}4} \cdot \left(
-                        e^{j\omega T / 4} -
-                        e^{-j\omega T / 4}
+                    e^{-j\omega\frac{T}8} \cdot \left(
+                        e^{j\omega T / 8} -
+                        e^{-j\omega T / 8}
                     \right)
                 \right]^2 = \\
             &=
                 \frac{I_m}{j\omega} \left[
-                    e^{-j\omega\frac{T}4} \cdot \left(
-                        2j\sin(\omega T / 4)
+                    e^{-j\omega\frac{T}8} \cdot \left(
+                        2j\sin(\omega T / 8)
                     \right)
                 \right]^2 = \\
-            &= \frac{I_m}{j\omega} e^{-j\omega\frac{T}4} \cdot (-4) \cdot \sin^2(\omega T / 4) = \\
-            &= 4\sin^2(\omega T / 4) \cdot \frac{I_m}{\omega} e^{-j(\omega T/2 - 90^\circ)} = \\
-            &= \frac{4I_m}{\omega} \sin^2(\omega T / 4) \cdot e^{j(90^\circ - \omega T/2)} = \\
+            &= \frac{I_m}{j\omega} e^{-j\omega\frac{T}4} \cdot (-4) \cdot \sin^2(\omega T / 8) = \\
+            &= 4\sin^2(\omega T / 8) \cdot \frac{I_m}{\omega} e^{-j(\omega T/4 - 90^\circ)} = \\
+            &= \frac{4I_m}{\omega} \sin^2(\omega T / 8) \cdot e^{j(90^\circ - \omega T/4)} = \\
             &= A_1(\omega)\cdot e^{j\Phi_1(\omega)}
     \end{aligned}
     \label{form:I1jw}
@@ -42,22 +42,22 @@ from scripts.calc_6 import ex6
 Амплитудный спектр входного сигнала:
 \begin{equation}
     A_1(\omega) = \left|
-        \frac{4I_m}{\omega} \sin^2\left(\frac{\omega T}{4}\right)
+        \frac{4I_m}{\omega} \sin^2\left(\frac{\omega T}{8}\right)
     \right|
 \end{equation}
  
 Фазовый спектр входного сигнала:
 \begin{equation}
-    \Phi_1(\omega) = 90^\circ - \frac{\omega T}{2}
+    \Phi_1(\omega) = 90^\circ - \frac{\omega T}{4}
 \end{equation}
 
 Для построения графика амплитудного спектра определяются его нули, то есть значения частот $\omega_\text{yзл}^k$, при которых спектр равен нулю:
 \begin{equation}
-    A_1(\omega) = 0 \text{ при } \sin^2\left(\frac{\omega T}{4}\right) = 0
+    A_1(\omega) = 0 \text{ при } \sin^2\left(\frac{\omega T}{8}\right) = 0
     \iff
-    \frac{\omega T}{4} = \pi k
+    \frac{\omega T}{8} = \pi k
     \implies
-    \omega_\text{yзл}^k = \frac{4\pi k}{T}
+    \omega_\text{yзл}^k = \frac{8\pi k}{T}
 \end{equation}
 
 Частоты первых нулей для заданных длительностей импульсов:
@@ -74,19 +74,19 @@ from scripts.calc_6 import ex6
             \frac{\omega T}{4}
         \right) = \\
         &= 4I_m \lim_{\omega \to 0} \frac{
-                \sin^2\left(\frac{\omega T}{4}\right)
+                \sin^2\left(\frac{\omega T}{8}\right)
         }{
                 \omega
         }
-        = \bcancel{4}I_m \lim_{\omega \to 0} \frac{
+        = 4I_m \lim_{\omega \to 0} \frac{
                 \omega^{\cancel{2}} T^2
         }{
-                \bcancel{4}\cdot 4 \cancel{\omega}
+                64 \cancel{\omega}
         } \\
         &= I_m \lim_{\omega \to 0} \frac{
                 \omega T^2
         }{
-                4
+                16
         }
         = 0
     \end{aligned}

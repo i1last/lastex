@@ -26,11 +26,11 @@ def calc_spectra(tu, T, w1):
     
     def A_cont(w):
         w_safe = np.where(w == 0, 1e-10, w)
-        val = (2 / T) * np.abs(4 * Im / w_safe * np.sin(w_safe * T / 4)**2)
+        val = (2 / T) * np.abs(4 * Im / w_safe * np.sin(w_safe * T / 8)**2)
         return np.where(w == 0, 0.0, val)
         
     def Phi_cont(w):
-        phi_deg = np.degrees(np.pi / 2 - w * T / 2)
+        phi_deg = np.degrees(np.pi / 2 - w * T / 4)
         return np.where(phi_deg > 0, phi_deg % 360, phi_deg % -360)
     
     for i in range(len(k_arr)):

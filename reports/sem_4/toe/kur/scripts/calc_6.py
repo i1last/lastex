@@ -30,7 +30,7 @@ def i21_analytical(t):
 # i2(t)
 def reaction(t, ti):
     term1 = i21_analytical(t) if t >= 0 else 0
-    term2 = -2 * i21_analytical(t - 0.5 * 2*ti) if t >= 0.5 * 2*ti else 0
-    term3 = i21_analytical(t - 2*ti) if t >= 2*ti else 0
+    term2 = -2 * i21_analytical(t - 0.25 * 2*ti) if t >= 0.25 * 2*ti else 0
+    term3 = i21_analytical(t - 0.5 * 2*ti) if t >= 0.5 * 2*ti else 0
     
     return term1 + term2 + term3

@@ -54,10 +54,13 @@ def plot_approx_out(tu, T, w1, A_k_in, Phi_k_in, A_k_out, Phi_k_out, prefix):
 
     # Формирование идеального меандра
     t_mod = t % T
-    y_input = np.piecewise(t_mod,[
-            (t_mod < T / 2),
+    y_input = np.piecewise(t_mod,
+        [
+            (t_mod < T / 4),
+            (t_mod >= T / 4) & (t_mod < T / 2),
             (t_mod >= T / 2)
-        ],[Im, -Im]
+        ],
+        [Im, -Im, 0]
     )
     
     # Входной РФ (аппроксимация)

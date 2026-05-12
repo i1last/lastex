@@ -14,9 +14,9 @@ from scripts.calc_8 import *
     \begin{aligned}
         {I}_2(j\omega) = 
         &\left[
-            \frac{4I_m}{\omega} \sin^2(\omega T / 4) 
+            \frac{4I_m}{\omega} \sin^2(\omega T / 8) 
             \cdot 
-            e^{j(90^\circ - \omega T/2)}
+            e^{j(90^\circ - \omega T/4)}
         \right]
         \times \\ \times
         &\left[
@@ -42,7 +42,7 @@ from scripts.calc_8 import *
         A_2(\omega) &= 
         \left|
             \frac{4I_m}{\omega} \sin^2\left(
-                \frac{\omega T}{4
+                \frac{\omega T}{8
             }\right)
         \right|
         \times \\ &\times
@@ -77,7 +77,7 @@ from scripts.calc_8 import *
     \begin{aligned}
         \Phi_2(\omega)
         &=  \left[
-            90^\circ - \frac{\omega T}{2}
+            90^\circ - \frac{\omega T}{4}
         \right] + \\
         &+ \left[
             \arg{( \pv[.2]{tf['z1_im']}^2 - \omega^2 )} -
