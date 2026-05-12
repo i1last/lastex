@@ -1,0 +1,73 @@
+{
+  "id": "c8404325-242f-4c39-9362-7e2f24d9e83e",
+  "version": "2.0",
+  "name": "SelectorsTraining",
+  "url": "https://test-selector-tree.netlify.app/",
+  "tests": [{
+    "id": "684a25a4-fab2-4a36-afd0-cf42829f1e0e",
+    "name": "birch",
+    "commands": [{
+      "id": "35400c0e-5921-4f19-92f1-54a679676219",
+      "comment": "",
+      "command": "open",
+      "target": "https://test-selector-tree.netlify.app/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2c205365-822d-4a43-b386-c39cbc806b14",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "854x874",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4457ca91-e515-46af-ae26-ecc261e4291c",
+      "comment": "",
+      "command": "click",
+      "target": "id=birch",
+      "targets": [
+        ["id=birch", "id"],
+        ["name=birch-tree", "name"],
+        ["css=#birch", "css:finder"],
+        ["xpath=//img[@id='birch']", "xpath:attributes"],
+        ["xpath=//section/div/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5efacadf-558e-447c-96e7-b64dc734d853",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=.imageContainer:nth-child(1) > h1",
+      "targets": [
+        ["css=.imageContainer:nth-child(1) > h1", "css:finder"],
+        ["xpath=//h1", "xpath:position"],
+        ["xpath=//h1[contains(.,'Березка')]", "xpath:innerText"]
+      ],
+      "value": "Березка"
+    }, {
+      "id": "89222d01-7f5c-4b9e-b1eb-9e540cbb44e7",
+      "comment": "",
+      "command": "verifyTitle",
+      "target": "Selectors Training",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "903e79e8-975d-4343-b82a-810ee5d8cd2b",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "f8b12b59-7e84-43d1-8cd7-997a9bcd9d82",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["684a25a4-fab2-4a36-afd0-cf42829f1e0e"]
+  }],
+  "urls": ["https://test-selector-tree.netlify.app/"],
+  "plugins": []
+}

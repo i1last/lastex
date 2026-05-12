@@ -1,0 +1,89 @@
+{
+  "id": "8aa08282-ec88-4c5e-86eb-3a30359e79fd",
+  "version": "2.0",
+  "name": "KZGroupTest",
+  "url": "https://kzgroup.ru/",
+  "tests": [{
+    "id": "1d2cfe35-8488-4aa8-a190-9ced28076de7",
+    "name": "kztest",
+    "commands": [{
+      "id": "c1f30cf6-66d8-4ccb-b50d-7c6c2ab51805",
+      "comment": "",
+      "command": "open",
+      "target": "https://kzgroup.ru/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8b55b4f6-2e3c-43cf-a843-cf16ec7d8741",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "854x877",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "04a2cccf-3ec6-4ccb-bfff-212c4ee76a61",
+      "comment": "",
+      "command": "verifyTitle",
+      "target": "Группа компаний «Кировский завод»",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ddbb0dc2-24ad-4218-9f38-c209211c9a97",
+      "comment": "",
+      "command": "click",
+      "target": "css=.c-nav-button_icon",
+      "targets": [
+        ["css=.c-nav-button_icon", "css:finder"],
+        ["xpath=//button/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "db6d4a65-86c2-4317-821d-639d67f9fe53",
+      "comment": "",
+      "command": "click",
+      "target": "css=.c-nav-button_icon",
+      "targets": [
+        ["css=.c-nav-button_icon", "css:finder"],
+        ["xpath=//button/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "97d0757e-2efa-40ed-b90c-55ef3af24907",
+      "comment": "",
+      "command": "click",
+      "target": "css=.header__logo-text",
+      "targets": [
+        ["css=.header__logo-text", "css:finder"],
+        ["xpath=//p", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c2c9c252-0936-4ca7-ab16-e3b8d8ea3cc4",
+      "comment": "",
+      "command": "verifyText",
+      "target": "css=.header__university-text",
+      "targets": [
+        ["css=.header__university-text", "css:finder"],
+        ["xpath=//div[2]/a/p", "xpath:position"]
+      ],
+      "value": "Корпоративный\\nуниверситет"
+    }, {
+      "id": "27123891-6272-4fc8-bcbc-e9a13e8466f6",
+      "comment": "",
+      "command": "verifyTitle",
+      "target": "Группа компаний «Кировский завод»",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "514f18a1-de80-4c04-9214-d8f3b3d95524",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["1d2cfe35-8488-4aa8-a190-9ced28076de7"]
+  }],
+  "urls": ["https://kzgroup.ru/"],
+  "plugins": []
+}
