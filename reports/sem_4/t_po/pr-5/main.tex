@@ -1,0 +1,103 @@
+\section*{Цель}
+Получение практических навыков работы с распределенной системой
+управления версиями Git и сервисом GitHub.
+
+\section*{Задачи}
+\begin{enumerate}
+    \item Создать пространство проекта на сервисе GitHub.
+    \item Разработать три ветви проекта.
+    \item Выполнить форк (копирование) внешнего репозитория.
+\end{enumerate}
+
+\section{Создание аккаунта GitHub}
+Первоначальным этапом работы являлась регистрация учетной записи на сервисе GitHub. Данная учетная запись используется в качестве основного пространства для всех последующих операций с репозиториями. Общий вид профиля пользователя с календарем активности представлен на \cref{fig:account.png}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/account.png}
+    \caption{Основная страница профиля пользователя в GitHub}
+    \label{fig:account.png}
+\end{figure}
+
+\section{Копирование файлов проекта в репозиторий на GitHub}
+После создания профиля был создан новый публичный репозиторий с именем \textit{Space}. В него был загружен набор файлов. На \cref{fig:files.png} отображена структура репозитория после загрузки. Коммиты для ветви \textit{main} показаны на \cref{fig:commits.png}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/files.png}
+    \caption{Содержимое репозитория \textit{Space} после начальной загрузки файлов}
+    \label{fig:files.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/commits.png}
+    \caption{История коммитов для основной ветви проекта}
+    \label{fig:commits.png}
+\end{figure}
+
+\section{Добавление второй ветви проекта Space}
+Была создана вторая ветвь — \textit{SecondBranch}. Источником для нее послужило состояние ветви \textit{main}. Перечень активных ветвей проекта представлен на \cref{fig:secondBranch.png}. В новую ветвь были добавлены дополнительные файлы, что привело к расхождению ее содержимого с ветвью \textit{main}, как показано на \cref{fig:newFiles.png}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/secondBranch.png}
+    \caption{Список ветвей репозитория после создания \textit{SecondBranch}}
+    \label{fig:secondBranch.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/newFiles.png}
+    \caption{Содержимое ветви \textit{SecondBranch} после добавления новых файлов}
+    \label{fig:newFiles.png}
+\end{figure}
+
+\section{Добавление третьей ветви проекта Space}
+Аналогично предыдущему шагу, от ветви \textit{main} была создана третья ветвь — \textit{ThirdBranch}. В данную ветвь был добавлен текстовый файл \textit{Назначение СКВ.txt}, что зафиксировано на \cref{fig:filesThirdBranch.png}. Таким образом, в репозитории были сформированы три независимые ветви: одна основная (\textit{main}) и две для ведения параллельной разработки.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/filesThirdBranch.png}
+    \caption{Содержимое репозитория в ветви \textit{ThirdBranch}}
+    \label{fig:filesThirdBranch.png}
+\end{figure}
+
+\section{Объединение ветвей проекта Space}
+Для интеграции изменений из ветви \textit{ThirdBranch} в основную ветвь \textit{main} был использован \textit{pull request}. Процесс создания запроса показан на \cref{fig:createPullRequest.png}. После автоматической проверки на наличие конфликтов слияние было подтверждено (\cref{fig:confirmPullRequest.png}). Итоговый статус ветвей после успешного объединения, где в ветвь \textit{main} были добавлены изменения из \textit{ThirdBranch}, представлен на \cref{fig:branchesAfterPull.png}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/createPullRequest.png}
+    \caption{Формирование запроса на слияние (pull request)}
+    \label{fig:createPullRequest.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/confirmPullRequest.png}
+    \caption{Подтверждение и выполнение слияния ветвей}
+    \label{fig:confirmPullRequest.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/branchesAfterPull.png}
+    \caption{Статус ветвей проекта после завершения слияния}
+    \label{fig:branchesAfterPull.png}
+\end{figure}
+
+\section{Форк репозитория}
+В рамках задания был выполнен форк внешнего публичного репозитория \textit{electron/electron}. Данная операция позволяет свободно экспериментировать с кодовой базой проекта, не затрагивая оригинал. Результат операции — полная копия репозитория в аккаунте пользователя — продемонстрирован на \cref{fig:fork.png}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/fork.png}
+    \caption{Форк репозитория \textit{electron} в рабочем пространстве пользователя}
+    \label{fig:fork.png}
+\end{figure}
+
+\section*{Выводы}
+В ходе выполнения практической работы была достигнута поставленная цель по получению навыков работы с системой контроля версий Git и сервисом GitHub. Были освоены базовые операции: создание репозитория, загрузка файлов, работа с ветвями (создание, переключение, слияние через pull request) и копирование сторонних репозиториев.
+
+В процессе работы было получено ясное представление о стратегии ветвления, позволяющей вести параллельную и изолированную разработку функционала. Практически отработан механизм запросов на слияние как основной инструмент для интеграции изменений и проведения код-ревью в командной работе.
+
+Существенных проблем при выполнении заданий не возникло, интерфейс GitHub является интуитивно понятным. Все поставленные задачи были выполнены в полном объеме.
+
+Ссылка на удаленный репозиторий, реализованный в ходе выполнения работы: \url{https://github.com/i1last/Space}.
