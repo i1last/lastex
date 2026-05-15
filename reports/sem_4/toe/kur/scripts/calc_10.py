@@ -56,8 +56,11 @@ def gen_fourier_str(A_k, Phi_k, w1):
     for i in range(1, K + 1):
         if A_k[i] > 1e-4:
             term = f"{A_k[i]:.3f} \\cos({i * w1:.3f}t "
-            if Phi_k[i] < 0:
-                term += f"- {abs(Phi_k[i]):.3f}^\\circ)"
+            phi_val = round(Phi_k[i], 1)
+            if phi_val == 0.0:
+                term += ")"  # Просто закрываем скобку
+            elif phi_val < 0:
+                term += f"- {abs(Phi_k[i]):.1f}^\\circ)"
             else:
                 term += f"+ {Phi_k[i]:.1f}^\\circ)"
             terms.append(term)
