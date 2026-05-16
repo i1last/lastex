@@ -1,0 +1,357 @@
+\section*{Организация процесса тестирования}
+
+Для организации процесса тестирования и контроля выполнения задач использовалась облачная система управления проектами Kaiten. Было создано рабочее пространство и доска проекта. Задачи, подлежащие тестированию, зафиксированы в виде карточек. 
+
+Для каждой карточки заданы следующие атрибуты: статус выполнения, дата начала, дата окончания, пользовательская метка. График выполнения задач в виде доски представлен на \cref{fig:kaiten_table}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/kaiten_table.png}
+    \caption{График выполнения задач в виде доски}
+    \label{fig:kaiten_table}
+\end{figure}
+
+Диаграмма Ганта, отображающая длительность выполнения каждой задачи и временные рамки, представлена на \cref{fig:kaiten_timeline}. График выполнения задач в табличном виде показан на \cref{fig:kaiten_report}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/kaiten_timeline.png}
+    \caption{TIMELINE-диаграмма выполнения проекта}
+    \label{fig:kaiten_timeline}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/kaiten_report.png}
+    \caption{График выполнения задач в табличном виде}
+    \label{fig:kaiten_report}
+\end{figure}
+
+\section{Разработка тестовых мероприятий}
+
+В качестве объекта тестирования выбрано веб-приложение Ассоциации \textit{Цифровая Энергетика} (URL: \url{https://www.digital-energy.ru/}). Разработан план тестовых мероприятий, включающий проверки графического интерфейса, совместимости, адаптивности и сетевого взаимодействия. План зафиксирован в \cref{tab:test_plan}.
+
+\begin{longtblr}[
+    caption = {План тестовых мероприятий},
+    label = {tab:test_plan},
+]{
+    colspec = { Q[l,m] X[l,m] X[l,m] Q[l,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    № & Описание проверки & Ожидаемый результат & Статус \\
+    1 & Проверка загрузки главной страницы & Страница загружается без ошибок, код 200 & Успешно \\
+    2 & Проверка отображения логотипа в шапке & Логотип отображается, является ссылкой на главную & Успешно \\
+    3 & Работоспособность главного меню навигации & При клике происходит переход в соответствующие разделы & Успешно \\
+    4 & Тестирование совместимости: Windows + Firefox & Корректное отображение элементов, отсутствие смещений & Успешно \\
+    5 & Тестирование совместимости: Windows + Opera & Корректное отображение элементов, отсутствие смещений & Успешно \\
+    6 & Тестирование совместимости: Windows + Vivaldi & Корректное отображение элементов, отсутствие смещений & Успешно \\
+    7 & Тестирование адаптивности: разрешение $1920\times1080$ & Десктопная версия отображается корректно & Успешно \\
+    8 & Тестирование адаптивности: разрешение $1366\times768$ & Версия для ноутбуков отображается без горизонтальной прокрутки & Успешно \\
+    9 & Тестирование адаптивности: разрешение $360\times800$ & Мобильная версия активируется, появляется гамбургер-меню & Успешно \\
+    10 & Проверка ссылок в подвале сайта (footer) & Все ссылки ведут на существующие страницы (нет 404) & Успешно \\
+    11 & Валидация HTML-кода главной страницы (W3C) & Отсутствие критических ошибок верстки & Замечания \\
+    12 & Проверка наличия favicon & Иконка вкладки отображается в браузере & Успешно \\
+    13 & Проверка работы формы обратной связи & Данные отправляются, выводится сообщение об успехе & Успешно \\
+    14 & Валидация полей формы (пустые поля) & Форма не отправляется, выводится предупреждение & Успешно \\
+    15 & Проверка скорости загрузки элементов (Network) & Время загрузки DOM не превышает допустимых пределов & Успешно \\
+    16 & Проверка структуры заголовков (H1-H6) & Иерархия соблюдена, на странице один H1 & Успешно \\
+    17 & Проверка наличия атрибутов alt у изображений & Все смысловые изображения имеют текстовое описание & Замечания \\
+    18 & Технический аудит используемых технологий & Определен стек технологий веб-приложения & Успешно \\
+    19 & Анализ заголовков HTTP-ответов & Присутствуют заголовки безопасности & Успешно \\
+    20 & Проверка файлов cookie & Файлы cookie имеют флаги Secure и HttpOnly & Успешно \\
+\end{longtblr}
+
+\section{Тестирование совместимости}
+
+Тестирование совместимости проводилось методом попарного тестирования различных браузеров в среде ОС Windows 10. Цель — убедиться в кроссбраузерной идентичности отображения контента. Результаты проверки в браузерах Firefox 133, Opera 108 и Vivaldi 7.0 представлены на \cref{fig:compat_firefox,fig:compat_opera,fig:compat_vivaldi}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/firefox1.png}
+    \caption{Отображение веб-приложения в браузере Firefox 133}
+    \label{fig:compat_firefox}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/opera1.png}
+    \caption{Отображение веб-приложения в браузере Opera 108}
+    \label{fig:compat_opera}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/vivaldi1.png}
+    \caption{Отображение веб-приложения в браузере Vivaldi 7.0}
+    \label{fig:compat_vivaldi}
+\end{figure}
+
+Расхождений не наблюдается.
+
+\section{Тестирование адаптивности}
+
+Для проведения тестирования адаптивности использовались встроенные инструментальные средства разработчика DevTools. Проверка поведения графического интерфейса выполнена на трех целевых разрешениях экрана: $1920\times1080$, $1366\times768$ и $360\times800$. Результаты зафиксированы на \cref{fig:adapt_1920,fig:adapt_1366,fig:adapt_360}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/1920+1080.png}
+    \caption{Тестирование адаптивности для разрешения $1920\times1080$}
+    \label{fig:adapt_1920}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/1366+768.png}
+    \caption{Тестирование адаптивности для разрешения $1366\times768$}
+    \label{fig:adapt_1366}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{figs/360+800.png}
+    \caption{Тестирование адаптивности для разрешения $360\times800$}
+    \label{fig:adapt_360}
+\end{figure}
+
+\section{Тестирование верстки}
+
+Проверка валидности верстки выполнена с использованием официального сервиса W3C Markup Validation Service. В ходе анализа исходного кода веб-страницы были выявлены предупреждения и информационные сообщения, касающиеся структуры документа. Фрагмент отчета о валидации представлен на \cref{fig:validator}, поскольку весь отчет занимает непозволительно большой объем.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=\textwidth, page=1, angle=-90]{figs/validator.pdf}
+    \caption{Результаты проверки верстки в W3C Validator}
+    \label{fig:validator}
+\end{figure}
+
+
+
+\section{Технический аудит}
+
+Технический аудит сайта проводился с использованием инструмента W3Techs. В результате анализа определен стек технологий, применяемых на сервере и клиенте. Результаты аудита представлены на \cref{fig:w3techs_audit}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=\textwidth, page=1]{figs/w3techs.pdf}
+    \caption{Результаты технического аудита веб-приложения (W3Techs)}
+    \label{fig:w3techs_audit}
+\end{figure}
+
+\section{Тестирование сетевых подключений}
+
+Тестирование сетевых подключений проводилось с использованием встроенных инструментов разработчика (DevTools, вкладка Network). Общий каскад загрузки компонентов веб-страницы представлен на \cref{fig:network_cascade}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/network_cascade.png}
+    \caption{Каскад загрузки веб-страницы}
+    \label{fig:network_cascade}
+\end{figure}
+
+Для детального анализа выбран сетевой запрос к основному документу (\textit{www.digital-energy.ru}). Во вкладке Headers (\cref{fig:network_header}) определены базовые параметры подключения:
+\begin{itemize}
+    \item Тип подключения: HTTPS.
+    \item Метод запроса: GET.
+    \item Код состояния: 200 (успешное выполнение).
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/network_header.png}
+    \caption{Заголовки запроса и ответа (Headers)}
+    \label{fig:network_header}
+\end{figure}
+
+Во вкладке Response (\cref{fig:network_responce}) зафиксировано тело ответа, представляющее собой исходный HTML-код загружаемого документа.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/network_response.png}
+    \caption{Тело ответа сервера (Response)}
+    \label{fig:network_responce}
+\end{figure}
+
+Детальная информация о параметрах маршрутизации и дополнительных заголовках показана на \cref{fig:network_www}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/network_www.png}
+    \caption{Дополнительная информация о сетевом запросе}
+    \label{fig:network_www}
+\end{figure}
+
+Анализ файлов cookie, передаваемых в рамках сессии, представлен на \cref{fig:network_cookie}. Наличие флага Secure указывает на то, что файлы cookie используют защищенное соединение.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/network_cookie.png}
+    \caption{Параметры файлов cookie}
+    \label{fig:network_cookie}
+\end{figure}
+
+\section{Определение элементов автоматизации тестирования на основе локаторов}
+
+В рамках подготовки к автоматизированному тестированию был исследован исходный код веб-элемента (логотипа компании) методом «белого ящика» с использованием вкладки Elements (\cref{fig:logo_code}).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/logo_code.png}
+    \caption{Исходный код элемента во вкладке Elements}
+    \label{fig:logo_code}
+\end{figure}
+
+Фрагмент программного кода исследуемого элемента:
+\begin{listing}[H]
+\caption{Исходный HTML-код веб-элемента логотипа}
+\label{lst:logo_code}
+\begin{minted}[breaklines]{html}
+<a id="logo" href="https://www.digital-energy.ru" data-supplied-ml-starting-dark="true" data-supplied-ml-starting="false" data-supplied-ml="false">
+    <img class="stnd skip-lazy default-logo" width="250" height="75" alt="Ассоциация &quot;Цифровая Энергетика&quot;" src="https://www.digital-energy.ru/wp-content/uploads/2021/02/de-logo-250-color.png" srcset="https://www.digital-energy.ru/wp-content/uploads/2021/02/de-logo-250-color.png 1x, https://www.digital-energy.ru/wp-content/uploads/2021/02/de-logo-500-color.png 2x">
+</a>
+\end{minted}
+\end{listing}
+
+Элемент сформирован на основе тега \textit{a}, внутрь которого вложен тег \textit{img}. Ключевые атрибуты тега \textit{a}, которые можно использовать для поиска элемента в DOM-дереве: \textit{id="logo"} и \textit{href="https://www.digital-energy.ru"}. 
+
+Варианты селекторов для обращения к данному элементу:
+\begin{itemize}
+    \item CSS-локатор по идентификатору: \textit{\#logo}.
+    \item XPath-локатор: \textit{//a[@id='logo']}.
+\end{itemize}
+
+
+Для расширения тестового покрытия были дополнительно проанализированы 4 элемента графического интерфейса. Результаты исследования исходного кода элементов представлены на \cref{fig:calendar_button,fig:hamburger,fig:search,fig:archive}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/calendar_button.png}
+    \caption{Исходный код элемента «Календарь мероприятий»}
+    \label{fig:calendar_button}
+\end{figure}
+
+Кнопка «Календарь мероприятий» реализована через тег \textit{a} с набором стилевых классов.
+\begin{itemize}
+    \item CSS-локатор: \textit{a.nectar-button.large.regular}
+    \item XPath-локатор: \textit{//a[contains(text(), 'КАЛЕНДАРЬ МЕРОПРИЯТИЙ')]}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/hamburger.png}
+    \caption{Исходный код элемента мобильного меню}
+    \label{fig:hamburger}
+\end{figure}
+
+Элемент управления боковым меню определен тегом \textit{a} с классом \textit{slide-out-widget-area-toggle}.
+\begin{itemize}
+    \item CSS-локатор: \textit{a.slide-out-widget-area-toggle}
+    \item XPath-локатор: \textit{//a[contains(@class, 'slide-out-widget-area-toggle')]}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/search.png}
+    \caption{Исходный код элемента «Поиск»}
+    \label{fig:search}
+\end{figure}
+
+Иконка вызова формы поиска вложена в элемент списка \textit{li} с уникальным идентификатором.
+\begin{itemize}
+    \item CSS-локатор: \textit{\#search-btn a}
+    \item XPath-локатор: \textit{//li[@id='search-btn']/a}
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figs/archive.png}
+    \caption{Исходный код ссылки «Архив новостей»}
+    \label{fig:archive}
+\end{figure}
+
+Ссылка на архив новостей реализована стандартным тегом \textit{a} с указанием относительного пути.
+\begin{itemize}
+    \item CSS-локатор: \textit{a[href*='digital-energy.ru/news']}
+    \item XPath-локатор: \textit{//a[contains(text(), 'Архив новостей')]}
+\end{itemize}
+
+
+\section{Автоматизация тестирования}
+
+Для автоматизации процесса тестирования применялось браузерное расширение Selenium IDE. Был разработан сценарий дымового тестирования, включающий последовательный переход по ключевым разделам веб-приложения.Сценарий автоматизированного тестирования зафиксирован в табличной форме (\cref{tab:selenium_steps}).
+
+\begin{longtblr}[
+    caption = {Сценарий автоматизированного тестирования},
+    label = {tab:selenium_steps},
+]{
+    colspec = { Q[l,m] X[l,m] X[l,m] },
+    hlines, vlines,
+    rowhead = 1,
+}
+    № п.п. & Последовательность действий & Ожидаемый результат \\
+    1 & Открыть веб-приложение по адресу \url{https://www.digital-energy.ru/} & Приложение открыто на главной странице \\
+    2 & Установить размер окна браузера $1936\times1096$ & Размер окна успешно изменен \\
+    3 & Нажать на пункт меню «Об ассоциации» & Осуществлен переход на соответствующую страницу \\
+    4 & Навести мышь на «Деятельность» & Открылось всплывающее меню \\
+    5 & Нажать на пункт меню «Новости» & Осуществлен переход в раздел <<Образование>> \\
+    6 & Нажать на пункт меню «Новости» & Осуществлен переход в раздел новостей \\
+    7 & Нажать на кнопку «Больше новостей» & Загружен дополнительный блок контента \\
+    8 & Нажать на иконку вызова бокового меню & Открыто боковое меню навигации \\
+    9 & Нажать на пункт «Учредители» в боковом меню & Осуществлен переход на страницу учредителей \\
+    10 & Нажать на логотип в шапке сайта & Осуществлен возврат на главную страницу \\
+    11 & Нажать на пункт меню «Контакты» & Осуществлен переход в раздел контанктов \\
+\end{longtblr}
+
+Визуальное представление записанных команд в интерфейсе Selenium IDE приведено на \cref{fig:selenium_script}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/selenium_script.png}
+    \caption{Сценарий автоматизированного тестирования в Selenium IDE}
+    \label{fig:selenium_script}
+\end{figure}
+
+При воспроизведении сценария все шаги были выполнены успешно. Лог выполнения с подтверждением корректности прохождения каждого этапа представлен на \cref{fig:selenium_log}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/selenium_log.png}
+    \caption{Лог успешного выполнения автоматизированного теста}
+    \label{fig:selenium_log}
+\end{figure}
+
+Экспортированный исходный код сценария в формате JSON приведен в \cref{lst:selenium_code}.
+
+\section{Применение искусственного интеллекта в тестировании}
+
+В рамках выполнения проекта для оптимизации процессов проектирования тестовых мероприятий использовалась большая языковая модель. Были сформулированы специализированные промпты для решения трех различных задач.
+
+\subsection{Запрос на предоставление определения из сферы тестирования}
+Нейросети была поставлена задача сформулировать академическое определение нагрузочного тестирования в контексте веб-приложений. Результат выполнения запроса представлен на \cref{fig:ai_def}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/ai_def.png}
+    \caption{Генерация определения нагрузочного тестирования}
+    \label{fig:ai_def}
+\end{figure}
+
+\subsection{Запрос на составление вопроса по техникам тестирования}
+Для проверки образовательных возможностей ИИ был сформирован запрос на создание тестового вопроса по техникам тест-дизайна (эквивалентное разбиение, анализ граничных значений). Сгенерированный вопрос с вариантами ответа показан на \cref{fig:ai_question}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/ai_question.png}
+    \caption{Генерация тестового вопроса по тест-дизайну}
+    \label{fig:ai_question}
+\end{figure}
+
+\subsection{Запрос на составление тест-кейсов}
+С целью автоматизации рутинной работы тестировщика, нейросети был передан URL исследуемого веб-приложения с требованием сгенерировать 5 базовых тест-кейсов. Результат, оформленный в табличном виде, зафиксирован на \cref{fig:ai_cases}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{figs/ai_cases.png}
+    \caption{Генерация базовых тест-кейсов для тестируемого ресурса}
+    \label{fig:ai_cases}
+\end{figure}

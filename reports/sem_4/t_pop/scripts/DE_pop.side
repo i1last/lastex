@@ -1,0 +1,188 @@
+{
+  "id": "f454ee9c-0c94-4fdd-9a4a-d183eebdfb58",
+  "version": "2.0",
+  "name": "DE_pop",
+  "url": "https://www.digital-energy.ru/",
+  "tests": [{
+    "id": "7fef756e-579d-4e84-8e2d-a96f18ebd2f4",
+    "name": "test1",
+    "commands": [{
+      "id": "608e3197-f9f5-4808-9c4c-5312d5ac884a",
+      "comment": "",
+      "command": "open",
+      "target": "https://www.digital-energy.ru/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "505fb432-3b95-4aa8-8bec-eefc37ee05fa",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1096",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e261d955-1464-484e-90e9-9be59e52bbc2",
+      "comment": "",
+      "command": "click",
+      "target": "css=#menu-item-10 > .sf-with-ul > .menu-title-text",
+      "targets": [
+        ["css=#menu-item-10 > .sf-with-ul > .menu-title-text", "css:finder"],
+        ["xpath=//li[@id='menu-item-10']/a/span", "xpath:idRelative"],
+        ["xpath=//li/a/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3b833635-688c-4a32-9d10-7be0ca636e29",
+      "comment": "",
+      "command": "click",
+      "target": "css=.tracked-pos",
+      "targets": [
+        ["css=.tracked-pos", "css:finder"],
+        ["xpath=//li[@id='menu-item-3733']/ul", "xpath:idRelative"],
+        ["xpath=//li[2]/ul", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5c020d52-e237-4ca2-b832-e6d786bc5952",
+      "comment": "",
+      "command": "click",
+      "target": "css=.tracked-pos",
+      "targets": [
+        ["css=.tracked-pos", "css:finder"],
+        ["xpath=//li[@id='menu-item-3733']/ul", "xpath:idRelative"],
+        ["xpath=//li[2]/ul", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4c12bc3a-6f1d-42c3-ba4b-3d36683bc906",
+      "comment": "",
+      "command": "mouseDown",
+      "target": "css=#menu-item-3733 > .sf-with-ul > .menu-title-text",
+      "targets": [
+        ["css=#menu-item-3733 > .sf-with-ul > .menu-title-text", "css:finder"],
+        ["xpath=//li[@id='menu-item-3733']/a/span", "xpath:idRelative"],
+        ["xpath=//nav/ul/li[2]/a/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "254f0285-7882-4781-ba3d-84d0313a2095",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "css=.tracked-pos",
+      "targets": [
+        ["css=.tracked-pos", "css:finder"],
+        ["xpath=//li[@id='menu-item-3733']/ul", "xpath:idRelative"],
+        ["xpath=//li[2]/ul", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a10e5125-7bbd-4df3-8e38-541854dd3c3b",
+      "comment": "",
+      "command": "click",
+      "target": "id=menu-item-3733",
+      "targets": [
+        ["id=menu-item-3733", "id"],
+        ["css=#menu-item-3733", "css:finder"],
+        ["xpath=//li[@id='menu-item-3733']", "xpath:attributes"],
+        ["xpath=//header[@id='top']/div/div/div[2]/nav/ul/li[2]", "xpath:idRelative"],
+        ["xpath=//nav/ul/li[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bf2b4d86-4537-462e-afd0-935d6e3ab2eb",
+      "comment": "",
+      "command": "click",
+      "target": "css=#menu-item-13485 .menu-title-text",
+      "targets": [
+        ["css=#menu-item-13485 .menu-title-text", "css:finder"],
+        ["xpath=//li[@id='menu-item-13485']/a/span", "xpath:idRelative"],
+        ["xpath=//li[2]/ul/li/a/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Образование')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "f7206163-ffc4-48f4-b539-18a6da29deba",
+      "comment": "",
+      "command": "click",
+      "target": "css=#menu-item-11 > .sf-with-ul > .menu-title-text",
+      "targets": [
+        ["css=#menu-item-11 > .sf-with-ul > .menu-title-text", "css:finder"],
+        ["xpath=//li[@id='menu-item-11']/a/span", "xpath:idRelative"],
+        ["xpath=//nav/ul/li[3]/a/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0386061b-635a-47d4-aeed-9aeed7f7e612",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Больше новостей",
+      "targets": [
+        ["linkText=Больше новостей", "linkText"],
+        ["css=.load-more", "css:finder"],
+        ["xpath=//a[contains(text(),'Больше новостей')]", "xpath:link"],
+        ["xpath=//div[@id='fws_6a08a291280e3']/div[2]/div/div/div[2]/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, '#')])[13]", "xpath:href"],
+        ["xpath=//div[2]/div/div/div/div[2]/div/div/div[2]/div/div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Больше новостей')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "77139701-afa2-45ad-bc58-09f348aef591",
+      "comment": "",
+      "command": "click",
+      "target": "css=.slide-out-widget-area-toggle:nth-child(4) span:nth-child(2)",
+      "targets": [
+        ["css=.slide-out-widget-area-toggle:nth-child(4) span:nth-child(2)", "css:finder"],
+        ["xpath=//header[@id='top']/div/div/div[2]/nav/ul[2]/li[4]/div/a/span[2]", "xpath:idRelative"],
+        ["xpath=//li[4]/div/a/span[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "66fa5433-0754-41bb-8149-f859a60c274f",
+      "comment": "",
+      "command": "click",
+      "target": "css=#menu-item-399 > a",
+      "targets": [
+        ["css=#menu-item-399 > a", "css:finder"],
+        ["xpath=(//a[contains(text(),'Учредители')])[2]", "xpath:link"],
+        ["xpath=//li[@id='menu-item-399']/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, 'https://www.digital-energy.ru/about/founders/')])[2]", "xpath:href"],
+        ["xpath=//div[5]/div/div/div/div/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7c39a957-5ec6-4e2f-b721-5eb916bcb943",
+      "comment": "",
+      "command": "click",
+      "target": "css=.starting-logo:nth-child(4)",
+      "targets": [
+        ["css=.starting-logo:nth-child(4)", "css:finder"],
+        ["xpath=(//img[@alt='Ассоциация \"Цифровая Энергетика\"'])[4]", "xpath:img"],
+        ["xpath=//a[@id='logo']/img[4]", "xpath:idRelative"],
+        ["xpath=//img[4]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "59538443-cd4d-4ae8-91ed-1753ed2bc487",
+      "comment": "",
+      "command": "click",
+      "target": "css=#menu-item-13 .menu-title-text",
+      "targets": [
+        ["css=#menu-item-13 .menu-title-text", "css:finder"],
+        ["xpath=//li[@id='menu-item-13']/a/span", "xpath:idRelative"],
+        ["xpath=//nav/ul/li[5]/a/span", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "57fd37df-4507-4e37-951e-4893291dbd49",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["7fef756e-579d-4e84-8e2d-a96f18ebd2f4"]
+  }],
+  "urls": ["https://www.digital-energy.ru/"],
+  "plugins": []
+}
