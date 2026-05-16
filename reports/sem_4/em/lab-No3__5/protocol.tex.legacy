@@ -1,0 +1,21 @@
+\luaexec{dofile('code/protocol.lua')}
+
+Емкость проводников (холостой ход) $C_0 = \val[1]{p.C0 * 1e12}$ пФ.
+
+\begin{table}[H]
+    \centering
+    \caption{Температурные зависимости емкости и $\tan \delta$ исследуемых образцов}
+    \label{tab:measurements}
+    \begin{tblr}{
+        width = \linewidth,
+        colspec = { Q[c,m] *{10}{X[c,m]} },
+        hlines, vlines,
+        rows = {m, font=\small},
+        rowhead = 2,
+        stretch = 1.1
+    }
+        \SetCell[r=2]{c} $t$, $^\circ\text{C}$ & \SetCell[c=2]{c} {1. Неорг.\\ стекло} & & \SetCell[c=2]{c} {2. Слюда} & & \SetCell[c=2]{c} {3. Тиконд} & & \SetCell[c=2]{c} {4. Полипр-н} & & \SetCell[c=2]{c} {5. Сегнето-\\керамика} & \\
+        & $C_1$, Ф & $\tan \delta_1$ & $C_2$, Ф & $\tan \delta_2$ & $C_3$, Ф & $\tan \delta_3$ & $C_4$, Ф & $\tan \delta_4$ & $C_5$, Ф & $\tan \delta_5$ \\
+        \expanded{\luablock*[0,exp,4,exp,4,exp,4,exp,4,exp,4][1][-1]{p.t, p.C1, p.tan1, p.C2, p.tan2, p.C3, p.tan3, p.C4, p.tan4, p.C5, p.tan5}} \\
+    \end{tblr}
+\end{table}

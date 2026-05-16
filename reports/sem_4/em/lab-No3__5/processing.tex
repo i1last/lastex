@@ -1,16 +1,18 @@
-\directlua{dofile("code/processing.lua")}
+\begin{python}
+from scripts.calc import *
+\end{python}
 
-\subsection*{ \fbox{Задание 1, 2.} Построение зависимостей $C(t)$ и $\tan \delta (t)$}
+\subsection*{ \fbox{Задания 1, 2.} Построение зависимостей $C(t)$ и $\tan \delta (t)$}
 \begin{quote}
     \textit{По экспериментальным данным \cref{tab:measurements} построить температурные зависимости емкости исследованных образцов $C(t)$ и тангенса угла диэлектрических потерь $\tan \delta$ исследованных образцов.}
 \end{quote}
 
-Первоначально производится коррекция измеренных значений емкости путем вычитания емкости соединительных проводов $C_0 = \val[1]{p.C0 * 1e12}$ пФ. Результаты представлены на \cref{fig:C_vs_t,fig:C_vs_t_without}. Поскольку значения тангенса угла диэлектрических потерь в ходе эксперимента не изменялись с температурой.
+Первоначально производится коррекция измеренных значений емкости путем вычитания емкости соединительных проводов $C_0 = \pv[-12.1]{p['C0']}$ пФ. Результаты представлены на \cref{fig:C_vs_t} и \cref{fig:C_vs_t_without}.  Поскольку значения тангенса угла диэлектрических потерь в ходе эксперимента не изменялись с температурой, их графики не приведены.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{figs/plot_C_vs_t.png}
-    \caption{Температурные зависимости емкости исследуемых образцов}
+    \input{figs/plot_C_vs_t.pgf}
+    \caption{Температурная зависимостьемкости сегнетокерамики}
     \label{fig:C_vs_t}
 \end{figure}
 
@@ -31,92 +33,138 @@
     \alpha_C = \frac{1}{C} \frac{dC}{dt}
 \end{equation}
 
-Производная $dC/dt$ рассчитывается численно методом конечных разностей для каждого интервала измерений:
-\begin{equation}
-    \frac{dC}{dt} \approx \frac{\Delta C}{\Delta t} = \frac{C_{i+1} - C_i}{t_{i+1} - t_i}
-\end{equation}
+Для линейных диэлектриков (образцы 1--4) производная $dC/dt$ принимается постоянной на всем температурном диапазоне и рассчитывается по крайним точкам ($t_1$ и $t_N$). Для нелинейного диэлектрика --- сегнетокерамики --- применяется метод разностей для каждого интервала $\Delta t$. Истинная емкость образца рассчитывается как $C_{net} = C_{meas} - C_0$.
 
-Истинная емкость образца рассчитывается как:
-\begin{equation}
-    C_{net} = C_{meas} - C_0
-\end{equation}
-
-Пример расчета ТКЕ для первого образца (неорганическое стекло) на первом температурном интервале ($t_1 = \val[0]{p.t[1]}\,^\circ\text{C}$, $t_2 = \val[0]{p.t[2]}\,^\circ\text{C}$):
-\begin{align}
-    \alpha_{C,1}(t_1) &= \frac{1}{C_{net,1}(t_1)} \frac{C_{net,1}(t_2) - C_{net,1}(t_1)}{t_2 - t_1} =\\
-    &=\frac{1}{\val[2]{r.C1_net[1]*1e12}} \cdot \frac{\val[2]{r.C1_net[2]*1e12} - \val[2]{r.C1_net[1]*1e12}}{\val[0]{p.t[2]} - \val[0]{p.t[1]}} = \\
-    &=\val[2,exp]{r.ac1[1]}\; \text{K}^{-1}
-\end{align}
-
-\subsection*{ \fbox{Задание 4.} Расчет температурного коэффициента диэлектрической проницаемости $\alpha_\epsilon$}
+\subsection*{ \fbox{Задание 4.} Расчет температурного коэффициента диэлектрической проницаемости $\alpha_\varepsilon$}
 \begin{quote} 
-    \textit{Пользуясь \cref{form:alphae}, рассчитать значения температурного коэффициента диэлектрической проницаемости $\alpha_\epsilon$ для исследованных материалов. Значения $\alpha_{g}$, необходимые для вычисления, указаны на испытательном стенде.}
+    \textit{Пользуясь формулой (5), рассчитать значения температурного коэффициента диэлектрической проницаемости $\alpha_\varepsilon$ для исследованных материалов. Значения $\alpha_{l\text{д}}$, необходимые для вычисления, указаны на испытательном стенде.}
 \end{quote}
 
 Температурный коэффициент диэлектрической проницаемости (ТКДП) рассчитывается по формуле:
 \begin{equation}
-    \alpha_\epsilon = \alpha_C - \alpha_{g},
+    \alpha_\varepsilon = \alpha_C - \alpha_{l\text{д}}
 \end{equation}
-где $\alpha_{g}$ --- температурный коэффициент линейного расширения диэлектрика.
 
-Пример расчета ТКДП для первого образца (неорганическое стекло) при температуре $t_1 = \val[0]{p.t[1]}\,^\circ\text{C}$ (значение $\alpha_{g,1} = \val[1,exp]{r.ald[1]}$ К$^{-1}$):
-\begin{equation}
-    \alpha_{\epsilon,1}(t_1) = \alpha_{C,1}(t_1) - \alpha_{g,1} = \val[2,exp]{r.ac1[1]} - \val[1,exp]{r.ald[1]} = \val[2,exp]{r.ae1[1]}\; \text{K}^{-1}
-\end{equation}
+Ниже представлены подробные расчеты $\alpha_C$ и $\alpha_\varepsilon$ для всех образцов ($C_0 = \pv[-12.1]{p['C0']}$ пФ).
+
+\textit{1. Неорганическое стекло}
+
+$t_1 = \pv[0]{p['t'][0]}\,^\circ\text{C}$, $C_{meas}(t_1) = \pv[-12.0]{p['C1'][0]}$ пФ; $t_N = \pv[0]{p['t'][-1]}\,^\circ\text{C}$, $C_{meas}(t_N) = \pv[-12.0]{p['C1'][-1]}$ пФ.
+
+$C_{net}(t_1) = \pv[-12.0]{p['C1'][0]} - \pv[-12.1]{p['C0']} = \pv[-12.1]{r['C1_net'][0]}$ пФ; $C_{net}(t_N) = \pv[-12.0]{p['C1'][-1]} - \pv[-12.1]{p['C0']} = \pv[-12.1]{r['C1_net'][-1]}$ пФ.
+\begin{equation*}
+    \alpha_C = \frac{1}{C_{net}(t_1)} \frac{C_{net}(t_N) - C_{net}(t_1)}{t_N - t_1} = \frac{1}{\pv[-12.1]{r['C1_net'][0]}} \frac{\pv[-12.1]{r['C1_net'][-1]} - \pv[-12.1]{r['C1_net'][0]}}{\pv[0]{p['t'][-1]} - \pv[0]{p['t'][0]}} = \pv[.2e]{(r['C1_net'][-1]-r['C1_net'][0])/(p['t'][-1]-p['t'][0])/r['C1_net'][0]}\; \text{K}^{-1}
+\end{equation*}
+\begin{equation*}
+    \alpha_\varepsilon = \alpha_C - \alpha_{l\text{д}} = \pv[.2e]{(r['C1_net'][-1]-r['C1_net'][0])/(p['t'][-1]-p['t'][0])/r['C1_net'][0]} - \pv[.2e]{r['ald'][0]} = \pv[.2e]{(r['C1_net'][-1]-r['C1_net'][0])/(p['t'][-1]-p['t'][0])/r['C1_net'][0] - r['ald'][0]}\; \text{K}^{-1}
+\end{equation*}
+
+\textit{2. Слюда}
+
+$C_{meas}(\pv[0]{p['t'][0]}\,^\circ\text{C}) = \pv[-12.0]{p['C2'][0]}$ пФ; $C_{meas}(\pv[0]{p['t'][-1]}\,^\circ\text{C}) = \pv[-12.0]{p['C2'][-1]}$ пФ.
+
+$C_{net}(\pv[0]{p['t'][0]}\,^\circ\text{C}) = \pv[-12.1]{r['C2_net'][0]}$ пФ; $C_{net}(\pv[0]{p['t'][-1]}\,^\circ\text{C}) = \pv[-12.1]{r['C2_net'][-1]}$ пФ.
+\begin{equation*}
+    \alpha_C = \frac{1}{\pv[-12.1]{r['C2_net'][0]}} \frac{\pv[-12.1]{r['C2_net'][-1]} - \pv[-12.1]{r['C2_net'][0]}}{\pv[0]{p['t'][-1]} - \pv[0]{p['t'][0]}} = \pv[.2e]{(r['C2_net'][-1]-r['C2_net'][0])/(p['t'][-1]-p['t'][0])/r['C2_net'][0]}\; \text{K}^{-1}
+\end{equation*}
+\begin{equation*}
+    \alpha_\varepsilon = \pv[.2e]{(r['C2_net'][-1]-r['C2_net'][0])/(p['t'][-1]-p['t'][0])/r['C2_net'][0]} - \pv[.3e]{r['ald'][1]} = \pv[.3e]{(r['C2_net'][-1]-r['C2_net'][0])/(p['t'][-1]-p['t'][0])/r['C2_net'][0] - r['ald'][1]}\; \text{K}^{-1}
+\end{equation*}
+
+\textit{3. Тиконд}
+
+$C_{meas}(\pv[0]{p['t'][0]}\,^\circ\text{C}) = \pv[-12.0]{p['C3'][0]}$ пФ; $C_{meas}(\pv[0]{p['t'][-1]}\,^\circ\text{C}) = \pv[-12.0]{p['C3'][-1]}$ пФ.
+
+$C_{net}(\pv[0]{p['t'][0]}\,^\circ\text{C}) = \pv[-12.1]{r['C3_net'][0]}$ пФ; $C_{net}(\pv[0]{p['t'][-1]}\,^\circ\text{C}) = \pv[-12.1]{r['C3_net'][-1]}$ пФ.
+\begin{equation*}
+    \alpha_C = \frac{1}{\pv[-12.1]{r['C3_net'][0]}} \frac{\pv[-12.1]{r['C3_net'][-1]} - \pv[-12.1]{r['C3_net'][0]}}{\pv[0]{p['t'][-1]} - \pv[0]{p['t'][0]}} = \pv[.2e]{(r['C3_net'][-1]-r['C3_net'][0])/(p['t'][-1]-p['t'][0])/r['C3_net'][0]}\; \text{K}^{-1}
+\end{equation*}
+\begin{equation*}
+    \alpha_\varepsilon = \pv[.2e]{(r['C3_net'][-1]-r['C3_net'][0])/(p['t'][-1]-p['t'][0])/r['C3_net'][0]} - \pv[.2e]{r['ald'][2]} = \pv[.2e]{(r['C3_net'][-1]-r['C3_net'][0])/(p['t'][-1]-p['t'][0])/r['C3_net'][0] - r['ald'][2]}\; \text{K}^{-1}
+\end{equation*}
+
+\textit{4. Полипропилен}
+
+$C_{meas}(\pv[0]{p['t'][0]}\,^\circ\text{C}) = \pv[-12.0]{p['C4'][0]}$ пФ; $C_{meas}(\pv[0]{p['t'][-1]}\,^\circ\text{C}) = \pv[-12.0]{p['C4'][-1]}$ пФ.
+
+$C_{net}(\pv[0]{p['t'][0]}\,^\circ\text{C}) = \pv[-12.1]{r['C4_net'][0]}$ пФ; $C_{net}(\pv[0]{p['t'][-1]}\,^\circ\text{C}) = \pv[-12.1]{r['C4_net'][-1]}$ пФ.
+\begin{equation*}
+    \alpha_C = \frac{1}{\pv[-12.1]{r['C4_net'][0]}} \frac{\pv[-12.1]{r['C4_net'][-1]} - \pv[-12.1]{r['C4_net'][0]}}{\pv[0]{p['t'][-1]} - \pv[0]{p['t'][0]}} = \pv[.2e]{(r['C4_net'][-1]-r['C4_net'][0])/(p['t'][-1]-p['t'][0])/r['C4_net'][0]}\; \text{K}^{-1}
+\end{equation*}
+\begin{equation*}
+    \alpha_\varepsilon = \pv[.2e]{(r['C4_net'][-1]-r['C4_net'][0])/(p['t'][-1]-p['t'][0])/r['C4_net'][0]} - \pv[.2e]{r['ald'][3]} = \pv[.2e]{(r['C4_net'][-1]-r['C4_net'][0])/(p['t'][-1]-p['t'][0])/r['C4_net'][0] - r['ald'][3]}\; \text{K}^{-1}
+\end{equation*}
+
+\textit{5. Сегнетокерамика (пример для первого температурного интервала)}
+
+$t_1 = \pv[0]{p['t'][0]}\,^\circ\text{C}$, $C_{meas}(t_1) = \pv[-12.0]{p['C5'][0]}$ пФ; $t_2 = \pv[0]{p['t'][1]}\,^\circ\text{C}$, $C_{meas}(t_2) = \pv[-12.0]{p['C5'][1]}$ пФ.
+
+$C_{net}(t_1) = \pv[-12.1]{r['C5_net'][0]}$ пФ; $C_{net}(t_2) = \pv[-12.1]{r['C5_net'][1]}$ пФ.
+\begin{equation*}
+    \alpha_{C,1} = \frac{1}{C_{net}(t_1)} \frac{C_{net}(t_2) - C_{net}(t_1)}{t_2 - t_1} = \frac{1}{\pv[-12.1]{r['C5_net'][0]}} \frac{\pv[-12.1]{r['C5_net'][1]} - \pv[-12.1]{r['C5_net'][0]}}{\pv[0]{p['t'][1]} - \pv[0]{p['t'][0]}} = \pv[.2e]{(r['C5_net'][1]-r['C5_net'][0])/(p['t'][1]-p['t'][0])/r['C5_net'][0]}\; \text{K}^{-1}
+\end{equation*}
+\begin{equation*}
+    \alpha_{\varepsilon,1} = \alpha_{C,1} - \alpha_{l\text{д}} = \pv[.2e]{(r['C5_net'][1]-r['C5_net'][0])/(p['t'][1]-p['t'][0])/r['C5_net'][0]} - \pv[.2e]{r['ald'][4]} = \pv[.2e]{(r['C5_net'][1]-r['C5_net'][0])/(p['t'][1]-p['t'][0])/r['C5_net'][0] - r['ald'][4]}\; \text{K}^{-1}
+\end{equation*}
 
 Результаты расчетов сведены в \cref{tab:res_1_3,tab:res_4_5}.
 
-\begin{table}[H]
-    \centering
-    \caption{Коэффициенты для образцов 1--3}
-    \label{tab:res_1_3}
-    \begin{tblr}{
-        width = \linewidth,
-        colspec = { Q[c,m] *{6}{X[c,m]} },
-        hlines, vlines,
-        row{1,2} = {font=\small},
-        row{3-Z} = {font=\small}
+\begin{longtblr}[
+    caption = {Коэффициенты для образцов 1--3},
+    label = {tab:res_1_3},
+]{
+    width = \linewidth,
+    colspec = { Q[c,m] *{6}{X[c,m]} },
+    hlines, vlines,
+    row{1,2} = {font=\small},
+    row{3-Z} = {font=\small}
+}
+    \SetCell[r=2]{c} $t$, $^\circ\text{C}$ & \SetCell[c=2]{c} \textit{1. Неорг. стекло} & & \SetCell[c=2]{c} \textit{2. Слюда} & & \SetCell[c=2]{c} \textit{3. Тиконд} & \\
+    & $\alpha_C \cdot 10^{-4}$ & $\alpha_\varepsilon \cdot 10^{-4}$ & $\alpha_C \cdot 10^{-4}$ & $\alpha_\varepsilon \cdot 10^{-4}$ & $\alpha_C \cdot 10^{-4}$ & $\alpha_\varepsilon \cdot 10^{-4}$ \\
+    \expanded{
+        \pt*[0, -4.2, -4.2, -4.2, -4.2, -4.2, -4.2]{
+            r['t_calc'], r['ac1'], r['ae1'], r['ac2'], r['ae2'], r['ac3'], r['ae3']
+        }
     }
-        \SetCell[r=2]{c} $t$, $^\circ\text{C}$ & \SetCell[c=2]{c} 1. Неорг. стекло & & \SetCell[c=2]{c} 2. Слюда & & \SetCell[c=2]{c} 3. Тиконд & \\
-        & $\alpha_C \cdot 10^{-4}$ & $\alpha_\epsilon \cdot 10^{-4}$ & $\alpha_C \cdot 10^{-4}$ & $\alpha_\epsilon \cdot 10^{-4}$ & $\alpha_C \cdot 10^{-4}$ & $\alpha_\epsilon \cdot 10^{-4}$ \\
-        \expanded{\luablock*[0,2m-4,2m-4,2m-4,2m-4,2m-4,2m-4][1][-1]{r.t_calc, r.ac1, r.ae1, r.ac2, r.ae2, r.ac3, r.ae3}} \\
-    \end{tblr}
-\end{table}
+\end{longtblr}
 
-\begin{table}[H]
-    \centering
-    \caption{Коэффициенты для образцов 4--5}
-    \label{tab:res_4_5}
-    \begin{tblr}{
-        width = \linewidth,
-        colspec = { Q[c,m] *{4}{X[c,m]} },
-        hlines, vlines,
-        row{1,2} = {font=\small},
-        row{3-Z} = {font=\small}
+\begin{longtblr}[
+    caption = {Коэффициенты для образцов 4--5},
+    label = {tab:res_4_5},
+]{
+    width = \linewidth,
+    colspec = { Q[c,m] *{4}{X[c,m]} },
+    hlines, vlines,
+    row{1,2} = {font=\small},
+    row{3-Z} = {font=\small}
+}
+    \SetCell[r=2]{c} $t$, $^\circ\text{C}$ & \SetCell[c=2]{c} \textit{4. Полипропилен} & & \SetCell[c=2]{c} \textit{5. Сегнетокерамика} & \\
+    & $\alpha_C \cdot 10^{-4}$ & $\alpha_\varepsilon \cdot 10^{-4}$ & $\alpha_C \cdot 10^{-4}$ & $\alpha_\varepsilon \cdot 10^{-4}$ \\
+    \expanded{
+        \pt*[0, -4.2, -4.2, -4.2, -4.2]{
+            r['t_calc'], r['ac4'], r['ae4'], r['ac5'], r['ae5']
+        }
     }
-        \SetCell[r=2]{c} $t$, $^\circ\text{C}$ & \SetCell[c=2]{c} 4. Полипропилен & & \SetCell[c=2]{c} 5. Сегнетокерамика & \\
-        & $\alpha_C \cdot 10^{-4}$ & $\alpha_\epsilon \cdot 10^{-4}$ & $\alpha_C \cdot 10^{-4}$ & $\alpha_\epsilon \cdot 10^{-4}$ \\
-        \expanded{\luablock*[0,2m-4,2m-4,2m-4,2m-4][1][-1]{r.t_calc, r.ac4, r.ae4, r.ac5, r.ae5}} \\
-    \end{tblr}
-\end{table}
+\end{longtblr}
 
-\subsection*{ \fbox{Задание 5.} Построение зависимостей $\alpha_\epsilon(t)$ и итоговая таблица}
+\subsection*{ \fbox{Задание 5.} Построение зависимостей $\alpha_\varepsilon(t)$}
 \begin{quote}
-    \textit{По данным \cref{tab:measurements} построить температурные зависимости температурного коэффициента диэлектрической проницаемости $\alpha_\epsilon$ для всех исследованных материалов.}
+    \textit{По данным \cref{tab:measurements} построить температурные зависимости температурного коэффициента диэлектрической проницаемости $\alpha_\varepsilon$ для всех исследованных материалов.}
 \end{quote}
 
-На \cref{fig:ae_vs_t,fig:ae_vs_t_without} представлены итоговые зависимости ТКДП от температуры. Сводные результаты расчетов приведены в \cref{tab:res_1_3,tab:res_4_5}.
+На \cref{fig:ae_vs_t,fig:ae_vs_t_without} представлены итоговые зависимости ТКДП от температуры.
 
 \begin{figure}[H]
     \centering
     \input{figs/plot_ae_vs_t.pgf}
-    \caption{Температурные зависимости ТКДП $\alpha_\epsilon$}
+    \caption{Температурные зависимости ТКДП $\alpha_\varepsilon$}
     \label{fig:ae_vs_t}
 \end{figure}
+
 \begin{figure}[H]
     \centering
     \input{figs/plot_ae_vs_t_withoutSK.pgf}
-    \caption{Температурные зависимости ТКДП $\alpha_\epsilon$ (без сегнетокерамики)}
+    \caption{Температурные зависимости ТКДП $\alpha_\varepsilon$ (без сегнетокерамики)}
     \label{fig:ae_vs_t_without}
 \end{figure}
 
@@ -138,7 +186,9 @@
     \begin{equation}
         \alpha_\varepsilon < 0
     \end{equation}
-    Преобладающие механизмы --- \textit{электронная и ионная поляризация}.% При повышении температуры межионные расстояния в кристаллической решетке увеличиваются. Это приводит к ослаблению сил внутреннего электрического поля и снижению объемной поляризуемости. Эффект теплового расширения доминирует, вызывая спад емкости.
+    Преобладающий механизм --- \textit{электронная поляризация}.
+    % ионной поляризацией. Отрицательный температурный коэффициент объясняется тем, что при нагревании кристаллическая решетка расширяется, внутреннее электрическое поле ослабевает, и ионная поляризуемость падает быстрее, чем растет объем.
+    % При повышении температуры межионные расстояния в кристаллической решетке увеличиваются. Это приводит к ослаблению сил внутреннего электрического поля и снижению объемной поляризуемости. Эффект теплового расширения доминирует, вызывая спад емкости.
 
     \item \textit{Неорганическое стекло и слюда (неорганические диэлектрики с неплотной упаковкой ионов)}.
     Для этих материалов коэффициент положителен:
